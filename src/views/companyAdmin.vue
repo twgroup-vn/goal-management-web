@@ -1,0 +1,59 @@
+<template>
+  <div>
+    <div class="container-fluid px-0">
+      <side-menu-admin class="side-nav" params="route: route" v-bind:class="{active: target}"></side-menu-admin>
+      <header class="main-header" v-bind:class="{active: target}">
+        <div class="d-flex align-items-center">
+          <a class="open-menu" @click="openMenu" v-bind:class="{active: target}">
+            <font-awesome-icon :icon="['fas', 'bars']" />
+          </a>
+          <a class="close-menu" @click="closeMenu" v-bind:class="{active: target}">
+            <font-awesome-icon :icon="['fas', 'bars']" />
+          </a>
+          <lang-select></lang-select>
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="noti-bell d-none">
+            <font-awesome-icon :icon="['far', 'bell']" class="icon mr-3" />
+            <div class="noti-number">2</div>
+          </div>
+          <avatar></avatar>
+        </div>
+      </header>
+      <div class="page-wrap" v-bind:class="{active: target}">
+        <div class="main-body">
+          <CompanyAdmin />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import SideMenuAdmin from "../components/side-bar-admin";
+import LangSelect from "../components/lang-select";
+import CompanyAdmin from "../modules/companyAdmin";
+import Avatar from "../components/avatar";
+export default {
+  name: "dashBoarduser",
+  data() {
+    return {
+      target: true,
+    };
+  },
+  components: {
+    CompanyAdmin,
+    "side-menu-admin": SideMenuAdmin,
+    "lang-select": LangSelect,
+    avatar: Avatar,
+  },
+  methods: {
+    openMenu: function () {
+      this.target = true;
+    },
+    closeMenu: function () {
+      this.target = false;
+    },
+  },
+};
+</script>

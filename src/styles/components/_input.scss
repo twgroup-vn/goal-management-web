@@ -1,0 +1,26 @@
+input{
+	&.input-primary{
+		background-color: $white;
+		border-bottom: 1px solid $grey-2;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		padding: 8px 15px;
+		width: 100%;
+		outline: none;
+	}
+	&.input-secondary{
+		background-color: $white;
+		border: 1px solid $grey-2;
+		padding: 8px 15px;
+		width: 100%;
+		outline: none;
+	}
+}
+
+textarea{
+	border: 1px solid $grey-2;
+	&:focus{
+		border-color: $grey-2;
+	}
+}

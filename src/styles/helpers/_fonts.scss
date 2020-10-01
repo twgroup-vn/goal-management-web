@@ -1,0 +1,26 @@
+@charset "UTF-8";
+//Font
+$Primary-Regular: 'OpenSans-Regular', Helvetica, Arial, sans-serif;
+$Primary-Semibold: 'OpenSans-Semibold', Helvetica, Arial,sans-serif;
+$Primary-Bold: 'OpenSans-Bold', Helvetica, Arial,sans-serif;
+
+// Load fonts from this directory
+$fonts-path-Regular: "../assets/fonts/OpenSans-Regular";
+$fonts-path-Medium: "../assets/fonts/OpenSans-Semibold";
+$fonts-path-Semibold: "../assets/fonts/OpenSans-Bold";
+
+$fonts-version: '?v=1.000';
+
+@font-face {
+    @include font-face('OpenSans-Regular',$fonts-path-Regular, $fonts-version);
+}
+@font-face {
+    @include font-face('OpenSans-Semibold',$fonts-path-Semibold, $fonts-version);
+}
+@font-face {
+    @include font-face('OpenSans-Bold',$fonts-path-Semibold, $fonts-version);
+}
+
+
+
+

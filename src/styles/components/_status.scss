@@ -1,0 +1,22 @@
+.status{
+    width: 100%;
+    padding: 4px;
+    border-radius: 30px;
+    color: $white;
+    text-align: center;
+    border: 1px solid transparent;
+    &.success{
+        border: 1px solid $light-success;
+        background: linear-gradient(to right, $light-success, $medium-success);
+        a{
+            color: $white;
+        }
+    }
+    &.danger{
+        border: 1px solid $red;
+        background: linear-gradient(to right, $pink, $orange);
+        a{
+            color: $white;
+        }
+    }
+}

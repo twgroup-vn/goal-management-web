@@ -1,0 +1,12 @@
+.wrapper-target{
+    background: $white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 5px rgba($grey-8, .1), 0 1px 5px rgba($grey-8, .1);
+    .title{
+        font-size: 21px;
+        font-family: $Primary-Bold;
+        text-align: center;
+    }
+}

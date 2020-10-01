@@ -1,0 +1,88 @@
+{
+    "common": {
+        "selectLang": "Language",
+        "theme": "Theme"
+    },
+    "userNav":{
+        "checkin": "Check-in",
+        "companyCheckin": "Company Check-in"
+    },
+    "nav":{
+        "dashboard": "Dashboard",
+        "checkin": "Check-in",
+        "dashBoardAdmin": "Dashboard",
+        "companyAdmin": "Company Management",
+        "checkInQuestionAdmin": "Check-in question",
+        "cycleAdmin": "Cycle Management",
+        "departmentAdmin": "Department Managment",
+        "positionAdmin": "Position Management",
+        "criteriaAdmin": "Criteria Management",
+        "employeeAdmin": "Employee Management",
+        "replyAdmin": "Review Management",
+        "goalAdmin": "Goal Management"
+    },
+    "dashboardPage": {
+    },
+    "checkinPage": {
+    },
+    "dashboardPageAdmin": {
+    },
+    "checkInQuestionAdmin": {
+        "nameQuestion": "Question",
+        "orderQuestion": "No",
+        "setting" : "Setting"
+    },
+    "cycleAdmin": {
+        "nameCycle": "Cycle name",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "setting" : "Setting"
+    },
+    "departmentAdmin": {
+        "nameDepartment": "Department name",
+        "description": "Description",
+        "setting" : "Setting"
+    },
+    "positionAdmin": {
+        "namePosition": "Position name",
+        "nameDepartment": "Department name",
+        "description": "Description",
+        "setting" : "Setting"
+    },
+    "criteriaAdmin": {
+        "nameCriteria": "Criteria name",
+        "star": "Star",
+        "type": "Type",
+        "setting" : "Setting"
+    },
+    "employeeAdmin": {
+        "name": "Full name",
+        "email": "Email",
+        "phoneNumber": "Phone number",
+        "department": "Department",
+        "position": "Position",
+        "permission": "Permision",
+        "setting" : "Setting"
+    },
+    "replyAdmin": {
+        "goal": "Goal",
+        "userReply": "Evaluators",
+        "evaluativeCriteria": "Evaluative Criteria",
+        "userReceive": "Evaluated person",
+        "content": "Reason",
+        "createdAt": "Evaluation Date",
+        "type": "Type",
+        "setting": "Setting"
+    },
+    "goalAdmin": {
+        "goal": "Goal",
+        "staffInCharge": "Staff",
+        "result": "Result",
+        "progressPercent": "Progress",
+        "confidenceLevel": "Confidence level",
+        "lastCheckInDate": "Latest check-in",
+        "nextCheckInDate": "Next check-in",
+        "status": "Status",
+        "setting": "Setting"
+    }
+}

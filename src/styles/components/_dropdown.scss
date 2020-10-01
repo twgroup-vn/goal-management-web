@@ -1,0 +1,16 @@
+.dropdown-menu{
+    right: 0;
+    left: inherit;
+    border-radius: 10px;
+    font-size: 14px;
+    min-width: 300px;
+    width: 100%;
+        .dropdown-item{
+            &.active{
+                background-color: $white;
+            }
+            &:active{
+                background-color: $white;
+            }
+        }
+}

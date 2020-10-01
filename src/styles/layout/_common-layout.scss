@@ -1,0 +1,23 @@
+.logo-lang{
+    width: 20px;
+    height: 20px;
+}
+
+// svg{
+//     path{
+//         fill: $grey-8;
+//     }
+// }
+
+hr{
+    border-top: 1px solid $grey-2;
+    width: 100%;
+}
+
+.white-background{
+    background-color: $white;
+    padding: 20px;
+    margin: 0 15px;
+    border-radius: 10px;
+    // height: calc(100vh - 100px);
+}

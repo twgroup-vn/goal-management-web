@@ -1,0 +1,21 @@
+.navbar{
+    background: linear-gradient(to top, $light-cyan, $medium-cyan);
+    .navbar-nav{
+        .nav-item{
+            a{
+                color: rgba($white, 0.75);
+                &:hover{
+                    color: $white;
+                }
+                &:focus{
+                    color: $white;
+                }
+                &.active{
+                    .nav-link{
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}

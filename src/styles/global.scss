@@ -1,0 +1,49 @@
+@import "@/styles/helpers/_variables.scss";
+@import "@/styles/helpers/_mixins.scss";
+@import "@/styles/helpers/_fonts.scss";
+
+body {
+    font-family: $Primary-Regular;
+    font-size: 14px;
+    font-stretch: normal;
+    line-height: 1.5;
+    color: $grey-8;
+    background-color: $grey-1;
+}
+
+a {
+    text-decoration: none;
+    font-size: 14px;
+    color: $grey-8;
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+        color: $grey-8;
+    }
+}
+
+@import "../styles/layout/_common-layout";
+@import "../styles/layout/_reset-bootstrap";
+@import "../styles/layout/_navbar";
+@import "../styles/layout/_sidebar";
+@import "../styles/layout/_authen";
+@import "../styles/layout/_general-form";
+@import "../styles/layout/reset-element/_dialog";
+@import "../styles//layout/reset-element/_pagination";
+
+@import "../styles/components/_cards";
+@import "../styles/components/_buttons";
+@import "../styles/components/_modal";
+@import "../styles/components/_checkbox";
+@import "../styles/components/_table";
+@import "../styles/components/_dropdown";
+@import "../styles/components/_status";
+@import "../styles/components/_input";
+@import "../styles/components/_avatar";
+@import "../styles/components/_icon";
+@import "../styles/components/_chart";
+
+@import "../styles/pages//management-company";
+@import "../styles/pages/checkInCompany"
+

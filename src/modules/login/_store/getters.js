@@ -1,0 +1,43 @@
+import _ from 'lodash'
+
+const getCompanyOfUser = (state) => {
+  return state.companiesOfUser;
+};
+
+const getCompanyDetail = (state) =>{
+  return state.companyDetails;
+}
+
+const getCurrentUser = (state) =>{
+  return state.currentUser;
+}
+
+const getQuestionsCompany = (state) =>{
+  if (state.companyDetails) {
+    var sortArray = _.filter(state.companyDetails.checkInQuestion, (o) => { return o.orderNo < 5 });
+    sortArray.sort((a, b) => {
+      if (a.orderNo < b.orderNo)
+        return -1;
+      if (a.orderNo > b.orderNo)
+        return 1;
+      return 0;
+    });
+    return sortArray;
+  }
+}
+
+const getCycleCompany = (state) => {
+  var data = [];
+  if(state.companyDetails && state.companyDetails.cycle){
+    data = _.cloneDeep(state.companyDetails.cycle);
+  }
+  return data;
+}
+
+export default {
+  getCompanyOfUser,
+  getCompanyDetail,
+  getQuestionsCompany,
+  getCurrentUser,
+  getCycleCompany
+};

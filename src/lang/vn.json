@@ -1,0 +1,88 @@
+{
+    "common": {
+        "selectLang": "Ngôn ngữ",
+        "theme": "Chủ đề"
+    },
+    "userNav":{
+        "checkin": "Tiến độ",
+        "companyCheckin": "Tiến độ công ty"
+    },
+    "nav":{
+        "dashboard": "Bảng điều khiển",
+        "checkin": "Tiến độ",
+        "dashBoardAdmin": "Bảng điều khiển",
+        "companyAdmin": "Quản lý công ty",
+        "checkInQuestionAdmin": "Câu hỏi check-in",
+        "cycleAdmin": "Quản lý chu kỳ",
+        "departmentAdmin": "Quản lý phòng ban",
+        "positionAdmin": "Quản lý vị trí công việc",
+        "criteriaAdmin": "Tiêu chí đánh giá",
+        "employeeAdmin": "Quản lý nhân viên",
+        "replyAdmin": "Quản lý phản hồi",
+        "goalAdmin": "Quản lý mục tiêu"
+    },
+    "dashboardPage": {
+    },
+    "checkinPage": {
+    },
+    "dashboardPageAdmin": {
+    },
+    "checkInQuestionAdmin": {
+        "nameQuestion": "Câu hỏi",
+        "orderQuestion": "Thứ tự",
+        "setting" : "Thao tác"
+    },
+    "cycleAdmin": {
+        "nameCycle": "Tên chu kỳ",
+        "startDate": "Ngày bắt đầu",
+        "endDate": "Ngày kết thúc",
+        "setting" : "Thao tác"
+    },
+    "departmentAdmin": {
+        "nameDepartment": "Tên phòng ban",
+        "description": "Mô tả",
+        "setting" : "Thao tác"
+    },
+    "positionAdmin": {
+        "namePosition": "Tên vị trí",
+        "nameDepartment": "Tên phòng ban",
+        "description": "Mô tả",
+        "setting" : "Thao tác"
+    },
+    "criteriaAdmin": {
+        "nameCriteria": "Tiêu chí đánh giá",
+        "star": "Số sao",
+        "type": "Loại phản hồi",
+        "setting" : "Thao tác"
+    },
+    "employeeAdmin": {
+        "name": "Họ và tên",
+        "email": "Email",
+        "phoneNumber": "Số điện thoại",
+        "department": "Phòng ban",
+        "position": "Vị trí công việc",
+        "permission": "Quyền hạn",
+        "setting" : "Thao tác"
+    },
+    "replyAdmin": {
+        "goal": "Mục tiêu",
+        "userReply": "Người đánh giá",
+        "evaluativeCriteria": "Tiêu chí đánh giá",
+        "userReceive": "Người được đánh giá",
+        "content": "Lý do",
+        "createdAt": "Ngày đánh giá",
+        "type": "Loại phản hồi",
+        "setting": "Thao tác"
+    },
+    "goalAdmin": {
+        "goal": "Mục tiêu",
+        "staffInCharge": "Người phụ trách",
+        "result": "Kết quả",
+        "progressPercent": "Tiến độ",
+        "confidenceLevel": "Mức độ tự tin",
+        "lastCheckInDate": "Check-in gần nhất",
+        "nextCheckInDate": "Check-in tiếp theo",
+        "status": "Trạng thái",
+        "setting": "Thao tác"
+    }
+}
