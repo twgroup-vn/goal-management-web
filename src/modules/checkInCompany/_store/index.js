@@ -5,12 +5,14 @@ import mutations from '../_store/mutations';
 const state = {
   userList: null,
   goalList: null,
+  goalUser: null,
   total: null,
+  cycleId: null,
   searchRequest: {
     title: '',
     description: '',
     pageIndex: 1,
-    pageSize: 3,
+    pageSize: 10,
   },
 }
 

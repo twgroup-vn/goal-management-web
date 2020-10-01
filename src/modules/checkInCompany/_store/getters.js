@@ -45,8 +45,24 @@ const getGoalList = (state) => {
     return data;
 };
 
+const getUserGoal = (state) => {
+  var data = {};
+  if (state.goalUser) {
+    data = _.map(state.goalUser, (v) => {
+      return v;
+    });
+    if(state.cycleId){
+      data = _.filter(data,(o)=>{
+        return o.cycleId === state.cycleId
+      });
+    }
+  }
+  return data;
+};
+
 
 export default {
   getUserList,
-  getGoalList
+  getGoalList,
+  getUserGoal
 };

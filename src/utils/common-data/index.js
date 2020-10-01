@@ -87,7 +87,7 @@ const goalStatusDisplay = {
   new: { name: 'mới', color: 'info' },
   inProgress: { name: 'thực hiện', color: 'primary'},
   done: { name: 'hoàn thành', color: 'success' },
-  cancel: { name: 'hủy', color: 'danger'}
+  cancel: { name: 'hủy', color: 'danger' }
 }
 
 export default{

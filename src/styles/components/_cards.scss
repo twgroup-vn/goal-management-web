@@ -1,6 +1,6 @@
 .created-date{
-    font-family: $Primary-Bold;
-    color: $grey-4;
+    color: $grey-5;
+    font-size: 12px;
 }
 
 .card{
@@ -9,9 +9,10 @@
     .card-body{
         .title{
             font-family: $Primary-Bold;
-            font-size: 16px;
+            font-size: 13px;
         }
         .content{
+            font-size: 16px;
             .result{
                 color: $light-cyan;
             }

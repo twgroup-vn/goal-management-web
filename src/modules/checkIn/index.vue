@@ -42,7 +42,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
-                  <div class="created-date">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                  <div class="created-date mb-3">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
                 </div>
               </div>
               <div class="row">

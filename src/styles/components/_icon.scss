@@ -18,3 +18,31 @@
         text-align: center;
     }
 }
+
+.relative-group-icon{
+    position: relative;
+    cursor: pointer;
+    .number{
+        position: absolute;
+        top: -10px;
+        right: -5px;
+        font-size: 12px;
+        font-family: $Primary-Bold;
+        &.danger{
+            color: $red;
+        }
+    }
+    .icon{
+        font-size: 20px;
+        &.star{
+            path{
+                fill: $warning;
+            }
+        }
+        &.danger{
+            path{
+                fill: $red;
+            }
+        }
+    }
+}

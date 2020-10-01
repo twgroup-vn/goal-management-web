@@ -34,10 +34,19 @@ const getCycleCompany = (state) => {
   return data;
 }
 
+const getEvaluateCriteriaCompany = (state) => {
+  var data = [];
+  if(state.companyDetails && state.companyDetails.evaluativeCriteria){
+    data = _.cloneDeep(state.companyDetails.evaluativeCriteria);
+  }
+  return data;
+}
+
 export default {
   getCompanyOfUser,
   getCompanyDetail,
   getQuestionsCompany,
   getCurrentUser,
-  getCycleCompany
+  getCycleCompany,
+  getEvaluateCriteriaCompany
 };

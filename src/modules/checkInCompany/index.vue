@@ -65,9 +65,23 @@
                       <div v-if="!item.avatar" class="avatar-without-img">{{item.convertName}}</div>
                       <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${item && item.avatar ? item.avatar : ''})` }"></div>
                     </div>
-                    <div class="ml-2 mr-2">{{ item && item.fullName ? item.fullName : '' }}</div>
+                    <div class="ml-2 mr-2">
+                      <div class="">{{ item && item.fullName ? item.fullName : '' }}</div>
+                      <div class="created-date">{{ item.createdAt.slice(0,10) }}</div>
+                    </div>
                   </div>
-                  <div class="created-date">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                  <div class="d-flex align-items-center">
+                    <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
+                      <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
+                      <div>
+                        <font-awesome-icon :icon="['fas', 'star']" class="icon star" :class="{ danger: item.star < 0 }"/>
+                      </div>
+                    </a>
+                    <a class="relative-group-icon" @click="handleModalViewFeedback(item.id)">
+                      <div class="number">{{ item.reply.length }}</div>
+                      <font-awesome-icon :icon="['far', 'comment-dots']" class="icon" />
+                    </a>
+                  </div>
                 </div>
               </div>
               <hr class=""/>
@@ -99,7 +113,7 @@
                 <div class="col-md-2 d-flex flex-column justify-content-center">
                   <div class="title">Trạng thái</div>
                   <div class="content">
-                    <div :class="`text-${commonData.goalStatusDisplay[item.status].color}`">
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
                       {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
                     </div>
                   </div>
@@ -165,17 +179,105 @@
     </el-dialog>
 
     <el-dialog title="Form phản hồi, ghi nhận" :visible.sync="modalFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
-      <div></div>
+      <div class="modal-body">
+        <div class="row my-2">
+          <div class="col-md-4 title">Loại phản hồi</div>
+          <div class="col-md-8">
+            <el-select v-model="formData.type" placeholder="Select" class="w-100">
+              <el-option
+                v-for="(item, index) in commonData.replyType"
+                :key="index"
+                :label="item.name"
+                :value="item.code">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-4 title">Người được phản hồi</div>
+          <div class="col-md-8">
+            <el-select v-model="formData.receiveUserId" placeholder="Select" class="w-100">
+              <el-option
+                v-for="item in feedbackUser"
+                :key="item.id"
+                :label="item.fullName"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-4 title">Chu kỳ</div>
+          <div class="col-md-8">
+            <el-select v-model="cycleId" placeholder="Select" class="w-100">
+              <el-option
+                v-for="item in cycleCompany"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-4 title">Mục tiêu</div>
+          <div class="col-md-8">
+            <el-select v-model="formData.goalId" placeholder="Select" class="w-100">
+              <el-option
+                v-for="item in goalUser"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-4 title">Tiêu chí</div>
+          <div class="col-md-8">
+            <el-select v-model="formData.evaluativeCriteriaId" placeholder="Select" class="w-100">
+              <el-option
+                v-for="item in evaluateUser"
+                :key="item.id"
+                :label="item.content"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-md-4 title">Nội dung</div>
+          <div class="col-md-8">
+            <textarea rows="10" class="w-100" v-model="formData.content"></textarea>
+          </div>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-secondary mr-3" @click="modalFeedback = false">
           Hủy
         </button>
-        <button class="btn btn-primary" @click="modalFeedback = false">
+        <button class="btn btn-primary" @click="submitResponse">
           Xác nhận
         </button>
       </span>
     </el-dialog>
 
+    <el-dialog title="Xem phản hồi, ghi nhận" :visible.sync="modalViewFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <table>
+        <thead>
+          <tr>
+            <th>Người phản hồi</th>
+            <th>Loại phản hồi</th>
+          </tr>
+        </thead>
+        <tbody v-for="(item, index) in goalList" :key="index">
+          <tr v-for="(replies, key) in item.reply" :key="key"> 
+            <td>{{ replies && replies.userId ? replies.userId : '' }}</td>
+            <td>{{ replies && replies.type ? replies.type : '' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </el-dialog>
   </div>
 </template>
 
@@ -184,6 +286,7 @@ import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import commonData from '../../utils/common-data';
 import PieChart from "./_components/pieChart";
+import _ from 'lodash';
 export default {
   components: {
     PieChart
@@ -195,18 +298,35 @@ export default {
       description: '',
       modalCheckIn: false,
       modalFeedback: false,
+      modalViewFeedback: false,
       activeTab: "check-in",
+      cycleId: '',
+      formData:{
+        receiveUserId: '',
+        type: '',
+        userId: localStorage.getItem("userId"),
+        goalId: '',
+        evaluativeCriteriaId: '',
+        content: '',
+        isDelete: false
+      },
+      user: null,
+      rawEvaluateCompany:null,
+      evaluateUser: null,
     };
   },
   computed: {
     ...mapState({
       searchRequest: state => state.$_checkInCompany.searchRequest,
-      currentUser: state => state.$_loginPage.currentUser
+      currentUser: state => state.$_loginPage.currentUser,
     }),
     ...mapGetters({
       questionsCompany: "$_loginPage/getQuestionsCompany",
       cycleCompany: "$_loginPage/getCycleCompany",
       goalList: "$_checkInCompany/getGoalList",
+      evaluateCompany: "$_loginPage/getEvaluateCriteriaCompany",
+      feedbackUser: "$_checkInCompany/getUserList",
+      goalUser: "$_checkInCompany/getUserGoal",
     }),
   },
   async created() {
@@ -217,6 +337,22 @@ export default {
     }
     await _this.$store.dispatch("$_checkInCompany/getUserList");
     await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
+     _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
+     _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
+  },
+  watch:{
+    "formData.receiveUserId": async function(val){
+      var _this = this;
+      await _this.$store.dispatch("$_checkInCompany/getAllGoalOfUser", val);
+    },
+    "cycleId": async function(val){
+      var _this = this;
+      await _this.$store.dispatch("$_checkInCompany/handleChangeCycleIdOfGoalUser", val);
+    },
+    "formData.type": async function(val){
+      var _this = this;
+      _this.evaluateUser = _.filter(_this.rawEvaluateCompany, o => {return o.type === val})
+    },
   },
   methods: {
     customColorMethod(percentage) {
@@ -237,12 +373,12 @@ export default {
     async handleSearch(){
       var _this = this;
       _this.searchRequest.description = _this.description;
-      await _this.$store.dispatch("$_checkInCompany/getGoalListOfUser");
+      await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
     },
     async handleFilter(){
       var _this = this;
       _this.searchRequest.title = _this.cycle;
-      await _this.$store.dispatch("$_checkInCompany/getGoalListOfUser");
+      await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
     },
     format(percentage) {
       return percentage === 100 ? "Full" : `${percentage}%`;
@@ -251,16 +387,39 @@ export default {
       var _this = this;
       _this.modalCheckIn = true;
     },
+    handleModalViewFeedback(val){
+      var _this = this;
+      console.log(val)
+      _this.modalViewFeedback = true;
+    },
     async handleSizeChange(val) {
       var _this = this;
       _this.searchRequest.pageSize = val;
-      await _this.$store.dispatch("$_checkInCompany/getGoalListOfUser");
+      await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
     },
     async handleCurrentChange(val) {
       var _this = this;
       _this.searchRequest.pageIndex = val;
-      await _this.$store.dispatch("$_checkInCompany/getGoalListOfUser");
+      await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
     },
+    submitResponse: _.debounce(async function () {
+      var _this = this;
+      try {
+        await _this.$store.dispatch("$_checkInCompany/createReply", _this.formData);
+        await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
+        _this.modalFeedback = false
+        _this.$notify({
+          title: "Chúc mừng",
+          message: "Phản hồi thành công",
+          type: "success",
+        });
+      } catch (error) {
+        _this.$notify.error({
+          title: "Thất bại",
+          message: "Phản hồi thất bại",
+        });
+      }
+    }, 500),
   },
 };
 </script>
