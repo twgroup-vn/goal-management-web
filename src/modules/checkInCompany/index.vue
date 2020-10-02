@@ -275,7 +275,7 @@
           </thead>
           <tbody v-for="(item, index) in replyClone" :key="index">
             <tr v-for="(text, key) in item.reply" :key="key"> 
-              <td>{{ feedbackUser.find(x => { return x.id === text.receiveUserId}).fullName }}</td>
+              <td>{{ feedbackUser.find(x => { return x.id === text.userId}).fullName }}</td>
               <td>{{ text.type ? commonData.replyTypeDisplay[text.type] : '' }}</td>
               <td>{{ text.createdAt.slice(0, 10) }}</td>
               <td>
@@ -349,7 +349,6 @@ export default {
     await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
      _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
      _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
-     _this.replyClone = _.cloneDeep(_this.goalList);
   },
   watch:{
     "formData.receiveUserId": async function(val){
@@ -398,9 +397,9 @@ export default {
       var _this = this;
       _this.modalCheckIn = true;
     },
-    handleModalViewFeedback(val){
+    async handleModalViewFeedback(val){
       var _this = this;
-      _this.replyClone = _.filter(_this.replyClone, (o)=>{ return o.id === val });
+      _this.replyClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
     },
     async handleSizeChange(val) {
