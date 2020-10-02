@@ -263,20 +263,29 @@
     </el-dialog>
 
     <el-dialog title="Xem phản hồi, ghi nhận" :visible.sync="modalViewFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
-      <table>
-        <thead>
-          <tr>
-            <th>Người phản hồi</th>
-            <th>Loại phản hồi</th>
-          </tr>
-        </thead>
-        <tbody v-for="(item, index) in goalList" :key="index">
-          <tr v-for="(replies, key) in item.reply" :key="key"> 
-            <td>{{ replies && replies.userId ? replies.userId : '' }}</td>
-            <td>{{ replies && replies.type ? replies.type : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Người phản hồi</th>
+              <th>Loại phản hồi</th>
+              <th>Ngày phản hồi</th>
+              <th>Số sao</th>
+            </tr>
+          </thead>
+          <tbody v-for="(item, index) in replyClone" :key="index">
+            <tr v-for="(text, key) in item.reply" :key="key"> 
+              <td>{{ feedbackUser.find(x => { return x.id === text.receiveUserId}).fullName }}</td>
+              <td>{{ text.type ? commonData.replyTypeDisplay[text.type] : '' }}</td>
+              <td>{{ text.createdAt.slice(0, 10) }}</td>
+              <td>
+                <span class="relative-group-icon"><font-awesome-icon :icon="['fas', 'star']" class="icon star"/></span>
+                <span>{{ evaluateCompany.find(x => { return x.id === text.evaluativeCriteriaId}).star }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -313,6 +322,7 @@ export default {
       user: null,
       rawEvaluateCompany:null,
       evaluateUser: null,
+      replyClone: null,
     };
   },
   computed: {
@@ -339,6 +349,7 @@ export default {
     await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
      _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
      _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
+     _this.replyClone = _.cloneDeep(_this.goalList);
   },
   watch:{
     "formData.receiveUserId": async function(val){
@@ -389,7 +400,7 @@ export default {
     },
     handleModalViewFeedback(val){
       var _this = this;
-      console.log(val)
+      _this.replyClone = _.filter(_this.replyClone, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
     },
     async handleSizeChange(val) {
