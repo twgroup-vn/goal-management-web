@@ -1,0 +1,127 @@
+.chatbox {
+    width: 400px;
+    height: 400px;
+    position: fixed;
+    display: flex;
+    flex-flow: column;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 2px 0 6px 6px rgba($grey-8, .2);
+    background: $white;
+    bottom: 0;
+    right: 30px;
+    transition: .1s ease-out;
+    .chatbox-top {
+      position: relative;
+      display: flex;
+      padding: 10px 0;
+      border-radius: 10px 10px 0 0;
+      background: $white;
+      .chatbox-icons {
+        padding: 0 10px 0 0;
+        display: flex;
+        position: relative;
+        a{
+          margin-right: 15px;
+          &:last-child{
+            margin-right: 0;
+          }
+        }
+        path{
+          fill: $grey-8;
+        }
+      }
+      .chat-name {
+        flex: 1;
+        padding: 0 0 0 15px;
+        font-size: 12px;
+        font-family: $Primary-Bold;
+        color: $general;
+        text-shadow: 1px 1px 0 $white;
+        transition: .1s ease-out;
+      }
+    }
+    .chat-messages {
+      background: rgba($general, 0.05);
+      padding: 10px;
+      overflow: auto;
+      display: flex;
+      flex-flow: row wrap;
+      align-content: flex-start;
+      flex: 1;
+      .message-box-holder {
+        width: 100%;
+        margin: 0 0 15px;
+        display: flex;
+        flex-flow: column;
+        align-items: flex-end;
+        .message-box {
+          padding: 6px 10px;
+          border-radius: 6px 0 6px 0;
+          position: relative;
+          background: rgba($general, 0.2);
+          border: 2px solid rgba($grey-8, 0.1);
+          color: $grey-8;
+          font-size: 12px;
+          border-radius: 10px;
+          &:after {
+            content: "";
+            position: absolute;
+            border: 10px solid transparent;
+            border-top: 10px solid rgba($general, 0.2);
+            border-right: none;
+            bottom: -22px;
+            right: 10px;
+          }
+          &.message-partner {
+            background: rgba($pink, .1);
+            border: 2px solid rgba($pink, .1);
+            align-self: flex-start;
+            &:after {
+              right: auto;
+              bottom: auto;
+              top: -22px;
+              left: 9px;
+              border: 10px solid transparent;
+              border-bottom: 10px solid rgba($pink, .2);
+              border-left: none;
+            }
+          }
+        }
+      }
+      .message-sender {
+        font-size: 12px;
+        margin: 0 0 15px;
+        color: $pink;
+        align-self: flex-start;
+      }
+    }
+    .chat-input-holder {
+      display: flex;
+      border-top: 1px solid rgba($grey-8, .1);
+      .chat-input {
+        resize: none;
+        padding: 5px 10px;
+        height: 40px;
+        color: $grey-8;
+        flex: 1;
+        border: none;
+        background: $white;
+        border-bottom: 1px solid rgba($grey-8, .05);
+        outline: none;
+        &:focus{
+          border: 0;
+        }
+      }
+    }
+}
+  
+  .chatboxShow {
+    margin-bottom: -362px;
+  }
+  
+  .chatboxShow .chatbox-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  

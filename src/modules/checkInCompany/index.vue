@@ -123,6 +123,7 @@
           </div>
         </div>
       </div>
+      <chat-box></chat-box>
     </div>
 
     <el-dialog title="Form check-in hàng tuần" :visible.sync="modalCheckIn" class="transition-box-center" width="80%" top="0vh" :close-on-click-modal="false" :close-on-press-escape="false">
@@ -299,10 +300,12 @@ import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import commonData from '../../utils/common-data';
 import PieChart from "./_components/pieChart";
+import ChatBox from '../../components/chat-box'
 import _ from 'lodash';
 export default {
   components: {
-    PieChart
+    PieChart,
+    'chat-box': ChatBox
   },
   data() {
     return {

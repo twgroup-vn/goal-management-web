@@ -4,6 +4,8 @@ import mutations from '../_store/mutations';
 
 const state = {
   data: null,
+  userList: null,
+  goalList: null,
   total: 0,
   headers: {
     userReply: true,

@@ -34,13 +34,13 @@
               <td>
                 <el-checkbox :value="item.id" v-model="ids"></el-checkbox>
               </td>
-              <td>{{item.userId}}</td>
-              <td>{{item.evaluativeCriteriaId}}</td>
-              <td>{{item.receiveUserId}}</td>
-              <td>{{item.content}}</td>
-              <td>{{item.goalId}}</td>
-              <td>{{item.createdAt}}</td>
-              <td>{{item.type}}</td>
+              <td>{{ feedbackUser.find(x => { return x.id === item.userId}).fullName }}</td>
+              <td>{{ evaluateCompany.find(x => { return x.id === item.evaluativeCriteriaId}).content }}</td>
+              <td>{{ feedbackUser.find(x => { return x.id === item.receiveUserId}).fullName }}</td>
+              <td>{{ item.content }}</td>
+              <td>{{ goalList.find(x => { return x.id === item.goalId}).name }}</td>
+              <td>{{ item.createdAt.slice(0, 10) }}</td>
+              <td>{{ item.type ? commonData.replyTypeDisplay[item.type] : '' }}</td>
               <td>
                 <div class="d-flex justify-content-end">
                   <font-awesome-icon :icon="['fas', 'edit']" @click="openDiaLog(item)" class="mr-3"/>
@@ -66,12 +66,14 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import commonData from '../../utils/common-data';
 import store from "./_store";
 import _ from 'lodash';
 export default {
   components: {},
   data() {
     return {
+      commonData,
       ids: [],
       isCheckAll: false,
       description: '',
@@ -89,6 +91,9 @@ export default {
     }),
     ...mapGetters({
         data: "$_replyAdmin/getData",
+        feedbackUser: "$_replyAdmin/getUserList",
+        evaluateCompany: "$_loginPage/getEvaluateCriteriaCompany",
+        goalList: "$_replyAdmin/getGoalList",
     }),
   },
   watch: {
@@ -104,6 +109,8 @@ export default {
       _this.$store.registerModule(STORE_KEY, store);
     }
     await _this.$store.dispatch("$_replyAdmin/getData");
+    await _this.$store.dispatch("$_replyAdmin/getUserList");
+    await _this.$store.dispatch("$_replyAdmin/getGoalListOfCompany");
   },
   methods: {
     async handleSearch(){
