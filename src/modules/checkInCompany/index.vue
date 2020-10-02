@@ -270,6 +270,7 @@
               <th>Người phản hồi</th>
               <th>Loại phản hồi</th>
               <th>Ngày phản hồi</th>
+              <th>Nội dung phản hồi</th>
               <th>Số sao</th>
             </tr>
           </thead>
@@ -278,9 +279,12 @@
               <td>{{ feedbackUser.find(x => { return x.id === text.userId}).fullName }}</td>
               <td>{{ text.type ? commonData.replyTypeDisplay[text.type] : '' }}</td>
               <td>{{ text.createdAt.slice(0, 10) }}</td>
+              <td>{{ text.content ? text.content : 'Không có nội dung' }}</td>
               <td>
-                <span class="relative-group-icon"><font-awesome-icon :icon="['fas', 'star']" class="icon star"/></span>
-                <span>{{ evaluateCompany.find(x => { return x.id === text.evaluativeCriteriaId}).star }}</span>
+                <a class="relative-group-icon">
+                  <span class="mr-2"><font-awesome-icon :icon="['fas', 'star']" class="icon star" /></span>
+                  <span class="number">{{ evaluateCompany.find(x => { return x.id === text.evaluativeCriteriaId}).star }}</span>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -397,7 +401,7 @@ export default {
       var _this = this;
       _this.modalCheckIn = true;
     },
-    async handleModalViewFeedback(val){
+    handleModalViewFeedback(val){
       var _this = this;
       _this.replyClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;

@@ -10,7 +10,6 @@
           <a class="close-menu" @click="closeMenu" v-bind:class="{active: target}">
             <font-awesome-icon :icon="['fas', 'bars']" />
           </a>
-          <lang-select></lang-select>
         </div>
         <div class="d-flex align-items-center">
           <div class="noti-bell d-none">
@@ -31,7 +30,6 @@
 
 <script>
 import SideMenuAdmin from "../components/side-bar-admin";
-import LangSelect from "../components/lang-select";
 import PositionAdmin from "../modules/positionAdmin";
 import Avatar from "../components/avatar";
 export default {
@@ -44,7 +42,6 @@ export default {
   components: {
     PositionAdmin,
     "side-menu-admin": SideMenuAdmin,
-    "lang-select": LangSelect,
     avatar: Avatar,
   },
   methods: {

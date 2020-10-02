@@ -81,7 +81,7 @@
                 <div class="col-md-1 d-flex flex-column justify-content-center">
                   <div class="title">Trạng thái</div>
                   <div class="content">
-                    <div :class="`text-${commonData.goalStatusDisplay[item.status].color}`">
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
                       {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
                     </div>
                   </div>
@@ -199,7 +199,7 @@
         </div>
         <div class="row my-2">
           <div class="col-md-4 title">Hình đính kèm</div>
-          <div class="col-md-4">
+          <div class="col-md-8">
             <div class="avatar-circle square">
               <img class="img-fluid" :src="NoAvatar" v-if="!formCreate.image" />
               <img class="img-fluid" :src="formCreate.image" v-else />

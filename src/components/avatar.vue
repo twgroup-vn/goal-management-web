@@ -44,6 +44,9 @@
             <a href="javascript:;" @click="redirectTo(`/userInfo`)">Thông tin tài khoản</a>
           </div>
           <div class="dropdown-item">
+            <a href="javascript:;" @click="redirectTo(`/admin/company`)">Quản trị thông tin</a>
+          </div>
+          <div class="dropdown-item">
             <a href="javascript:;" @click="logout">Đăng xuất</a>
           </div>
         </div>

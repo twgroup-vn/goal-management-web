@@ -1,7 +1,9 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-light">
-      <router-link class="navbar-brand" to="/">Logo</router-link>
+      <router-link class="navbar-brand" to="/">
+        <img class="img-fluid" :src="MainLogo"/>
+      </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,6 +32,7 @@
 import { routes } from '../router/routes'
 import commonData from '../utils/common-data/index';
 import Avatar from "../components/avatar"
+import MainLogo from '../assets/svgs/mainLogo/TWG-white.svg'
 export default {
   components: {
     'avatar': Avatar
@@ -39,6 +42,7 @@ export default {
     return {
       routes,
       commonData,
+      MainLogo
     };
   },
   created() {
