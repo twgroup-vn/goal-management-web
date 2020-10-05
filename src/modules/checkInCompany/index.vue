@@ -16,7 +16,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input placeholder="Tìm kiếm" class="form-control" v-model="description" />
+            <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
@@ -93,7 +93,7 @@
                 <div class="col-md-2 d-flex flex-column justify-content-center">
                   <div class="title">Kết quả chính</div>
                   <div class="content">
-                    <a href="javascript:;" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                    <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
                 <div class="col-md-2 d-flex flex-column justify-content-center">
@@ -137,7 +137,7 @@
             <div class="row my-2">
               <div class="col-md-4 title">Mục tiêu</div>
               <div class="col-md-8">
-                <input class="input-secondary" placeholder="Nhập mục tiêu" />
+                <input class="input-primary" placeholder="Nhập mục tiêu" />
               </div>
             </div>
             <div class="row my-2">
@@ -265,8 +265,8 @@
 
     <el-dialog title="Xem phản hồi, ghi nhận" :visible.sync="modalViewFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="table-responsive">
-        <table class="table">
-          <thead>
+        <table class="table table-hover">
+          <thead class="thead-light">
             <tr>
               <th>Người phản hồi</th>
               <th>Loại phản hồi</th>
@@ -287,6 +287,37 @@
                   <span class="number">{{ evaluateCompany.find(x => { return x.id === text.evaluativeCriteriaId}).star }}</span>
                 </a>
               </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="Form xem kết quả" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>{{ questionsCompany.find(x => x.orderNo === 1).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 2).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 3).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
+              <th>Mức độ tự tin</th>
+              <th>Kết quả</th>
+              <th>Ngày check-in cuối cùng</th>
+              <th>Ngày tạo</th>
+            </tr>
+          </thead>
+         <tbody v-for="(item, index) in checkInClone" :key="index">
+            <tr v-for="(check, key) in item.checkIn" :key="key"> 
+              <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerThird ? check.answerThird : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerFourth ? check.answerFourth : 'Không có câu trả lời' }}</td>
+              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : ''}}</td>
+              <td>{{ check.result ? check.result : 'Không có kết quả' }}</td>
+              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : '' }}</td>
+              <td>{{ check.createdAt ? check.createdAt.slice(0,10) : ''}}</td>
             </tr>
           </tbody>
         </table>
@@ -315,6 +346,7 @@ export default {
       modalCheckIn: false,
       modalFeedback: false,
       modalViewFeedback: false,
+      modalViewCheckIn: false,
       activeTab: "check-in",
       cycleId: '',
       formData:{
@@ -330,6 +362,7 @@ export default {
       rawEvaluateCompany:null,
       evaluateUser: null,
       replyClone: null,
+      checkInClone: null
     };
   },
   computed: {
@@ -354,8 +387,8 @@ export default {
     }
     await _this.$store.dispatch("$_checkInCompany/getUserList");
     await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
-     _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
-     _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
+    _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
+    _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
   },
   watch:{
     "formData.receiveUserId": async function(val){
@@ -408,6 +441,11 @@ export default {
       var _this = this;
       _this.replyClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
+    },
+    handleModalViewCheckIn(val){
+      var _this = this;
+      _this.checkInClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalViewCheckIn = true;
     },
     async handleSizeChange(val) {
       var _this = this;

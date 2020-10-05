@@ -4,7 +4,7 @@
 
 body {
     font-family: $Primary-Regular;
-    font-size: 14px;
+    font-size: 16px;
     font-stretch: normal;
     line-height: 1.5;
     color: $grey-8;
@@ -30,7 +30,9 @@ a {
 @import "../styles/layout/_authen";
 @import "../styles/layout/_general-form";
 @import "../styles/layout/reset-element/_dialog";
-@import "../styles//layout/reset-element/_pagination";
+@import "../styles/layout/reset-element/_pagination";
+@import "../styles/layout/reset-element/_dropdown";
+@import "../styles/layout/reset-element/_checkbox";
 
 @import "../styles/components/_cards";
 @import "../styles/components/_buttons";

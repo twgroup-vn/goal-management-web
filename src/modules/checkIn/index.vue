@@ -16,7 +16,7 @@
         <div class="col-md-6">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <input placeholder="Tìm kiếm" class="form-control" v-model="description" />
+              <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
             </div>
             <div class="col-md-4">
               <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
@@ -114,13 +114,13 @@
             <div class="row my-2">
               <div class="col-md-4 title">Kết quả</div>
               <div class="col-md-8">
-                <input class="input-secondary" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
+                <input class="input-primary" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
               </div>
             </div>
             <div class="row my-2">
               <div class="col-md-4 title">Tiến độ</div>
               <div class="col-md-8">
-                <input type="number" class="input-secondary" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
+                <input type="number" class="input-primary" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
               </div> 
             </div>
             <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
@@ -188,13 +188,13 @@
         <div class="row my-2">
           <div class="col-md-4 title">Mục tiêu của bạn</div>
           <div class="col-md-8">
-            <input class="input-secondary" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" />
+            <input class="input-primary" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" />
           </div>      
         </div>
         <div class="row my-2">
           <div class="col-md-4 title">Link kế hoạch</div>
           <div class="col-md-8">
-            <input class="input-secondary" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
+            <input class="input-primary" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
           </div>      
         </div>
         <div class="row my-2">

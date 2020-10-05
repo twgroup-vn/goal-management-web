@@ -4,7 +4,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="form-control" placeholder="Tìm kiếm"/>  
+            <input class="input-primary" placeholder="Tìm kiếm"/>  
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary">Tìm kiếm</button>
@@ -17,7 +17,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <table class="table">
+        <table class="table table-hover">
           <thead class="thead-light">
             <tr>
               <th scope="col">Tên chu kỳ</th>

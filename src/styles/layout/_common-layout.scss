@@ -19,7 +19,7 @@ hr{
     padding: 20px;
     margin: 0 15px;
     border-radius: 10px;
-    // height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
 }
 
 .border-radius-0{

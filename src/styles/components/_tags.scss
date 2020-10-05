@@ -7,12 +7,12 @@
     font-size: 12px;
     border-radius: 10px;
     padding: 4px;
-    font-family: $Primary-Bold;
+    font-family: $Primary-Semibold;
     &.primary{
         background: $general;
     }
     &.info{
-        background: $primary-3;
+        background: $primary;
     }
     &.success{
         background: $medium-success;

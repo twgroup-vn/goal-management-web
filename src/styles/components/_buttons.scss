@@ -4,10 +4,9 @@
         border: 0;
         color: $white;
         transition: all 0.1s linear;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 10px 25px;
+        border-radius: 4px;
+        font-size: 16px;
+        padding: 8px 20px;
         &:hover{
             background: linear-gradient(to top, $light-cyan, $medium-cyan);
             border: 0;
@@ -32,10 +31,9 @@
         color: $white;
         border: 0;
         transition: all 0.1s linear;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 10px 25px;
+        border-radius: 4px;
+        font-size: 16px;
+        padding: 8px 20px;
         &:hover{
             background: linear-gradient(to top, $grey-4, $grey-6);
             color: $white;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chatbox" :class="{ chatboxShow : open}">
+    <div class="chatbox" :class="{ chatboxShow : !open}">
       <div class="chatbox-top">
         <div class="chat-name">Thuận</div>
         <div class="chatbox-icons">

@@ -28,7 +28,7 @@
               <label for="inputUserName">User Name</label>
               <input
                 type="text"
-                class="form-control"
+                class="input-primary"
                 id="inputUserName"
                 v-model="formData.username"
                 readonly
@@ -38,7 +38,7 @@
               <label for="inputName">Name</label>
               <input
                 type="text"
-                class="form-control"
+                class="input-primary"
                 id="inputName"
                 v-model="formData.fullName"
               />
@@ -47,7 +47,7 @@
               <label for="inputShortName">Password</label>
               <input
                 type="text"
-                class="form-control"
+                class="input-primary"
                 id="inputShortName"
                 v-model="formData.password"
               />
@@ -58,7 +58,7 @@
               <label for="inputCompanyName">Email:</label>
               <input
                 type="email"
-                class="form-control"
+                class="input-primary"
                 id="inputCompanyName"
                 v-model="formData.email"
               />
@@ -67,7 +67,7 @@
               <label for="inputPassword">Phone number</label>
               <input
                 type="text"
-                class="form-control"
+                class="input-primary"
                 id="inputPassword"
                 v-model="formData.phoneNumber"
               />

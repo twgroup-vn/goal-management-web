@@ -1,25 +1,26 @@
 @charset "UTF-8";
 //Font
-$Primary-Regular: 'OpenSans-Regular', Helvetica, Arial, sans-serif;
-$Primary-Semibold: 'OpenSans-Semibold', Helvetica, Arial,sans-serif;
-$Primary-Bold: 'OpenSans-Bold', Helvetica, Arial,sans-serif;
+$Primary-Regular: 'IBMPlexSans-Regular', Helvetica, Arial, sans-serif;
+$Primary-Light: 'IBMPlexSans-Light', Helvetica, Arial,sans-serif;
+$Primary-Semibold: 'IBMPlexSans-SemiBold', Helvetica, Arial,sans-serif;
 
 // Load fonts from this directory
-$fonts-path-Regular: "../assets/fonts/OpenSans-Regular";
-$fonts-path-Medium: "../assets/fonts/OpenSans-Semibold";
-$fonts-path-Semibold: "../assets/fonts/OpenSans-Bold";
+$fonts-path-Regular: "../assets/fonts/IBMPlexSans-Regular";
+$fonts-path-Light: "../assets/fonts/IBMPlexSans-Light";
+$fonts-path-Semibold: "../assets/fonts/IBMPlexSans-SemiBold";
 
 $fonts-version: '?v=1.000';
 
 @font-face {
-    @include font-face('OpenSans-Regular',$fonts-path-Regular, $fonts-version);
+    @include font-face('IBMPlexSans-Regular',$fonts-path-Regular, $fonts-version);
 }
 @font-face {
-    @include font-face('OpenSans-Semibold',$fonts-path-Semibold, $fonts-version);
+    @include font-face('IBMPlexSans-Light',$fonts-path-Light, $fonts-version);
 }
 @font-face {
-    @include font-face('OpenSans-Bold',$fonts-path-Semibold, $fonts-version);
+    @include font-face('IBMPlexSans-SemiBold',$fonts-path-Semibold, $fonts-version);
 }
+
 
 
 

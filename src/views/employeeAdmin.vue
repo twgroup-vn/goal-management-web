@@ -12,7 +12,7 @@
           </a>
         </div>
         <div class="d-flex align-items-center">
-          <div class="noti-bell">
+          <div class="noti-bell d-none">
             <font-awesome-icon :icon="['far', 'bell']" class="icon mr-3" />
             <div class="noti-number">2</div>
           </div>

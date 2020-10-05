@@ -16,7 +16,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="form-control" placeholder="Tìm kiếm" v-model="description" />  
+            <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <table class="table">
+        <table class="table table-hover">
         <thead class="thead-light">
           <tr>
             <th>
@@ -76,7 +76,7 @@
         <div class="form-group">
           <label class="control-label font-weight-bold">Tên phòng ban</label>
           <div class="mb-20">
-            <input type="text" class="form-control" placeholder="Nhập tên phòng ban" v-model="formData.name" />
+            <input type="text" class="input-primary" placeholder="Nhập tên phòng ban" v-model="formData.name" />
           </div>
         </div>
         <div class="form-group mt-3">
