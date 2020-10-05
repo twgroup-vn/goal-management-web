@@ -1,5 +1,9 @@
 .table{
+    font-size: 14px;
     th, td{
         word-break: break-word;
+    }
+    th{
+        font-family: $Primary-Semibold;
     }
 }

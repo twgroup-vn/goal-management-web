@@ -53,7 +53,7 @@
                 <div class="col-md-2 d-flex flex-column justify-content-center">
                   <div class="title">Kết quả chính</div>
                   <div class="content">
-                    <a href="javascript:;" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                    <a href="javascript:;" @click="handleModalViewCheckIn(item.id)" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
                 <div class="col-md-2 d-flex flex-column justify-content-center">
@@ -227,6 +227,34 @@
       </span>
     </el-dialog>
 
+    <el-dialog title="Form xem kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>{{ questionsCompany.find(x => x.orderNo === 1).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 2).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 3).question }}</th>
+              <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
+              <th>Mức độ tự tin</th>
+              <th>Phần trăm tiến độ</th>
+              <th>Ngày check-in cuối cùng</th>
+            </tr>
+          </thead>
+         <tbody v-for="(item, index) in checkInClone" :key="index">
+            <tr v-for="(check, key) in item.checkIn" :key="key"> 
+              <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerThird ? check.answerThird : 'Không có câu trả lời' }}</td>
+              <td>{{ check.answerFourth ? check.answerFourth : 'Không có câu trả lời' }}</td>
+              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : ''}}</td>
+              <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
+              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -247,6 +275,7 @@ export default {
       modalCheckIn: false,
       activeTab: "check-in",
       modalCreateGoal: false,
+      modalViewCheckIn: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -272,7 +301,8 @@ export default {
       },
       file: null,
       path: null,
-      goalDetails: null
+      goalDetails: null,
+      checkInClone: null
     };
   },
   computed: {
@@ -315,6 +345,11 @@ export default {
       var _this = this;
       _this.searchRequest.title = _this.cycle;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+    },
+    handleModalViewCheckIn(val){
+      var _this = this;
+      _this.checkInClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalViewCheckIn = true;
     },
     customColorMethod(percentage) {
       if (percentage < 10) {

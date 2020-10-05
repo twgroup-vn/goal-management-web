@@ -5,7 +5,7 @@ const getUserList = async () => {
 }
 
 const getGoalListOfUser = async (pageIndex, pageSize, description, title) => {
-    console.log(process.env.API_URL);
+    console.log(process.env.VUE_APP_API_ROOT);
     var query = { "PageIndex": pageIndex, "PageSize": pageSize, "Description": description, "Title": title };
     return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/goal/getGoalOfUser`, query);
 }

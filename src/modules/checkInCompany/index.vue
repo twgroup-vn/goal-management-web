@@ -293,7 +293,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="Form xem kết quả" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Form xem kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="table-responsive">
         <table class="table table-hover">
           <thead class="thead-light">
@@ -303,9 +303,8 @@
               <th>{{ questionsCompany.find(x => x.orderNo === 3).question }}</th>
               <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
               <th>Mức độ tự tin</th>
-              <th>Kết quả</th>
+              <th>Phần trăm tiến độ</th>
               <th>Ngày check-in cuối cùng</th>
-              <th>Ngày tạo</th>
             </tr>
           </thead>
          <tbody v-for="(item, index) in checkInClone" :key="index">
@@ -315,9 +314,8 @@
               <td>{{ check.answerThird ? check.answerThird : 'Không có câu trả lời' }}</td>
               <td>{{ check.answerFourth ? check.answerFourth : 'Không có câu trả lời' }}</td>
               <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : ''}}</td>
-              <td>{{ check.result ? check.result : 'Không có kết quả' }}</td>
+              <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
               <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : '' }}</td>
-              <td>{{ check.createdAt ? check.createdAt.slice(0,10) : ''}}</td>
             </tr>
           </tbody>
         </table>
