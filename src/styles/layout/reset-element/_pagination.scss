@@ -1,8 +1,8 @@
 .el-pagination.is-background .el-pager li:not(.disabled).active{
-    background-color: $light-cyan !important;
+    background-color: $blue-500 !important;
     color: $white !important;
 }
 
 .el-pager li:hover{
-    color: $light-cyan !important;
+    color: $blue-500 !important;
 }

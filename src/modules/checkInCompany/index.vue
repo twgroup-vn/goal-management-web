@@ -19,12 +19,12 @@
             <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
+            <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
           </div>
         </div>
       </div>
       <div class="col-md-4 text-right">
-        <button class="btn btn-primary" @click="openCreateFeedback">Phản hồi</button>
+        <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Phản hồi</button>
       </div>
     </div>
     <div class="row">
@@ -170,10 +170,10 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary mr-3" @click="modalCheckIn = false">
+        <button class="btn btn-secondary btn-medium mr-3" @click="modalCheckIn = false">
           Hủy
         </button>
-        <button class="btn btn-primary" @click="modalCheckIn = false">
+        <button class="btn btn-primary btn-medium" @click="modalCheckIn = false">
           Xác nhận
         </button>
       </span>
@@ -254,10 +254,10 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary mr-3" @click="modalFeedback = false">
+        <button class="btn btn-secondary btn-medium mr-3" @click="modalFeedback = false">
           Hủy
         </button>
-        <button class="btn btn-primary" @click="submitResponse">
+        <button class="btn btn-primary btn-medium" @click="submitResponse">
           Xác nhận
         </button>
       </span>

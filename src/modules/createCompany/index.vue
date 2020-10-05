@@ -36,7 +36,7 @@
           <div class="form-group">
             <input type="text" placeholder="Company email" class="input-primary" v-model="formData.email" />
           </div>
-          <button class="btn btn-primary" @click="submit">Submit</button>
+          <button class="btn btn-primary btn-medium" @click="submit">Submit</button>
         </div>
       </div>
     </div>

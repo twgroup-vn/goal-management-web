@@ -23,7 +23,7 @@
 
       <div class="chat-input-holder">
         <textarea class="chat-input"></textarea>
-        <button class="btn btn-primary border-radius-0">
+        <button class="btn btn-primary btn-medium border-radius-0">
             <font-awesome-icon :icon="['fas', 'paper-plane']" />
         </button>
       </div>

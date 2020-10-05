@@ -10,7 +10,7 @@
             <div class="name-login">{{currentUser && currentUser.fullName ? currentUser.fullName : ''}}</div>
             <div class="email-login">{{currentUser && currentUser.email ? currentUser.email: ''}}</div>
           </div>
-          <button class="btn btn-primary" @click="logout">Log out</button>
+          <button class="btn btn-primary btn-medium" @click="logout">Log out</button>
         </div>
         <div class="wrapper" v-else>
           <h1>Login</h1>
@@ -20,7 +20,7 @@
           <div class="form-group w-100">
             <input class="input-primary" type="password" placeholder="Password" v-model="formData.Password" />
           </div>
-          <button class="btn btn-primary" @click="submit">Log In</button>
+          <button class="btn btn-primary btn-medium" @click="submit">Log In</button>
         </div>
       </div>
       <div class="overlay-container">

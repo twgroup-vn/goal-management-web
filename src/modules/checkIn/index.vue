@@ -19,12 +19,12 @@
               <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
             </div>
             <div class="col-md-4">
-              <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
+              <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
             </div>
           </div>
         </div>
         <div class="col-md-4 text-right">
-          <button class="btn btn-primary" @click="openCreateGoal">Tạo mục tiêu</button>
+          <button class="btn btn-primary btn-medium" @click="openCreateGoal">Tạo mục tiêu</button>
         </div>
       </div>
       <el-pagination class="text-right"
@@ -150,10 +150,10 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary mr-3" @click="modalCheckIn = false">
+        <button class="btn btn-secondary btn-medium mr-3" @click="modalCheckIn = false">
           Hủy
         </button>
-        <button class="btn btn-primary" @click="submitCheckIn">
+        <button class="btn btn-primary btn-medium" @click="submitCheckIn">
           Xác nhận
         </button>
       </span>
@@ -218,10 +218,10 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary mr-3" @click="modalCreateGoal = false">
+        <button class="btn btn-secondary btn-medium mr-3" @click="modalCreateGoal = false">
           Hủy
         </button>
-        <button class="btn btn-primary" @click="submit">
+        <button class="btn btn-primary btn-medium" @click="submit">
           Xác nhận
         </button>
       </span>

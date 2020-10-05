@@ -1,55 +1,75 @@
 .btn{
     &.btn-primary{
-        background: linear-gradient(to top, $light-cyan, $medium-cyan);
-        border: 0;
+        background: $blue-500;
+        border: 1px solid transparent;
         color: $white;
         transition: all 0.1s linear;
         border-radius: 4px;
-        font-size: 16px;
-        padding: 8px 20px;
+        &.btn-small{
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        &.btn-medium{
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        &.btn-large{
+            padding: 8px 20px;
+            font-size: 16px;
+        }
         &:hover{
-            background: linear-gradient(to top, $light-cyan, $medium-cyan);
-            border: 0;
+            background: $blue-500;
+            border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
         }
         &:focus{
-            background: linear-gradient(to top, $light-cyan, $medium-cyan);
-            border: 0;
+            background: $blue-500;
+            border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
         }
         &:active{
-            background: linear-gradient(to top, $light-cyan, $medium-cyan);
-            border: 0;
+            background: $blue-500;
+            border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
         }
     }
     &.btn-secondary{
-        background: linear-gradient(to top, $grey-4, $grey-6);
-        color: $white;
-        border: 0;
+        background: $white;
+        color: $blue-500;
+        border: 1px solid $blue-500;
         transition: all 0.1s linear;
         border-radius: 4px;
-        font-size: 16px;
-        padding: 8px 20px;
+        &.btn-small{
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        &.btn-medium{
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        &.btn-large{
+            padding: 8px 20px;
+            font-size: 16px;
+        }
         &:hover{
-            background: linear-gradient(to top, $grey-4, $grey-6);
+            background: $blue-500;
             color: $white;
-            border: 0;
+            border: 1px solid transparent;
             transition: all 0.1s linear;
         }
         &:focus{
-            background: linear-gradient(to top, $grey-4, $grey-6);
+            background: $blue-500;
             color: $white;
-            border: 0;
+            border: 1px solid transparent;
             transition: all 0.1s linear;
         }
         &:active{
-            background: linear-gradient(to top, $grey-4, $grey-6);
+            background: $blue-500;
             color: $white;
-            border: 0;
+            border: 1px solid transparent;
             transition: all 0.1s linear;;
         }
     }
@@ -67,6 +87,6 @@
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle{
-    background: linear-gradient(to top, $light-cyan, $medium-cyan);
-    border-color: $light-cyan;
+    background: $blue-500;
+    border-color: $blue-500;
 }

@@ -8,12 +8,12 @@
             <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary" @click="handleSearch">Tìm kiếm</button>
+            <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
           </div>
         </div>
       </div>
       <div class="col-md-6 text-right">
-        <button class="btn btn-primary" @click="addNew">Thêm mới</button>
+        <button class="btn btn-primary btn-medium" @click="addNew">Thêm mới</button>
       </div>
     </div>
     <div class="row">
@@ -91,8 +91,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-primary mr-3" @click="dialogVisible = false">Hủy</button>
-        <button class="btn btn-primary" @click="submit">Đồng ý</button>
+        <button class="btn btn-primary btn-medium mr-3" @click="dialogVisible = false">Hủy</button>
+        <button class="btn btn-primary btn-medium" @click="submit">Đồng ý</button>
       </span>
     </el-dialog>
   </div>

@@ -7,12 +7,12 @@
             <input class="input-primary" placeholder="Tìm kiếm"/>  
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary">Tìm kiếm</button>
+            <button class="btn btn-primary btn-medium">Tìm kiếm</button>
           </div>
         </div>
       </div>
       <div class="col-md-6 text-right">
-        <button class="btn btn-primary">Thêm mới</button>
+        <button class="btn btn-primary btn-medium">Thêm mới</button>
       </div>
     </div>
     <div class="row">

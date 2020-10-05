@@ -63,7 +63,7 @@
           </div>
         </div>
         <div>
-          <button class="btn btn-primary" @click="submit">Submit</button>
+          <button class="btn btn-primary btn-medium" @click="submit">Submit</button>
         </div>
       </div>
     </div>
