@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
+            <input class="input-primary medium" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
             <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
@@ -36,8 +36,10 @@
               </td>
               <td>{{item.content}}</td>
               <td>
-                <font-awesome-icon :icon="['far', 'star']" style="color:yellow" />
-                {{item.star}}
+                <a class="relative-group-icon">
+                  <span class="mr-2"><font-awesome-icon :icon="['fas', 'star']" class="icon star" /></span>
+                  <span class="number">{{item.star}}</span>
+                </a>
               </td>
               <td>{{item.type ? commonData.replyTypeDisplay[item.type] : '' }}</td>
               <td>
@@ -66,14 +68,14 @@
         <div class="form-group">
           <label class="control-label font-weight-bold">Tiêu chí đánh giá</label>
           <div class="mb-20">
-            <input type="text" class="input-primary" placeholder="Nhập tên phòng ban" v-model="formData.content" />
+            <input type="text" class="input-primary medium" placeholder="Nhập tên phòng ban" v-model="formData.content" />
           </div>
         </div>
         <div class="row mt-3">
           <div class="form-group col-md-6">
             <label class="control-label font-weight-bold">Số lượng sao</label>
             <div class="mb-20">
-              <input type="number" class="input-primary" placeholder="Nhập số sao" v-model="formData.star" />
+              <input type="number" class="input-primary medium" placeholder="Nhập số sao" v-model="formData.star" />
             </div>
           </div>
           <div class="form-group col-md-6">

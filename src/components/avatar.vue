@@ -1,7 +1,7 @@
 <template>
     <div>
       <a href="javascript:;" class="d-flex align-items-center group-avatar" v-click-outside="hide" @click="toggle">
-        <div>
+        <div class="avatar-circle original">
           <div v-if="!currentUser.avatar" class="avatar-without-img">{{convertName}}</div>
           <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${currentUser && currentUser.avatar ? currentUser.avatar : ''})` }"></div>
         </div>

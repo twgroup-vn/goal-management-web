@@ -5,7 +5,8 @@
         <div class="wrapper" v-if="currentUser || user">
           <div class="mb-3">
             <div class="avatar-circle mb-3">
-              <img class="img-fluid" :src="NoAvatar" />
+              <img class="img-fluid" v-if="currentUser.avatar" :src="currentUser.avatar" />
+              <img class="img-fluid" v-else :src="NoAvatar" />
             </div>
             <div class="name-login">{{currentUser && currentUser.fullName ? currentUser.fullName : ''}}</div>
             <div class="email-login">{{currentUser && currentUser.email ? currentUser.email: ''}}</div>
@@ -15,10 +16,10 @@
         <div class="wrapper" v-else>
           <h1>Login</h1>
           <div class="form-group w-100">
-            <input class="input-primary" type="email" placeholder="Email" v-model="formData.Username" />
+            <input class="input-primary medium" type="email" placeholder="Email" v-model="formData.Username" />
           </div>
           <div class="form-group w-100">
-            <input class="input-primary" type="password" placeholder="Password" v-model="formData.Password" />
+            <input class="input-primary medium" type="password" placeholder="Password" v-model="formData.Password" />
           </div>
           <button class="btn btn-primary btn-medium" @click="submit">Log In</button>
         </div>
@@ -26,7 +27,7 @@
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-right">
-            <h1>Welcome User</h1>
+            <h1>Welcome {{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</h1>
             <a
               href="javascript:;"
               @click="redirectTo('/createCompany')"

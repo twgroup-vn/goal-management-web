@@ -4,7 +4,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Tìm kiếm"/>  
+            <input class="input-primary medium" placeholder="Tìm kiếm"/>  
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary btn-medium">Tìm kiếm</button>

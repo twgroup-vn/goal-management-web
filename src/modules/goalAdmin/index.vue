@@ -2,7 +2,7 @@
 <div>
   <div>
     <div class="row justify-content-between align-items-center mb-3">
-      <div class="col-md-2">
+      <div class="col-md-4">
         <el-select v-model="cycle"  @change="handleFilter">
           <el-option value="" label="Tất cả"></el-option>
           <el-option
@@ -13,10 +13,10 @@
           </el-option>
         </el-select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
+            <input class="input-primary medium" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
             <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
@@ -49,7 +49,12 @@
               <td>{{commonData.confidenceLevelDisplay[item.confidenceLevel]}}</td>
               <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0,10) : '' }}</td>
               <!-- <td>{{item.nextCheckInDate}}</td> -->
-              <td><el-tag :type="commonData.goalStatusDisplay[item.status].color" effect="plain">{{commonData.goalStatusDisplay[item.status].name}}</el-tag></td>
+              <td>
+                <!-- <el-tag :type="commonData.goalStatusDisplay[item.status].color" effect="plain">{{commonData.goalStatusDisplay[item.status].name}}</el-tag> -->
+                <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
+                  {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
+                </div>
+              </td>
               <td>
                 <div class="d-flex justify-content-end">
                   <font-awesome-icon :icon="['fas', 'edit']" @click="openDiaLog(item)" class="mr-3"/>
@@ -76,7 +81,7 @@
         <div class="form-group">
           <label class="control-label font-weight-bold">Tên phòng ban</label>
           <div class="mb-20">
-            <input type="text" class="input-primary" placeholder="Nhập tên phòng ban" v-model="formData.name" />
+            <input type="text" class="input-primary medium" placeholder="Nhập tên phòng ban" v-model="formData.name" />
           </div>
         </div>
         <div class="form-group mt-3">

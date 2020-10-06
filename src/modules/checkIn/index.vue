@@ -16,7 +16,7 @@
         <div class="col-md-6">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
+              <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" />
             </div>
             <div class="col-md-4">
               <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
@@ -27,17 +27,22 @@
           <button class="btn btn-primary btn-medium" @click="openCreateGoal">Tạo mục tiêu</button>
         </div>
       </div>
-      <el-pagination class="text-right"
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     background
-                     :current-page.sync="searchRequest.pageIndex"
-                     layout="sizes, prev, pager, next , jumper"
-                     :page-sizes="[5, 10, 20]" 
-                     :total="goalList.total">
-      </el-pagination>
-      <div class="row mt-4" v-for="(item, index) in goalList" :key="index">
-        <div class="col-lg-12">
+      <div class="row justify-content-end align-items-center">
+        <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
+          <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
+          <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
+        </a>
+        <el-pagination  @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        background
+                        :current-page.sync="searchRequest.pageIndex"
+                        layout="sizes, prev, pager, next , jumper"
+                        :page-sizes="[5, 10, 20]" 
+                        :total="goalList.total">
+        </el-pagination>
+      </div>
+      <div class="row mt-4">
+        <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-3 col-md-6 col-12'" v-for="(item, index) in goalList" :key="index">
           <div class="card">
             <div class="card-body">
               <div class="row">
@@ -46,31 +51,31 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-1 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mục tiêu</div>
                   <div class="content">{{ item.name ? item.name : ''}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Kết quả chính</div>
                   <div class="content">
                     <a href="javascript:;" @click="handleModalViewCheckIn(item.id)" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Tiến độ</div>
                   <div class="content">
                     <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
                   </div>
                 </div>
-                <div class="col-md-1 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Thay đổi</div>
                   <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mức độ tự tin</div>
                   <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Check-in</div>
                   <div class="content">
                     <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
@@ -78,7 +83,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-1 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-1 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Trạng thái</div>
                   <div class="content">
                     <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
@@ -114,13 +119,13 @@
             <div class="row my-2">
               <div class="col-md-4 title">Kết quả</div>
               <div class="col-md-8">
-                <input class="input-primary" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
+                <input class="input-primary medium" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
               </div>
             </div>
             <div class="row my-2">
               <div class="col-md-4 title">Tiến độ</div>
               <div class="col-md-8">
-                <input type="number" class="input-primary" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
+                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
               </div> 
             </div>
             <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
@@ -188,13 +193,13 @@
         <div class="row my-2">
           <div class="col-md-4 title">Mục tiêu của bạn</div>
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" />
+            <input class="input-primary medium" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" />
           </div>      
         </div>
         <div class="row my-2">
           <div class="col-md-4 title">Link kế hoạch</div>
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
+            <input class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
           </div>      
         </div>
         <div class="row my-2">
@@ -238,7 +243,7 @@
               <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
               <th>Mức độ tự tin</th>
               <th>Phần trăm tiến độ</th>
-              <th>Ngày check-in cuối cùng</th>
+              <th>Ngày check-in gần nhất</th>
             </tr>
           </thead>
          <tbody v-for="(item, index) in checkInClone" :key="index">
@@ -302,7 +307,8 @@ export default {
       file: null,
       path: null,
       goalDetails: null,
-      checkInClone: null
+      checkInClone: null,
+      switchLayout: false
     };
   },
   computed: {
@@ -326,6 +332,10 @@ export default {
     await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
   },
   methods: {
+    handleSwitchLayout(){
+      var _this = this;
+      _this.switchLayout = ! _this.switchLayout;
+    },
     async handleSizeChange(val) {
       var _this = this;
       _this.searchRequest.pageSize = val;

@@ -1,20 +1,19 @@
 .status{
     width: 100%;
-    padding: 4px;
-    border-radius: 30px;
+    border-radius: 10px;
     color: $white;
     text-align: center;
     border: 1px solid transparent;
     &.success{
-        border: 1px solid $light-success;
-        background: linear-gradient(to right, $light-success, $medium-success);
+        border: 1px solid $green;
+        background: $green;
         a{
             color: $white;
         }
     }
     &.danger{
         border: 1px solid $red;
-        background: linear-gradient(to right, $pink, $orange);
+        background: $red;
         a{
             color: $white;
         }

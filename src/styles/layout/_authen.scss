@@ -28,7 +28,7 @@
             .social-container {
                 margin: 30px 0;
                 a {
-                    border: 1px solid $grey-3;
+                    border: 1px solid $gray-300;
                     border-radius: 50%;
                     display: inline-flex;
                     justify-content: center;
@@ -59,9 +59,7 @@
         width: 50%;
         height: 100%;
         .overlay {
-            background: $pink;
-            background: -webkit-linear-gradient(to top, $light-cyan, $medium-cyan);
-            background: linear-gradient(to top, $light-cyan, $medium-cyan);
+            background: $primary-400;
             background-repeat: no-repeat;
             background-size: cover;
             background-position: 0 0;

@@ -2,31 +2,31 @@
   <div>
     <div class="white-background">
       <div class="row justify-content-between align-items-center mb-3">
-      <div class="col-md-2">
-        <el-select v-model="cycle"  @change="handleFilter">
-          <el-option value="" label="Tất cả"></el-option>
-          <el-option
-            v-for="item in cycleCompany"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="col-md-6">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <input placeholder="Tìm kiếm" class="input-primary" v-model="description" />
-          </div>
-          <div class="col-md-4">
-            <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
+        <div class="col-md-2">
+          <el-select v-model="cycle" @change="handleFilter">
+            <el-option value="" label="Tất cả"></el-option>
+            <el-option
+              v-for="item in cycleCompany"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-md-6">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" />
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
+            </div>
           </div>
         </div>
+        <div class="col-md-4 text-right">
+          <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Phản hồi</button>
+        </div>
       </div>
-      <div class="col-md-4 text-right">
-        <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Phản hồi</button>
-      </div>
-    </div>
     <div class="row">
       <div class="col-md-6">
         <div class="wrapper-target">
@@ -45,18 +45,23 @@
         </div>
       </div>
     </div>
-    <el-pagination class="text-right"
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     background
-                     :current-page.sync="searchRequest.pageIndex"
-                     layout="sizes, prev, pager, next , jumper"
-                     :page-sizes="[5, 10, 20]" 
-                     :total="goalList.total">
-    </el-pagination>
-    <div class="row mt-4" v-for="(item, index) in goalList" :key="index">
-        <div class="col-lg-12">
-          <div class="card">
+    <div class="row justify-content-end align-items-center">
+      <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
+        <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
+        <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
+      </a>
+      <el-pagination    @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      background
+                      :current-page.sync="searchRequest.pageIndex"
+                      layout="sizes, prev, pager, next , jumper"
+                      :page-sizes="[5, 10, 20]" 
+                      :total="goalList.total">
+      </el-pagination>
+    </div>
+    <div class="row mt-4">
+        <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-3 col-md-6 col-12'" v-for="(item, index) in goalList" :key="index">
+          <div class="card mb-4">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12 d-flex align-items-center justify-content-between">
@@ -86,31 +91,31 @@
               </div>
               <hr class=""/>
               <div class="row">
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mục tiêu</div>
                   <div class="content">{{ item.name ? item.name : ''}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Kết quả chính</div>
                   <div class="content">
                     <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Tiến độ</div>
                   <div class="content">
                     <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
                   </div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Thay đổi</div>
                   <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mức độ tự tin</div>
                   <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
                 </div>
-                <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Trạng thái</div>
                   <div class="content">
                     <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
@@ -137,7 +142,7 @@
             <div class="row my-2">
               <div class="col-md-4 title">Mục tiêu</div>
               <div class="col-md-8">
-                <input class="input-primary" placeholder="Nhập mục tiêu" />
+                <input class="input-primary medium" placeholder="Nhập mục tiêu" />
               </div>
             </div>
             <div class="row my-2">
@@ -275,7 +280,7 @@
               <th>Số sao</th>
             </tr>
           </thead>
-          <tbody v-for="(item, index) in replyClone" :key="index">
+          <tbody v-for="(item, index) in replyData" :key="index">
             <tr v-for="(text, key) in item.reply" :key="key"> 
               <td>{{ feedbackUser.find(x => { return x.id === text.userId}).fullName }}</td>
               <td>{{ text.type ? commonData.replyTypeDisplay[text.type] : '' }}</td>
@@ -304,10 +309,10 @@
               <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
               <th>Mức độ tự tin</th>
               <th>Phần trăm tiến độ</th>
-              <th>Ngày check-in cuối cùng</th>
+              <th>Ngày check-in gần nhất</th>
             </tr>
           </thead>
-         <tbody v-for="(item, index) in checkInClone" :key="index">
+         <tbody v-for="(item, index) in checkInData" :key="index">
             <tr v-for="(check, key) in item.checkIn" :key="key"> 
               <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
               <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
@@ -359,8 +364,9 @@ export default {
       user: null,
       rawEvaluateCompany:null,
       evaluateUser: null,
-      replyClone: null,
-      checkInClone: null
+      replyData: null,
+      checkInData: null,
+      switchLayout: false,
     };
   },
   computed: {
@@ -403,6 +409,10 @@ export default {
     },
   },
   methods: {
+    handleSwitchLayout(){
+      var _this = this;
+      _this.switchLayout = ! _this.switchLayout;
+    },
     customColorMethod(percentage) {
       if (percentage < 10) {
         return '#909399';
@@ -437,12 +447,12 @@ export default {
     },
     handleModalViewFeedback(val){
       var _this = this;
-      _this.replyClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.replyData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
     },
     handleModalViewCheckIn(val){
       var _this = this;
-      _this.checkInClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewCheckIn = true;
     },
     async handleSizeChange(val) {

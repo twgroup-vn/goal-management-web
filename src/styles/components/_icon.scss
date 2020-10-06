@@ -46,3 +46,10 @@
         }
     }
 }
+
+.switch-icon{
+    display: none;
+    &.show{
+        display: block;
+    }
+}

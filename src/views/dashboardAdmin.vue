@@ -10,6 +10,9 @@
           <a class="close-menu" @click="closeMenu" v-bind:class="{active: target}">
             <font-awesome-icon :icon="['fas', 'bars']" />
           </a>
+          <router-link class="logo-brand" to="/">
+            <img class="img-fluid" :src="MainLogo"/>
+          </router-link>
         </div>
         <div class="d-flex align-items-center">
           <div class="noti-bell d-none">
@@ -32,11 +35,13 @@
 import SideMenuAdmin from "../components/side-bar-admin";
 import DashBoardAdmin from "../modules/dashboardAdmin";
 import Avatar from "../components/avatar";
+import MainLogo from '../assets/svgs/mainLogo/TWG-white.svg'
 export default {
   name: "dashBoarduser",
   data() {
     return {
       target: true,
+      MainLogo
     };
   },
   components: {

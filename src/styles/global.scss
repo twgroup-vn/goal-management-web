@@ -7,19 +7,19 @@ body {
     font-size: 16px;
     font-stretch: normal;
     line-height: 1.5;
-    color: $grey-8;
-    background-color: $grey-1;
+    color: $gray-900;
+    background-color: $gray-100;
 }
 
 a {
     text-decoration: none;
     font-size: 14px;
-    color: $grey-8;
+    color: $gray-900;
     &:hover,
     &:focus,
     &:active {
         text-decoration: none;
-        color: $grey-8;
+        color: $gray-900;
     }
 }
 
@@ -34,6 +34,7 @@ a {
 @import "../styles/layout/reset-element/_dropdown";
 @import "../styles/layout/reset-element/_checkbox";
 
+@import "../styles/components/_style-guide";
 @import "../styles/components/_cards";
 @import "../styles/components/_buttons";
 @import "../styles/components/_modal";

@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
+            <input class="input-primary medium" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
             <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
@@ -112,7 +112,7 @@
         <div class="form-group">
           <label class="control-label font-weight-bold">Nhân viên</label>
           <div class="mb-20">
-            <input type="text" class="input-primary" v-model="userNameUpdate" readonly/>
+            <input type="text" class="input-primary medium" v-model="userNameUpdate" readonly/>
           </div>
         </div>
         <div class="form-group mt-3">

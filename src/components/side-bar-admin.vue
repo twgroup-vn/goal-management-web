@@ -8,10 +8,10 @@
         <li class="nav-brand" v-else>Logo</li>
         <li class="nav-item" v-for="(route, index) in routes" :key="index">
           <router-link :to="route.path" exact-active-class="active">
-            <div class="nav-link-wrapper" v-if="route.name =='dashboardAdmin'">
+            <!-- <div class="nav-link-wrapper" v-if="route.name =='dashboardAdmin'">
               <font-awesome-icon :icon="['fas', 'chart-line']" />
               <a class="nav-link">{{ $t("nav.dashBoardAdmin") }}</a>
-            </div>
+            </div> -->
             <div class="nav-link-wrapper" v-if="route.name =='companyAdmin'">
               <font-awesome-icon :icon="['far', 'building']" />
               <a class="nav-link">{{ $t("nav.companyAdmin") }}</a>

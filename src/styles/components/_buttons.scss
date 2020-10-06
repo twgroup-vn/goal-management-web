@@ -1,6 +1,6 @@
 .btn{
     &.btn-primary{
-        background: $blue-500;
+        background: $primary;
         border: 1px solid transparent;
         color: $white;
         transition: all 0.1s linear;
@@ -18,19 +18,19 @@
             font-size: 16px;
         }
         &:hover{
-            background: $blue-500;
+            background: $primary-400;
             border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
         }
         &:focus{
-            background: $blue-500;
+            background: $primary-700;
             border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
         }
         &:active{
-            background: $blue-500;
+            background: $primary-700;
             border: 1px solid transparent;
             color: $white;
             transition: all 0.1s linear;
@@ -38,8 +38,8 @@
     }
     &.btn-secondary{
         background: $white;
-        color: $blue-500;
-        border: 1px solid $blue-500;
+        color: $primary;
+        border: 1px solid $primary;
         transition: all 0.1s linear;
         border-radius: 4px;
         &.btn-small{
@@ -55,19 +55,19 @@
             font-size: 16px;
         }
         &:hover{
-            background: $blue-500;
+            background: $primary;
             color: $white;
             border: 1px solid transparent;
             transition: all 0.1s linear;
         }
         &:focus{
-            background: $blue-500;
+            background: $primary;
             color: $white;
             border: 1px solid transparent;
             transition: all 0.1s linear;
         }
         &:active{
-            background: $blue-500;
+            background: $primary;
             color: $white;
             border: 1px solid transparent;
             transition: all 0.1s linear;;
@@ -87,6 +87,6 @@
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle{
-    background: $blue-500;
-    border-color: $blue-500;
+    background: $primary;
+    border-color: $primary;
 }

@@ -27,7 +27,7 @@
             <label for="inputName">Name</label>
             <input
               type="text"
-              class="input-primary"
+              class="input-primary medium"
               id="inputName"
               v-model="formData.name"
             />
@@ -36,7 +36,7 @@
             <label for="inputShortName">Short name</label>
             <input
               type="text"
-              class="input-primary"
+              class="input-primary medium"
               id="inputShortName"
               v-model="formData.shortName"
             />
@@ -47,7 +47,7 @@
             <label for="inputCompanyName">Email:</label>
             <input
               type="email"
-              class="input-primary"
+              class="input-primary medium"
               id="inputCompanyName"
               v-model="formData.email"
             />
@@ -56,7 +56,7 @@
             <label for="inputPassword">Phone number</label>
             <input
               type="text"
-              class="input-primary"
+              class="input-primary medium"
               id="inputPassword"
               v-model="formData.phoneNumber"
             />

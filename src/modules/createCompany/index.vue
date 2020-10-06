@@ -25,16 +25,16 @@
             </div>
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Company name" class="input-primary" v-model="formData.name" />
+            <input type="text" placeholder="Company name" class="input-primary medium" v-model="formData.name" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Company short name" class="input-primary" v-model="formData.shortName" />
+            <input type="text" placeholder="Company short name" class="input-primary medium" v-model="formData.shortName" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Company phone number" class="input-primary" v-model="formData.phoneNumber" />
+            <input type="text" placeholder="Company phone number" class="input-primary medium" v-model="formData.phoneNumber" />
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Company email" class="input-primary" v-model="formData.email" />
+            <input type="text" placeholder="Company email" class="input-primary medium" v-model="formData.email" />
           </div>
           <button class="btn btn-primary btn-medium" @click="submit">Submit</button>
         </div>

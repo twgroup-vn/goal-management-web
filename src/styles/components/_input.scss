@@ -1,27 +1,41 @@
 input{
 	&.input-primary{
 		background-color: $white;
-		border: 1px solid $grey-2;
-		border-radius: 4px;
-		padding: 8px 16px;
-		font-size: 14px;
+		border: 1px solid $gray-100;
 		width: 100%;
 		outline: none;
-	}
-	&.input-primary{
-		background-color: $white;
-		border: 1px solid $grey-2;
-		padding: 8px 16px;
-		font-size: 14px;
-		width: 100%;
-		outline: none;
+		&.small{
+			font-size: 12px;
+			border-radius: 2px;
+			padding: 8px 12px;
+		}
+		&.medium{
+			font-size: 14px;
+			border-radius: 4px;
+			padding: 9px 8px;
+
+		}
+		&.large{
+			font-size: 14px;
+			border-radius: 4px;
+			padding: 11px 16px;
+		}
+		&:hover{
+			border: 1px solid $primary-400;
+		}
+		&:focus{
+			border: 1px solid $primary-400;
+		}
+		&:hover{
+			border: 1px solid $primary-400;
+		}
 	}
 }
 
 textarea{
 	padding: 8px 16px;
-	border: 1px solid $grey-2;
+	border: 1px solid $gray-200;
 	&:focus{
-		border-color: $grey-2;
+		border-color: $gray-200;
 	}
 }

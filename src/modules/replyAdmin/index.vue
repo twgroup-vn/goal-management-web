@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary" placeholder="Tìm kiếm" v-model="description" />  
+            <input class="input-primary medium" placeholder="Tìm kiếm" v-model="description" />  
           </div>
           <div class="col-md-4">
             <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
