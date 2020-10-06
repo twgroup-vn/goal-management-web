@@ -3,7 +3,7 @@
     <div class="white-background">
       <div class="row justify-content-between align-items-center mb-3">
         <div class="col-md-2">
-          <el-select v-model="cycle"  @change="handleFilter">
+          <el-select v-model="cycle" @change="handleFilter">
             <el-option value="" label="Tất cả"></el-option>
             <el-option
               v-for="item in cycleCompany"
@@ -43,13 +43,26 @@
       </div>
       <div class="row mt-4">
         <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-3 col-md-6 col-12'" v-for="(item, index) in goalList" :key="index">
-          <div class="card">
+          <div class="card mb-4">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="created-date mb-3">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <div class="created-date">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-end">
+                  <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
+                    <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
+                    <div>
+                      <font-awesome-icon :icon="['fas', 'star']" class="icon star" :class="{ danger: item.star < 0 }"/>
+                    </div>
+                  </a>
+                  <a class="relative-group-icon" @click="handleModalViewFeedback(item.id)">
+                    <div class="number">{{ item.reply.length }}</div>
+                    <font-awesome-icon :icon="['far', 'comment-dots']" class="icon" />
+                  </a>
                 </div>
               </div>
+              <hr class=""/>
               <div class="row">
                 <div :class="switchLayout == false ? 'col-md-1 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mục tiêu</div>
@@ -246,7 +259,7 @@
               <th>Ngày check-in gần nhất</th>
             </tr>
           </thead>
-         <tbody v-for="(item, index) in checkInClone" :key="index">
+         <tbody v-for="(item, index) in checkInData" :key="index">
             <tr v-for="(check, key) in item.checkIn" :key="key"> 
               <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
               <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
@@ -260,6 +273,37 @@
         </table>
       </div>
     </el-dialog>
+
+    <el-dialog title="Xem phản hồi, ghi nhận" :visible.sync="modalViewFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>Người phản hồi</th>
+              <th>Loại phản hồi</th>
+              <th>Ngày phản hồi</th>
+              <th>Nội dung phản hồi</th>
+              <th>Số sao</th>
+            </tr>
+          </thead>
+          <tbody v-for="(item, index) in replyData" :key="index">
+            <tr v-for="(text, key) in item.reply" :key="key"> 
+              <td>{{ feedbackUser.find(x => { return x.id === text.userId}).fullName }}</td>
+              <td>{{ text.type ? commonData.replyTypeDisplay[text.type] : '' }}</td>
+              <td>{{ text.createdAt.slice(0, 10) }}</td>
+              <td>{{ text.content ? text.content : 'Không có nội dung' }}</td>
+              <td>
+                <a class="relative-group-icon">
+                  <span class="mr-2"><font-awesome-icon :icon="['fas', 'star']" class="icon star" /></span>
+                  <span class="number">{{ evaluateCompany.find(x => { return x.id === text.evaluativeCriteriaId}).star }}</span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -281,6 +325,7 @@ export default {
       activeTab: "check-in",
       modalCreateGoal: false,
       modalViewCheckIn: false,
+      modalViewFeedback: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -308,6 +353,8 @@ export default {
       path: null,
       goalDetails: null,
       checkInClone: null,
+      replyData: null,
+      checkInData: null,
       switchLayout: false
     };
   },
@@ -320,6 +367,8 @@ export default {
       cycleCompany: "$_loginPage/getCycleCompany",
       userCompany: "$_checkInUser/getUserList",
       goalList: "$_checkInUser/getGoalList",
+      feedbackUser: "$_checkInUser/getUserList",
+      evaluateCompany: "$_loginPage/getEvaluateCriteriaCompany",
     }),
   },
   async created() {
@@ -358,8 +407,13 @@ export default {
     },
     handleModalViewCheckIn(val){
       var _this = this;
-      _this.checkInClone = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewCheckIn = true;
+    },
+    handleModalViewFeedback(val){
+      var _this = this;
+      _this.replyData = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalViewFeedback = true;
     },
     customColorMethod(percentage) {
       if (percentage < 10) {

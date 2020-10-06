@@ -4,7 +4,7 @@
         "theme": "Theme"
     },
     "userNav":{
-        "checkin": "Check-in",
+        "checkin": "Personal Check-in",
         "companyCheckin": "Company Check-in"
     },
     "nav":{

@@ -13,39 +13,57 @@
               <a class="nav-link">{{ $t("nav.dashBoardAdmin") }}</a>
             </div> -->
             <div class="nav-link-wrapper" v-if="route.name =='companyAdmin'">
-              <font-awesome-icon :icon="['far', 'building']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'building']" />
+              </div>
               <a class="nav-link">{{ $t("nav.companyAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='checkInQuestionAdmin'">
-              <font-awesome-icon :icon="['far', 'question-circle']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'question-circle']" />
+              </div>
               <a class="nav-link">{{ $t("nav.checkInQuestionAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='cycleAdmin'">
-              <font-awesome-icon :icon="['far', 'life-ring']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'life-ring']" />
+              </div> 
               <a class="nav-link">{{ $t("nav.cycleAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='departmentAdmin'">
-              <font-awesome-icon :icon="['fa', 'users']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['fa', 'users']" />
+              </div>
               <a class="nav-link">{{ $t("nav.departmentAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='positionAdmin'">
-              <font-awesome-icon :icon="['far', 'building']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'building']" />
+              </div>
               <a class="nav-link">{{ $t("nav.positionAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='criteriaAdmin'">
-              <font-awesome-icon :icon="['far', 'star']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'star']" />
+              </div>
               <a class="nav-link">{{ $t("nav.criteriaAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='employeeAdmin'">
-              <font-awesome-icon :icon="['far', 'user']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'user']" />
+              </div>
               <a class="nav-link">{{ $t("nav.employeeAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='replyAdmin'">
-              <font-awesome-icon :icon="['far', 'comment-dots']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['far', 'comment-dots']" />
+              </div>
               <a class="nav-link">{{ $t("nav.replyAdmin") }}</a>
             </div>
             <div class="nav-link-wrapper" v-if="route.name =='goalAdmin'">
-              <font-awesome-icon :icon="['fa', 'bullseye']" />
+              <div class="icon">
+                <font-awesome-icon :icon="['fa', 'bullseye']" />
+              </div>
               <a class="nav-link">{{ $t("nav.goalAdmin") }}</a>
             </div>
           </router-link>

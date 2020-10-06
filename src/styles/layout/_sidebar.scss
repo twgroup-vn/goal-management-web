@@ -30,6 +30,10 @@
                         align-items: center;
                         padding-left: 20px;
                         border-left: 4px solid transparent;
+                        .icon {
+                            width: 20px;
+                            text-align: center;
+                        }
                         .nav-link{
                             color: $primary-400;
                             padding: 8px 15px;

@@ -50,7 +50,7 @@
         <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
         <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
       </a>
-      <el-pagination    @size-change="handleSizeChange"
+      <el-pagination  @size-change="handleSizeChange"
                       @current-change="handleCurrentChange"
                       background
                       :current-page.sync="searchRequest.pageIndex"
@@ -91,31 +91,31 @@
               </div>
               <hr class=""/>
               <div class="row">
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mục tiêu</div>
                   <div class="content">{{ item.name ? item.name : ''}}</div>
                 </div>
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Kết quả chính</div>
                   <div class="content">
                     <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Tiến độ</div>
                   <div class="content">
                     <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
                   </div>
                 </div>
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Thay đổi</div>
                   <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
                 </div>
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Mức độ tự tin</div>
                   <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
                 </div>
-                <div :class="switchLayout == false ? 'col-md-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
                   <div class="title">Trạng thái</div>
                   <div class="content">
                     <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
