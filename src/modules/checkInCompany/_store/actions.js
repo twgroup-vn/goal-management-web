@@ -24,10 +24,16 @@ const createReply = async (context, request) => {
   return response;
 };
 
+const getAllGoalOfCompany = async (context, request) => {
+  let response = await api.getAllGoalOfCompany(request);
+  context.commit('SET_COMPANY_GOAL_LIST', response.data);
+}
+
 export default {
   getUserList,
   getGoalListOfCompany,
   getAllGoalOfUser,
   handleChangeCycleIdOfGoalUser,
-  createReply
+  createReply,
+  getAllGoalOfCompany
 }

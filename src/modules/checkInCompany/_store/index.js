@@ -8,6 +8,7 @@ const state = {
   goalUser: null,
   total: null,
   cycleId: null,
+  companyGoalList: null,
   searchRequest: {
     title: '',
     description: '',

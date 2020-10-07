@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="white-background">
+      <!-- <style-guide></style-guide> -->
       <div class="row justify-content-between align-items-center mb-3">
         <div class="col-md-2">
           <el-select v-model="cycle" @change="handleFilter">
@@ -76,6 +77,10 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-center">
+                    <a class="relative-group-icon mr-4" @click="handleModalRelation(item.id)">
+                      <div class="number">{{ item.relation.length }}</div>
+                      <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
+                    </a>
                     <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
                       <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
                       <div>
@@ -326,6 +331,26 @@
         </table>
       </div>
     </el-dialog>
+
+    <el-dialog title="Form mục tiêu liên quan" :visible.sync="modalRelation" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div v-for="(item, index) in relationData" :key="index">
+        <div v-for="(relate, key) in item.relation" :key="key" class="card mb-4">
+          <div class="card-body">
+            <div><span class="font-weight-bold mr-2">Loại quan hệ:</span><span>{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</span></div>
+            <div class="d-flex align-items-center justify-content-between" v-if="relate.type == 'previousStep'">
+              <div class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+              <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
+              <div>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between" v-if="relate.type == 'nextStep'">
+              <div class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+              <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
+              <div>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -336,10 +361,12 @@ import commonData from '../../utils/common-data';
 import PieChart from "./_components/pieChart";
 import ChatBox from '../../components/chat-box'
 import _ from 'lodash';
+// import Guide from '../../components/style-guide'
 export default {
   components: {
     PieChart,
-    'chat-box': ChatBox
+    'chat-box': ChatBox,
+    // 'style-guide': Guide
   },
   data() {
     return {
@@ -350,6 +377,7 @@ export default {
       modalFeedback: false,
       modalViewFeedback: false,
       modalViewCheckIn: false,
+      modalRelation: false,
       activeTab: "check-in",
       cycleId: '',
       formData:{
@@ -366,6 +394,7 @@ export default {
       evaluateUser: null,
       replyData: null,
       checkInData: null,
+      relationData: null,
       switchLayout: false,
     };
   },
@@ -381,6 +410,7 @@ export default {
       evaluateCompany: "$_loginPage/getEvaluateCriteriaCompany",
       feedbackUser: "$_checkInCompany/getUserList",
       goalUser: "$_checkInCompany/getUserGoal",
+      goalOfCompany: "$_checkInCompany/getAllGoalOfCompany",
     }),
   },
   async created() {
@@ -391,6 +421,7 @@ export default {
     }
     await _this.$store.dispatch("$_checkInCompany/getUserList");
     await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
+    await _this.$store.dispatch("$_checkInCompany/getAllGoalOfCompany");
     _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
     _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
   },
@@ -454,6 +485,11 @@ export default {
       var _this = this;
       _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewCheckIn = true;
+    },
+    handleModalRelation(val){
+      var _this = this;
+      _this.relationData = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalRelation = true;
     },
     async handleSizeChange(val) {
       var _this = this;

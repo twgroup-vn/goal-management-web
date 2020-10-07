@@ -96,6 +96,12 @@ const relationshipType = [
   { code: 'sameTime', name: 'Song song'},
 ]
 
+const relationTypeDisplay = {
+  previousStep: 'previousStep',
+  nextStep: 'nextStep',
+  sameTime: 'sameTime'
+}
+
 export default{
   theme,
   optionLangEN,
@@ -108,5 +114,6 @@ export default{
   checkInStatusDisplay,
   goalStatus,
   goalStatusDisplay,
-  relationshipType
+  relationshipType,
+  relationTypeDisplay
 }

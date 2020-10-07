@@ -1,5 +1,8 @@
 .icon{
     font-size: 16px;
+    &.arrow-long{
+        font-size: 22px;
+    }
 }
 
 .noti-bell{
@@ -28,16 +31,23 @@
         right: -10px;
         font-size: 12px;
         font-family: $Primary-Semibold;
+        color: $gray-400;
         &.danger{
             color: $red;
         }
     }
     .icon{
         font-size: 20px;
+        path{
+            fill: $gray-400;
+        }
         &.star{
             path{
                 fill: $warning;
             }
+        }
+        &.diagram{
+            font-size: 16px;
         }
         &.danger{
             path{

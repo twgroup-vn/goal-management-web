@@ -11,6 +11,16 @@ const getUserList = (state) => {
   return data;
 };
 
+const getAllGoalOfCompany = (state) => {
+  var data = {};
+  if (state.companyGoalList) {
+    data = _.map(state.companyGoalList, (v) => {
+      return v;
+    });
+  }
+  return data;
+};
+
 const getGoalList = (state) => {
     var data = {};
     var currentDate = moment(new Date()).format('DD/MM/YYYY');
@@ -64,5 +74,6 @@ const getUserGoal = (state) => {
 export default {
   getUserList,
   getGoalList,
-  getUserGoal
+  getUserGoal,
+  getAllGoalOfCompany
 };

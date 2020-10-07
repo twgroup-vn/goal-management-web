@@ -16,10 +16,15 @@ const getAllGoalOfUser = async (request) => {
 const createReply = async (request) => {
     return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/reply/create`, request);
 }
+
+const getAllGoalOfCompany = async () => {
+    return Vue.prototype.$http.get(`http://172.20.10.25:5000/api/goal/getAllGoalOfCompany`);
+}
   
 export default {
     getUserList,
     getGoalListOfCompany,
     getAllGoalOfUser,
-    createReply
+    createReply,
+    getAllGoalOfCompany
 }
