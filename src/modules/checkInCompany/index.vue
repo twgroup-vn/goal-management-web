@@ -336,16 +336,50 @@
       <div v-for="(item, index) in relationData" :key="index">
         <div v-for="(relate, key) in item.relation" :key="key" class="card mb-4">
           <div class="card-body">
-            <div><span class="font-weight-bold mr-2">Loại quan hệ:</span><span>{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</span></div>
-            <div class="d-flex align-items-center justify-content-between" v-if="relate.type == 'previousStep'">
-              <div class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
-              <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
-              <div>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+            <div class="row align-items-center justify-content-between" v-if="relate.type == 'previousStep'">
+              <div class="col-md-4">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.goalId}).progressPercent }}%</span>
+                </div>
+              </div>
+              <div class="col-md-4 group-relation">
+                <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
+                <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
+              </div>
+              <div class="col-md-4 text-right">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).progressPercent }}%</span>
+                </div>
+              </div>
             </div>
-            <div class="d-flex align-items-center justify-content-between" v-if="relate.type == 'nextStep'">
-              <div class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
-              <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
-              <div>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+            <div class="row align-items-center justify-content-between" v-if="relate.type == 'nextStep'">
+              <div class="col-md-4">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+              <div class="col-md-4 group-relation">
+                <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
+                <font-awesome-icon :icon="['fas', 'long-arrow-alt-left']" class="icon arrow-long" />
+              </div>
+              <div class="col-md-4 font-weight-bold text-right">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+            </div>
+            <div class="row align-items-center justify-content-between" v-if="relate.type == 'sameTime'">
+              <div class="col-md-4">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+              <div class="col-md-4 group-relation">
+                <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
+                <div class="row justify-content-center">
+                  <font-awesome-icon :icon="['fas', 'long-arrow-alt-left']" class="icon arrow-long" />
+                  <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
+                </div>
+              </div>
+              <div class="col-md-4 text-right">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
             </div>
           </div>
         </div>

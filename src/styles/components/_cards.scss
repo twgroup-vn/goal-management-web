@@ -20,5 +20,16 @@
                 color: $primary-400;
             }
         }
+        .group-relation{
+            text-align: center;
+            .text{
+                font-size: 10px;
+            }
+            .icon {
+                &.arrow-long{
+                    font-size: 22px;
+                }
+            }
+        }
     }
 }

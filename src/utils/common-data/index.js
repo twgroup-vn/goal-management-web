@@ -97,9 +97,9 @@ const relationshipType = [
 ]
 
 const relationTypeDisplay = {
-  previousStep: 'previousStep',
-  nextStep: 'nextStep',
-  sameTime: 'sameTime'
+  previousStep: 'Mục tiêu tiếp theo',
+  nextStep: 'Mục tiêu làm trước',
+  sameTime: 'Song song'
 }
 
 export default{
