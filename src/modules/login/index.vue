@@ -5,7 +5,7 @@
         <div class="wrapper" v-if="currentUser || user">
           <div class="mb-3">
             <div class="avatar-circle mb-3">
-              <img class="img-fluid" v-if="currentUser.avatar" :src="currentUser.avatar" />
+              <img class="img-fluid" v-if="currentUser.avatar" :src="currentUser && currentUser.avatar ? currentUser.avatar : ''" />
               <img class="img-fluid" v-else :src="NoAvatar" />
             </div>
             <div class="name-login">{{currentUser && currentUser.fullName ? currentUser.fullName : ''}}</div>
@@ -27,7 +27,7 @@
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-right">
-            <h1>Welcome {{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</h1>
+            <h1>Welcome back</h1>
             <a
               href="javascript:;"
               @click="redirectTo('/createCompany')"
@@ -73,6 +73,7 @@ export default {
       },
       company: "",
       user: null,
+      activeSlide: false
     };
   },
   computed: {
@@ -108,6 +109,7 @@ export default {
           type: "success",
         });
         await _this.$store.dispatch("$_loginPage/getCompanyOfUser", localStorage.getItem("userId"));
+        _this.activeSlide = true;
       } catch (error) {
         _this.$notify.error({
           title: "Thất bại",

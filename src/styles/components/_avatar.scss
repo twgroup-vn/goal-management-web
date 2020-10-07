@@ -54,8 +54,12 @@
         }
         .logo{
             height: 100%;
-            img{
-                border-radius: 0;
+            div{
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 100%;
+                width: 100%;
             }
         }
     }

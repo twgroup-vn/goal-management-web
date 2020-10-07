@@ -5,8 +5,8 @@
         <div class="form-group mb-0">
           <div class="avatar-circle square">
               <div class="logo">
-                <img class="img-fluid" :src="NoAvatar" v-if="!formData.avatar"/>
-                <img class="img-fluid" :src="formData.avatar" v-else/>
+                <div :style="{ backgroundImage: `url(${NoAvatar})` }" v-if="!formData.avatar"/>
+                <div :style="{ backgroundImage: `url(${formData && formData.avatar ? formData.avatar : ''})` }" v-else/>
               </div>
               <div class="group-edit-avatar">
                 <font-awesome-icon :icon="['fas', 'pen-square']" />

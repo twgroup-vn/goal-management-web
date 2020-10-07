@@ -90,6 +90,12 @@ const goalStatusDisplay = {
   cancel: { name: 'hủy', color: 'danger' }
 }
 
+const relationshipType = [
+  { code: 'previousStep', name: 'previous step'},
+  { code: 'nextStep', name: 'next step'},
+  { code: 'sameTime', name: 'same time'},
+]
+
 export default{
   theme,
   optionLangEN,
@@ -101,5 +107,6 @@ export default{
   checkInStatus,
   checkInStatusDisplay,
   goalStatus,
-  goalStatusDisplay
+  goalStatusDisplay,
+  relationshipType
 }

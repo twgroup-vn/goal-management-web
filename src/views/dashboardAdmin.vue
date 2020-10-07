@@ -10,7 +10,7 @@
           <a class="close-menu" @click="closeMenu" v-bind:class="{active: target}">
             <font-awesome-icon :icon="['fas', 'bars']" />
           </a>
-          <router-link class="logo-brand" to="/">
+          <router-link class="logo-brand" to="/checkIn">
             <img class="img-fluid" :src="MainLogo"/>
           </router-link>
         </div>
