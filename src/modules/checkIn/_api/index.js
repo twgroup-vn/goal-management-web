@@ -24,7 +24,7 @@ const uploadImage = async (request) => {
 }
 
 const createRelation = async (request) => {
-    return Vue.prototype.$http.post(`http://localhost:5000/api/goal/createRelation`, { "Description" : request });
+    return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/goal/createRelation`, { "Description" : request });
 }
 
 const createGoal = async (request) => {
