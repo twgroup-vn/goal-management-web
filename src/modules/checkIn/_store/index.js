@@ -5,6 +5,7 @@ import mutations from '../_store/mutations';
 const state = {
   userList: null,
   goalList: null,
+  companyGoalList: null,
   total: null,
   searchRequest: {
     title: '',

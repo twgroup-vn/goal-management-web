@@ -5,6 +5,15 @@ const getUserList = async (context, request) => {
   context.commit('SET_USER_LIST', response.data);
 };
 
+const createRelation = async (context, request) => {
+  let response = await api.createRelation(request);
+  return response.data;
+};
+
+const getAllGoalOfCompany = async (context, request) => {
+  let response = await api.getAllGoalOfCompany(request);
+  context.commit('SET_COMPANY_GOAL_LIST', response.data);
+};
 
 const getGoalListOfUser = async (context) => {
   let response = await api.getGoalListOfUser(context.state.searchRequest.pageIndex, context.state.searchRequest.pageSize, context.state.searchRequest.description, context.state.searchRequest.title);
@@ -30,6 +39,8 @@ export default {
   getUserList,
   uploadImage,
   getGoalListOfUser,
+  getAllGoalOfCompany,
   editGoal,
-  editCheckIn
+  editCheckIn,
+  createRelation
 }

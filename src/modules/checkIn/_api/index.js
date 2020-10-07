@@ -4,8 +4,11 @@ const getUserList = async () => {
     return Vue.prototype.$http.get(`http://172.20.10.25:5000/api/company/getRelatedUser`);
 }
 
+const getAllGoalOfCompany = async () => {
+    return Vue.prototype.$http.get(`http://localhost:5000/api/goal/getAllGoalOfCompany`);
+}
+
 const getGoalListOfUser = async (pageIndex, pageSize, description, title) => {
-    console.log(process.env.VUE_APP_API_ROOT);
     var query = { "PageIndex": pageIndex, "PageSize": pageSize, "Description": description, "Title": title };
     return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/goal/getGoalOfUser`, query);
 }
@@ -20,9 +23,13 @@ const uploadImage = async (request) => {
     });
 }
 
+const createRelation = async (request) => {
+    return Vue.prototype.$http.post(`http://localhost:5000/api/goal/createRelation`, { "Description" : request });
+}
+
 const createGoal = async (request) => {
     return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/goal/create`, request);
-  }
+}
   
 const updateGoal = async (request) => {
     return Vue.prototype.$http.post(`http://172.20.10.25:5000/api/goal/update`, request);
@@ -43,5 +50,7 @@ export default {
     updateGoal,
     createCheckIn,
     updateCheckIn,
-    getGoalListOfUser
+    getGoalListOfUser,
+    getAllGoalOfCompany,
+    createRelation
 }

@@ -50,6 +50,10 @@
                   <div class="created-date">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
                 </div>
                 <div class="col-md-6 d-flex align-items-center justify-content-end">
+                  <a class="relative-group-icon mr-4" @click="handleModalViewRalation(item)">
+                      <div class="number">{{ item.relation.length }}</div>
+                      <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
+                  </a>
                   <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
                     <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
                     <div>
@@ -214,8 +218,50 @@
           <div class="col-md-8">
             <input class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
           </div>      
-        </div>
+        </div><hr/>
         <div class="row my-2">
+          <div class="col-md-4 title">
+            Các mục tiêu liên kết
+          </div>
+          <div class="col-md-8 text-right">
+              <button class="btn btn-secondary mr-2" @click="clearRelation">
+                <font-awesome-icon :icon="['fas', 'trash']" />
+              </button>
+              <button class="btn btn-primary" @click="addRelation">
+                <font-awesome-icon :icon="['fas', 'plus']" />
+              </button>
+          </div>
+        </div>
+        <div class="row my-2" v-for="(item, index) in relationArray" :key="index">
+           <div class="col-md-8">
+             <el-select
+                v-model="item.RelatedGoalId"
+                filterable
+                remote
+                reserve-keyword
+                placeholder="Nhập mục tiêu liên kết"
+                :remote-method="remoteMethod"
+                :loading="loading">
+                <el-option
+                  v-for="goal in options"
+                  :key="goal.id"
+                  :label="goal.name"
+                  :value="goal.id">
+                </el-option>
+              </el-select>
+           </div>
+           <div class="col-md-4">
+              <el-select v-model="item.Type" placeholder="Chọn loại liên kết">
+                <el-option
+                  v-for="type in commonData.relationshipType"
+                  :key="type.code"
+                  :label="type.name"
+                  :value="type.code">
+                </el-option>
+              </el-select>
+           </div>
+        </div>
+        <!-- <div class="row my-2">
           <div class="col-md-4 title">Hình đính kèm</div>
           <div class="col-md-8">
             <div class="avatar-circle square">
@@ -233,7 +279,7 @@
               </div>
             </div>
           </div>      
-        </div>
+        </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-secondary btn-medium mr-3" @click="modalCreateGoal = false">
@@ -304,6 +350,57 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="Cập nhật liên kết" :visible.sync="modalViewRalation" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="modal-body">       
+        <div class="row my-2">
+          <div class="col-md-4 title">
+            Các mục tiêu liên kết
+          </div>
+          <div class="col-md-8 text-right">
+              <button class="btn btn-primary" @click="addRelationById">
+                <font-awesome-icon :icon="['fas', 'plus']" />
+              </button>
+          </div>
+        </div>
+        <div class="row my-2" v-for="(item, index) in relationArray" :key="index">
+           <div class="col-md-8">
+             <el-select
+                v-model="item.RelatedGoalId"
+                filterable
+                remote
+                reserve-keyword
+                placeholder="Nhập mục tiêu liên kết"
+                :remote-method="remoteMethod"
+                :loading="loading">
+                <el-option
+                  v-for="goal in options"
+                  :key="goal.id"
+                  :label="goal.name"
+                  :value="goal.id">
+                </el-option>
+              </el-select>
+           </div>
+           <div class="col-md-4">
+              <el-select v-model="item.Type" placeholder="Chọn loại liên kết">
+                <el-option
+                  v-for="type in commonData.relationshipType"
+                  :key="type.code"
+                  :label="type.name"
+                  :value="type.code">
+                </el-option>
+              </el-select>
+           </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-secondary btn-medium mr-3" @click="modalViewRalation = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="updateRelation">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -326,6 +423,7 @@ export default {
       modalCreateGoal: false,
       modalViewCheckIn: false,
       modalViewFeedback: false,
+      modalViewRalation: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -355,7 +453,12 @@ export default {
       checkInClone: null,
       replyData: null,
       checkInData: null,
-      switchLayout: false
+      switchLayout: false,
+      relationArray: [
+        { GoalId: null, RelatedGoalId: null, Type: null  }
+      ],
+      loading: false,
+      options: [],
     };
   },
   computed: {
@@ -369,6 +472,7 @@ export default {
       goalList: "$_checkInUser/getGoalList",
       feedbackUser: "$_checkInUser/getUserList",
       evaluateCompany: "$_loginPage/getEvaluateCriteriaCompany",
+      companyGoalList: "$_checkInUser/getCompanyGoalList",
     }),
   },
   async created() {
@@ -379,8 +483,33 @@ export default {
     }
     await _this.$store.dispatch("$_checkInUser/getUserList");
     await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+    await _this.$store.dispatch("$_checkInUser/getAllGoalOfCompany");
   },
   methods: {
+    clearRelation(){
+      var _this = this;
+      _this.relationArray = [
+        { GoalId: null, RelatedGoalId: null, Type: null  }
+      ]
+    },
+    clearRelationById(){
+      var _this = this;
+      _this.relationArray = [
+        { GoalId: _this.updateRelationGoalId, RelatedGoalId: null, Type: null  }
+      ]
+    },
+    addRelation(){
+      var _this = this;
+      _this.relationArray.push({
+        GoalId: null, RelatedGoalId: null, Type: null
+      });
+    },
+    addRelationById(){
+      var _this = this;
+      _this.relationArray.push({
+        GoalId: _this.updateRelationGoalId, RelatedGoalId: null, Type: null
+      });
+    },
     handleSwitchLayout(){
       var _this = this;
       _this.switchLayout = ! _this.switchLayout;
@@ -414,6 +543,22 @@ export default {
       var _this = this;
       _this.replyData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
+    },
+    handleModalViewRalation(item){
+      var _this = this;
+      _this.updateRelationGoalId = item.id;
+      if(item.relation && item.relation.length){
+        _this.relationArray = [];
+        _.forEach(item.relation, (o)=> {
+          _this.relationArray.push({ GoalId: o.goalId, RelatedGoalId: o.relatedGoalId, Type: o.type });
+        });
+        _this.options = _.cloneDeep(_this.companyGoalList);
+      }
+      else
+      {
+        _this.clearRelationById();
+      }
+      _this.modalViewRalation = true;
     },
     customColorMethod(percentage) {
       if (percentage < 10) {
@@ -464,12 +609,23 @@ export default {
     },
     openCreateGoal(){
       var _this = this;
+      _this.clearRelation();
       _this.modalCreateGoal = true;
     },
     submit: _.debounce(async function () {
       var _this = this;
       try {
-        await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
+        var response = await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
+        if(response && response.id){
+          if(_this.relationArray && _this.relationArray.length && _this.relationArray[0].RelatedGoalId && _this.relationArray[0].Type){
+            var relationArraySubmit = _.map(_this.relationArray, (o) => {
+              o.GoalId = response.id;
+              return o;
+            });
+            var arrayToString = JSON.stringify(relationArraySubmit);
+            await _this.$store.dispatch("$_checkInUser/createRelation", arrayToString);
+          }
+        }
         _this.$notify({
           title: "Chúc mừng",
           message: "Cập nhật thành công",
@@ -488,6 +644,7 @@ export default {
           isDelete: false,
           status: 'new'
         };
+        _this.clearRelation();
         await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
       } catch (error) {
         _this.$notify.error({
@@ -525,7 +682,44 @@ export default {
           message: "Cập nhật thất bại",
         });
       }
-    }, 500)
+    }, 500),
+    remoteMethod(query) {
+        var _this = this;
+        if (query !== '') {
+          _this.loading = true;
+          setTimeout(() => {
+            _this.loading = false;
+            _this.options = _this.companyGoalList.filter(item => {
+              return item.name.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          _this.options = [];
+        }
+      },
+    updateRelation: _.debounce(async function () {
+      var _this = this;
+      try {
+          if(_this.relationArray && _this.relationArray.length && _this.relationArray[0].RelatedGoalId && _this.relationArray[0].Type){
+            var arrayToString = JSON.stringify(_this.relationArray);
+            await _this.$store.dispatch("$_checkInUser/createRelation", arrayToString);
+          }
+          _this.$notify({
+            title: "Chúc mừng",
+            message: "Cập nhật thành công",
+            type: "success",
+          });
+        _this.modalViewRalation = false;
+        _this.clearRelation();
+        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+      } catch (error) {
+        _this.$notify.error({
+          title: "Thất bại",
+          message: "Cập nhật thất bại",
+        });
+      }
+    }, 500),
   },
 };
 </script>

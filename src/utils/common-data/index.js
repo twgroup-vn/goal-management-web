@@ -91,9 +91,9 @@ const goalStatusDisplay = {
 }
 
 const relationshipType = [
-  { code: 'previousStep', name: 'previous step'},
-  { code: 'nextStep', name: 'next step'},
-  { code: 'sameTime', name: 'same time'},
+  { code: 'previousStep', name: 'Mục tiêu tiếp theo'},
+  { code: 'nextStep', name: 'Mục tiêu làm trước'},
+  { code: 'sameTime', name: 'Song song'},
 ]
 
 export default{
