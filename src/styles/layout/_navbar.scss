@@ -1,5 +1,7 @@
 .navbar{
-    background: $primary-400;
+    background: $white;
+    box-shadow: 0px 0px 1px rgba(0, 17, 65, 0.47);
+    padding: 0 20px;
     .navbar-brand{
         width: 60px;
         height: 100%;
@@ -7,17 +9,24 @@
     }
     .navbar-nav{
         .nav-item{
+            .nav-link-wrapper{
+                a{
+                    padding:15px;
+                }
+            }
             a{
-                color: rgba($white, 0.75);
+                color: $gray-700;
                 &:hover{
-                    color: $white;
+                    color: $gray-700;
                 }
                 &:focus{
-                    color: $white;
+                    color: $gray-700;
                 }
                 &.active{
                     .nav-link{
-                        color: $white;
+                        color: $gray-700;
+                        background: $primary-100;
+                        box-shadow: inset 0px -3px 0px $primary;
                     }
                 }
             }

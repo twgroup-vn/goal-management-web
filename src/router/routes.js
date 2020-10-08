@@ -1,13 +1,15 @@
 import auth from '../middleware/auth'
 import noAuth from '../middleware/noAuth'
 
-
 export const routes = [
     {
         path: '/checkIn', name: 'checkIn', component: () => import('../views/checkIn.vue'), display: 'Tiến độ', beforeEnter: auth
     },
     {
         path: '/checkInCompany', name: 'checkInCompany', component: () => import('../views/checkInCompany.vue'), display: 'Tiến độ công ty', beforeEnter: auth
+    },
+    {
+        path: '/conversation', name: 'conversation', component: () => import('../views/conversation.vue'), display: 'Hội thoại', beforeEnter: auth
     },
     {
         path: '/createCompany', name: 'createCompany', component: () => import('../views/createCompany.vue'), display: 'Tạo công ty', beforeEnter: noAuth
@@ -18,6 +20,7 @@ export const routes = [
     {
         path: '/login', name: 'login', component: () => import('../views/login.vue'), display: 'Đăng nhập', beforeEnter: noAuth
     },
+    
     /* Admin */
     {
         path: '/admin/dashboard', name: 'dashboardAdmin', component: () => import('../views/dashboardAdmin.vue'), display: 'Bảng điều khiển', beforeEnter: auth

@@ -9,17 +9,20 @@
 //     }
 // }
 
+.main{
+    padding: 0 56px;
+}
+
 hr{
-    border-top: 1px solid $gray-200;
+    border-top: 1px solid $gray-100;
     width: 100%;
 }
 
 .white-background{
     background-color: $white;
-    padding: 20px;
-    margin: 0 15px;
-    border-radius: 10px;
-    min-height: calc(100vh - 100px);
+    padding: 24px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid $gray-100;
 }
 
 .border-radius-0{

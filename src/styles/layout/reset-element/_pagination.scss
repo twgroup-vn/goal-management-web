@@ -6,3 +6,9 @@
 .el-pager li:hover{
     color: $primary-400 !important;
 }
+
+.main{
+    .el-pagination{
+        padding: 0;
+    }
+}

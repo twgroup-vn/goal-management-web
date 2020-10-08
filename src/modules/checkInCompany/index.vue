@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="white-background">
-      <!-- <style-guide></style-guide> -->
-      <div class="row justify-content-between align-items-center mb-3">
+      <div class="row justify-content-between align-items-center">
         <div class="col-md-2">
           <el-select v-model="cycle" @change="handleFilter">
             <el-option value="" label="Tất cả"></el-option>
@@ -28,103 +27,106 @@
           <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Phản hồi</button>
         </div>
       </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="wrapper-target">
-          <div class="title">Mục tiêu toàn công ty</div>
-          <div class="content">
-            <PieChart/>
+    </div>
+    <div class="main container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="wrapper-target">
+            <div class="title">Mục tiêu toàn công ty</div>
+            <div class="content">
+              <PieChart/>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="wrapper-target">
+            <div class="title">Mục tiêu của {{ currentUser.fullName  }}</div>
+            <div class="content">
+              <PieChart/>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="wrapper-target">
-          <div class="title">Mục tiêu của {{ currentUser.fullName  }}</div>
-          <div class="content">
-            <PieChart/>
-          </div>
-        </div>
+      <div class="d-flex justify-content-end align-items-center">
+        <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
+          <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
+          <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
+        </a>
+        <el-pagination  @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        background
+                        :current-page.sync="searchRequest.pageIndex"
+                        layout="sizes, prev, pager, next , jumper"
+                        :page-sizes="[5, 10, 20]" 
+                        :total="goalList.total">
+        </el-pagination>
       </div>
-    </div>
-    <div class="row justify-content-end align-items-center">
-      <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
-        <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
-        <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
-      </a>
-      <el-pagination  @size-change="handleSizeChange"
-                      @current-change="handleCurrentChange"
-                      background
-                      :current-page.sync="searchRequest.pageIndex"
-                      layout="sizes, prev, pager, next , jumper"
-                      :page-sizes="[5, 10, 20]" 
-                      :total="goalList.total">
-      </el-pagination>
-    </div>
-    <div class="row mt-4">
-        <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-3 col-md-6 col-12'" v-for="(item, index) in goalList" :key="index">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12 d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <div class="group-avatar">
-                      <div v-if="!item.avatar" class="avatar-without-img">{{item.convertName}}</div>
-                      <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${item && item.avatar ? item.avatar : ''})` }"></div>
-                    </div>
-                    <div class="ml-2 mr-2">
-                      <div class="">{{ item && item.fullName ? item.fullName : '' }}</div>
-                      <div class="created-date">{{ item.createdAt.slice(0,10) }}</div>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <a class="relative-group-icon mr-4" @click="handleModalRelation(item.id)">
-                      <div class="number">{{ item.relation.length }}</div>
-                      <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
-                    </a>
-                    <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
-                      <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
-                      <div>
-                        <font-awesome-icon :icon="['fas', 'star']" class="icon star" :class="{ danger: item.star < 0 }"/>
+      <div class="row mt-4">
+          <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-3 col-md-6 col-12'" v-for="(item, index) in goalList" :key="index">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                      <div class="group-avatar">
+                        <div v-if="!item.avatar" class="avatar-without-img">{{item.convertName}}</div>
+                        <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${item && item.avatar ? item.avatar : ''})` }"></div>
                       </div>
-                    </a>
-                    <a class="relative-group-icon" @click="handleModalViewFeedback(item.id)">
-                      <div class="number">{{ item.reply.length }}</div>
-                      <font-awesome-icon :icon="['far', 'comment-dots']" class="icon" />
-                    </a>
+                      <div class="ml-2 mr-2">
+                        <div class="">{{ item && item.fullName ? item.fullName : '' }}</div>
+                        <div class="created-date">{{ item.createdAt.slice(0,10) }}</div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <a class="relative-group-icon mr-4" @click="handleModalRelation(item.id)">
+                        <div class="number">{{ item.relation.length }}</div>
+                        <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
+                      </a>
+                      <a class="relative-group-icon mr-4" @click="handleModalViewFeedback(item.id)">
+                        <div class="number star" :class="{ danger: item.star < 0 }">{{ item.star }}</div>
+                        <div>
+                          <font-awesome-icon :icon="['fas', 'star']" class="icon star" :class="{ danger: item.star < 0 }"/>
+                        </div>
+                      </a>
+                      <a class="relative-group-icon" @click="handleModalViewFeedback(item.id)">
+                        <div class="number">{{ item.reply.length }}</div>
+                        <font-awesome-icon :icon="['far', 'comment-dots']" class="icon" />
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr class=""/>
-              <div class="row">
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Mục tiêu</div>
-                  <div class="content">{{ item.name ? item.name : ''}}</div>
-                </div>
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Kết quả chính</div>
-                  <div class="content">
-                    <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                <hr class=""/>
+                <div class="row">
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                    <div class="title">Mục tiêu</div>
+                    <div class="content">{{ item.name ? item.name : ''}}</div>
                   </div>
-                </div>
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Tiến độ</div>
-                  <div class="content">
-                    <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid grid d-flex flex-column justify-content-center'">
+                    <div class="title">Kết quả chính</div>
+                    <div class="content">
+                      <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                    </div>
                   </div>
-                </div>
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Thay đổi</div>
-                  <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
-                </div>
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Mức độ tự tin</div>
-                  <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
-                </div>
-                <div :class="switchLayout == false ? 'col-2 d-flex flex-column justify-content-center' : 'col-md-12 mb-2 d-flex flex-column justify-content-center'">
-                  <div class="title">Trạng thái</div>
-                  <div class="content">
-                    <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
-                      {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                    <div class="title">Tiến độ</div>
+                    <div class="content">
+                      <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                    </div>
+                  </div>
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                    <div class="title">Thay đổi</div>
+                    <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
+                  </div>
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                    <div class="title">Mức độ tự tin</div>
+                    <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
+                  </div>
+                  <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                    <div class="title">Trạng thái</div>
+                    <div class="content">
+                      <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
+                        {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -132,8 +134,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <chat-box></chat-box>
     </div>
 
     <el-dialog title="Form check-in hàng tuần" :visible.sync="modalCheckIn" class="transition-box-center" width="80%" top="0vh" :close-on-click-modal="false" :close-on-press-escape="false">
@@ -346,6 +346,14 @@
                   <span class="mr-2">Tiến độ:</span>
                   <span>{{ goalOfCompany.find(x => { return x.id === relate.goalId}).progressPercent }}%</span>
                 </div>
+                <div class="d-flex justify-content-start">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.goalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
               </div>
               <div class="col-md-4 group-relation">
                 <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
@@ -354,24 +362,85 @@
               <div class="col-md-4 text-right">
                 <div>
                   <span class="mr-2">Mục tiêu:</span>
-                  <span class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</span>
                 </div>
                 <div>
                   <span class="mr-2">Tiến độ:</span>
                   <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).progressPercent }}%</span>
                 </div>
+                <div class="d-flex justify-content-end">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
               </div>
             </div>
+
             <div class="row align-items-center justify-content-between" v-if="relate.type == 'nextStep'">
-              <div class="col-md-4">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+              <div class="col-md-4">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).progressPercent }}%</span>
+                </div>
+                <div class="d-flex justify-content-start">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
+              </div>
               <div class="col-md-4 group-relation">
                 <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
                 <font-awesome-icon :icon="['fas', 'long-arrow-alt-left']" class="icon arrow-long" />
               </div>
-              <div class="col-md-4 font-weight-bold text-right">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+              <div class="col-md-4 text-right">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span class="font-weight-bold">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.goalId}).progressPercent }}%</span>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.goalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
+              </div>
             </div>
+
             <div class="row align-items-center justify-content-between" v-if="relate.type == 'sameTime'">
-              <div class="col-md-4">{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</div>
+              <div class="col-md-4">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.goalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.goalId}).progressPercent }}%</span>
+                </div>
+                <div class="d-flex justify-content-start">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.goalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.goalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
+              </div>
               <div class="col-md-4 group-relation">
                 <div class="text">{{ relate.type ?  commonData.relationTypeDisplay[relate.type] : ''}}</div>
                 <div class="row justify-content-center">
@@ -379,7 +448,24 @@
                   <font-awesome-icon :icon="['fas', 'long-arrow-alt-right']" class="icon arrow-long" />
                 </div>
               </div>
-              <div class="col-md-4 text-right">{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</div>
+              <div class="col-md-4 text-right">
+                <div>
+                  <span class="mr-2">Mục tiêu:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).name }}</span>
+                </div>
+                <div>
+                  <span class="mr-2">Tiến độ:</span>
+                  <span>{{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).progressPercent }}%</span>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <span class="mr-2">Trạng thái:</span>
+                  <span>
+                    <div class="tag" :class="`${commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].color}`">
+                      {{ goalOfCompany.find(x => { return x.id === relate.relatedGoalId}) ?  commonData.goalStatusDisplay[goalOfCompany.find(x => { return x.id === relate.relatedGoalId}).status].name : ''}}
+                    </div>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -393,14 +479,10 @@ import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import commonData from '../../utils/common-data';
 import PieChart from "./_components/pieChart";
-import ChatBox from '../../components/chat-box'
 import _ from 'lodash';
-// import Guide from '../../components/style-guide'
 export default {
   components: {
     PieChart,
-    'chat-box': ChatBox,
-    // 'style-guide': Guide
   },
   data() {
     return {

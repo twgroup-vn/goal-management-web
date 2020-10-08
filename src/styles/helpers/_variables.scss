@@ -1,17 +1,6 @@
 //Colors
-
 $white:           #ffffff !default;
-$warning:         #ffaa00;
-$medium-success:  #039f4b;
-$light-success:   #63D471;
-$general:         #0087eb;
-$red:             #FF0000;
-$orange:          #FF4B2B;
-$pink:            #FF416C;
-$light-cyan:      #80CED7;
-$medium-cyan:     #007EA7;
-
-$primary:         #0F62FE;
+$primary:        #FF704C;
 $primary-100:     mix(white,$primary, 70%);
 $primary-200:     mix(white,$primary, 50%);
 $primary-300:     mix(white,$primary, 30%);
@@ -20,6 +9,16 @@ $primary-600:     mix(black,$primary, 10%);
 $primary-700:     mix(black,$primary, 30%);
 $primary-800:     mix(black,$primary, 50%);
 $primary-900:     mix(black,$primary, 70%);
+
+$blue:          #0F62FE;
+$blue-100:        mix(white,$primary, 70%);
+$blue-200:        mix(white,$primary, 50%);
+$blue-300:        mix(white,$primary, 30%);
+$blue-400:        mix(white,$primary, 10%);
+$blue-600:        mix(black,$primary, 10%);
+$blue-700:        mix(black,$primary, 30%);
+$blue-800:        mix(black,$primary, 50%);
+$blue-900:        mix(black,$primary, 70%);
 
 $secondary:       #fff7d7;
 
@@ -33,10 +32,46 @@ $gray-700:        mix(black,$gray, 30%);
 $gray-800:        mix(black,$gray, 50%);
 $gray-900:        mix(black,$gray, 70%);
 
-$blue:          #0043CE;
-$red:           #DA1E28;
+$blue:            #0043CE;
+$blue-100:        mix(white,$blue, 70%);
+$blue-200:        mix(white,$blue, 50%);
+$blue-300:        mix(white,$blue, 30%);
+$blue-400:        mix(white,$blue, 10%);
+$blue-600:        mix(black,$blue, 10%);
+$blue-700:        mix(black,$blue, 30%);
+$blue-800:        mix(black,$blue, 50%);
+$blue-900:        mix(black,$blue, 70%);
+
+$red:            #DA1E28;
+$red-100:         mix(white,$red, 70%);
+$red-200:         mix(white,$red, 50%);
+$red-300:         mix(white,$red, 30%);
+$red-400:         mix(white,$red, 10%);
+$red-600:         mix(black,$red, 10%);
+$red-700:         mix(black,$red, 30%);
+$red-800:         mix(black,$red, 50%);
+$red-900:         mix(black,$red, 70%);
+
 $yellow:        #F1C21B;
+$yellow-100:      mix(white,$yellow, 70%);
+$yellow-200:      mix(white,$yellow, 50%);
+$yellow-300:      mix(white,$yellow, 30%);
+$yellow-400:      mix(white,$yellow, 10%);
+$yellow-600:      mix(black,$yellow, 10%);
+$yellow-700:      mix(black,$yellow, 30%);
+$yellow-800:      mix(black,$yellow, 50%);
+$yellow-900:      mix(black,$yellow, 70%);
+
 $green:         #24A148;
+$green-100:       mix(white,$green, 70%);
+$green-200:       mix(white,$green, 50%);
+$green-300:       mix(white,$green, 30%);
+$green-400:       mix(white,$green, 10%);
+$green-600:       mix(black,$green, 10%);
+$green-700:       mix(black,$green, 30%);
+$green-800:       mix(black,$green, 50%);
+$green-900:       mix(black,$green, 70%);
+
 
 
 

@@ -5,7 +5,8 @@
     },
     "userNav":{
         "checkin": "Tiến độ cá nhân",
-        "companyCheckin": "Tiến độ công ty"
+        "companyCheckin": "Tiến độ công ty",
+        "conversation": "Hội thoại"
     },
     "nav":{
         "dashboard": "Bảng điều khiển",

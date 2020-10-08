@@ -1,15 +1,15 @@
 .group-avatar{
-    color: $white;
+    color: $gray-900;
     position: relative;
     &:hover{
-        color: $white;
+        color: $gray-900;
     }
     &:focus{
-        color: $white;
+        color: $gray-900;
     }
     svg{
         path{
-            fill: $white;
+            fill: $gray-900;
         }
     }
     .avatar-without-img{
@@ -44,6 +44,14 @@
         width: auto;
         height: auto;
         background: $white;
+    }
+    &.chatList{
+        width: 60px;
+        height: 60px;
+        margin: inherit;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
     &.square{
         border-radius: 0;

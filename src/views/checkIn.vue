@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-menu params="route: route"></nav-menu>
-    <div class="container-fluid my-3">
+    <div>
       <CheckIn />
     </div>
   </div>

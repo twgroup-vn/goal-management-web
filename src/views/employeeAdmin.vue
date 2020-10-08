@@ -15,7 +15,7 @@
           </router-link>
         </div>
         <div class="d-flex align-items-center">
-          <div class="noti-bell d-none">
+          <div class="noti-group d-none">
             <font-awesome-icon :icon="['far', 'bell']" class="icon mr-3" />
             <div class="noti-number">2</div>
           </div>
@@ -35,7 +35,7 @@
 import SideMenuAdmin from "../components/side-bar-admin";
 import EmployeeAdmin from "../modules/employeeAdmin";
 import Avatar from "../components/avatar";
-import MainLogo from '../assets/svgs/mainLogo/TWG-white.svg'
+import MainLogo from '../assets/svgs/mainLogo/TWG.svg'
 export default {
   name: "employeeAdmin",
   data() {

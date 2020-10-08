@@ -91,8 +91,8 @@
     align-items: center;
     justify-content: space-between;
     height: 60px;
-    background: $primary;
-    color: $white;
+    background: $white;
+    color: $gray-900;
     padding: 0 20px;
     .logo-brand{
         width: 60px;
@@ -104,7 +104,7 @@
         cursor: pointer;
         svg{
             path{
-                fill: $white;
+                fill: $gray-900;
             }
         }
         &.active {
@@ -116,7 +116,7 @@
         display: none;
         svg{
             path{
-                fill: $white;
+                fill: $gray-900;
             }
         }
         &.active {

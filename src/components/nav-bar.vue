@@ -14,8 +14,11 @@
             <div class="nav-link-wrapper" v-if="route.name =='checkIn'">
               <a class="nav-link">{{ $t("userNav.checkin") }}</a>
             </div>
-             <div class="nav-link-wrapper" v-if="route.name =='checkInCompany'">
+            <div class="nav-link-wrapper" v-if="route.name =='checkInCompany'">
               <a class="nav-link">{{ $t("userNav.companyCheckin") }}</a>
+            </div>
+            <div class="nav-link-wrapper" v-if="route.name =='conversation'">
+              <a class="nav-link">{{ $t("userNav.conversation") }}</a>
             </div>
           </router-link>
           </li>
@@ -32,7 +35,7 @@
 import { routes } from '../router/routes'
 import commonData from '../utils/common-data/index';
 import Avatar from "../components/avatar"
-import MainLogo from '../assets/svgs/mainLogo/TWG-white.svg'
+import MainLogo from '../assets/svgs/mainLogo/TWG.svg'
 export default {
   components: {
     'avatar': Avatar

@@ -1,22 +1,22 @@
 <template>
   <div>
     <nav-menu params="route: route"></nav-menu>
-    <div>
-      <CheckInCompany />
+    <div class="container-fluid my-3">
+      <Conversation />
     </div>
   </div>
 </template>
 
 <script>
 import NavMenu from "../components/nav-bar";
-import CheckInCompany from "../modules/checkInCompany";
+import Conversation from "../modules/conversation";
 export default {
-  name: "checkInUser",
+  name: "conversation",
   data() {
     return {};
   },
   components: {
-    CheckInCompany,
+    Conversation,
     "nav-menu": NavMenu
   },
   methods: {

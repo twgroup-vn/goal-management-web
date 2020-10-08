@@ -5,7 +5,8 @@
     },
     "userNav":{
         "checkin": "Personal Check-in",
-        "companyCheckin": "Company Check-in"
+        "companyCheckin": "Company Check-in",
+        "conversation": "Conversation"
     },
     "nav":{
         "dashboard": "Dashboard",

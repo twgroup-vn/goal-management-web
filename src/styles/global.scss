@@ -8,7 +8,7 @@ body {
     font-stretch: normal;
     line-height: 1.5;
     color: $gray-900;
-    background-color: $gray-100;
+    background-color: rgba($primary, 0.03);
 }
 
 a {
@@ -47,7 +47,7 @@ a {
 @import "../styles/components/_icon";
 @import "../styles/components/_chart";
 @import "../styles/components/_tags";
-@import "../styles/components/_chatbox";
+@import "../styles/components/_conversation";
 
 @import "../styles/pages//management-company";
 @import "../styles/pages/checkInCompany"
