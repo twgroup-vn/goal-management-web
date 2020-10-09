@@ -1,3 +1,33 @@
 .el-select{
     width: 100%;
+    .el-input{
+        &.is-focus{
+            .el-input{
+                &__inner{
+                    border-color: $primary !important;
+                }
+            }
+        }
+        &__inner{
+            &:hover{
+                border-color: $primary !important;
+            }
+            &:focus{
+                border-color: $primary !important;
+            }
+            &.is-active{
+                border-color: $primary !important;
+            }
+        }
+    }
+}
+
+.el-select-dropdown{
+    .el-select-dropdown{
+        &__item{
+            &.selected{
+                color: $primary;
+            }
+        }
+    }
 }

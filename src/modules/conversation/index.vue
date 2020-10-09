@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-4 pr-0">
+      <div class="col-md-3 pr-0">
         <conversation-list></conversation-list>
       </div>
-      <div class="col-md-8 pl-0">
+      <div class="col-md-9 pl-0">
         <chat-box></chat-box>
       </div>
     </div>

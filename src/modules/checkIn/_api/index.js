@@ -5,7 +5,7 @@ const getUserList = async () => {
 }
 
 const getAllGoalOfCompany = async () => {
-    return Vue.prototype.$http.get(`http://localhost:5000/api/goal/getAllGoalOfCompany`);
+    return Vue.prototype.$http.get(`http://172.20.10.25:5000/api/goal/getAllGoalOfCompany`);
 }
 
 const getGoalListOfUser = async (pageIndex, pageSize, description, title) => {

@@ -541,7 +541,7 @@ export default {
       _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewCheckIn = true;
     },
-    handleModalViewFeedback(val){
+    async handleModalViewFeedback(val){
       var _this = this;
       _this.replyData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
