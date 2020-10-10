@@ -31,12 +31,14 @@
             </div>
         </div>
         <div :class="rightInfo == false ? 'group-infoBox' : 'group-infoBox active'">
-            <div class="avatar" :style="{ backgroundImage: `url(${NoAvatar})` }"></div>
-            <div class="email">nguyennt@twgroup.vn</div>
-            <div class="number">0941203233</div>
-            <div class="department">
-                <div class="mb-2">IT Department</div>
-                <div>Front end designer</div>
+            <div v-for="(item, index) in userChat" :key="index">
+                <div class="avatar" :style="{ backgroundImage: `url(${item.userInfo.avatar})` }"></div>
+                <div class="email">{{ item.userInfo && item.userInfo.email ? item.userInfo.email : ''}}</div>
+                <div class="number">{{ item.userInfo && item.userInfo.phoneNumber ? item.userInfo.phoneNumber : ''}}</div>
+                <!-- <div class="department">
+                    <div class="mb-2">IT Department</div>
+                    <div>Front end designer</div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -60,6 +62,7 @@ export default {
         sendMail(val){
             console.log(val)
         }
-    }
+    },
+    props:['userChat']
 }
 </script>

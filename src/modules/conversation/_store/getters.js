@@ -1,5 +1,20 @@
 import _ from 'lodash'
 
+const getListConversation = (state) => {
+  var data = {};
+  if (state.listConversation && state.userList && state.userList.length) {
+    data = _.map(state.listConversation, (v) => {
+      v.participantOject = v.participant ? JSON.parse(v.participant.replace(/'/g, '"')) : '';
+       _.filter(v.participantOject, x => {return x.id === localStorage.getItem("userId")});
+      v.userInfo = _.find(state.userList, (o)=>{ return v.participantOject.indexOf(o.id) > -1 });
+      v.isRead = v.isRead && v.latestMessenger !== localStorage.getItem("userId")  ? false : true
+      console.log(v)
+      return v;
+    });
+  }
+  return data;
+};
+
 const getUserList = (state) => {
   var data = {};
   if (state.userList) {
@@ -10,32 +25,7 @@ const getUserList = (state) => {
   return data;
 };
 
-const getGoalList = (state) => {
-  var data = {};
-  if (state.goalList) {
-    data = _.map(state.goalList, (v) => {
-      return v;
-    });
-    data.total = state.total;
-  }
-  return data;
-};
-
-const getData = (state) => {
-  var data = {};
-  if (state.data) {
-    data = _.map(state.data, (v) => {
-      return v;
-    });
-    data = _.filter(data, (o) => { return !o.isDelete });
-    data.data = data;
-    data.total = state.total;
-  }
-  return data;
-};
-
 export default {
-  getUserList,
-  getData,
-  getGoalList
+  getListConversation,
+  getUserList
 };

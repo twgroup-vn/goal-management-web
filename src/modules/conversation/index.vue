@@ -2,10 +2,10 @@
   <div>
     <div class="row">
       <div class="col-md-3 pr-0">
-        <conversation-list></conversation-list>
+        <conversation-list :list-conversation="dataConversation" :list-user="userList"></conversation-list>
       </div>
       <div class="col-md-9 pl-0">
-        <chat-box></chat-box>
+        <chat-box :user-chat="dataConversation"></chat-box>
       </div>
     </div>
   </div>
@@ -30,11 +30,11 @@ export default {
   },
   computed: {
     ...mapState({
-      // headers: state => state.$_conversation.headers,
-      // searchRequest: state => state.$_conversation.searchRequest,
+      searchRequest: state => state.$_conversation.searchRequest,
     }),
     ...mapGetters({
-        // data: "$_conversation/getData",
+        dataConversation: "$_conversation/getListConversation",
+        userList: "$_conversation/getUserList",
     }),
   },
   async created() {
@@ -43,7 +43,8 @@ export default {
     if (!(STORE_KEY in this.$store._modules.root._children)) {
       _this.$store.registerModule(STORE_KEY, store);
     }
-    // await _this.$store.dispatch("$_conversation/getData");
+    await _this.$store.dispatch("$_conversation/getListConversation");
+    await _this.$store.dispatch("$_conversation/getUserList");
   },
   methods: {
     // async handleSearch(){

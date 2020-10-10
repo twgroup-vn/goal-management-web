@@ -12,28 +12,19 @@
                         <span slot="label">
                             <font-awesome-icon :icon="['fas', 'history']" />
                         </span>
-                        <div class="chat-list">
+                        <div class="chat-list" v-for="(item, index) in listConversation" :key="index">
                             <div class="col-md-8 d-flex align-items-center">
-                                <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }"></div>
+                                <div>
+                                    <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.userInfo.avatar})` }" v-if="item.userInfo.avatar"></div>
+                                    <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
+                                </div>
                                 <div class="ml-3">
-                                    <div class="name">Hiếu Thuận</div>
-                                    <div class="lastest-chat">Chào</div>
+                                    <div class="name">{{ item.userInfo.fullName ? item.userInfo.fullName : '' }}</div>
+                                    <div class="lastest-chat" :class="{isRead: !item.isRead}" >{{ item.latestMessage ? item.latestMessage : '' }}</div>
                                 </div>
                             </div>
                             <div class="col-md-4 noti-group">
-                                <div class="noti-number chat">1</div>
-                            </div>
-                        </div>
-                        <div class="chat-list">
-                            <div class="col-md-8 d-flex align-items-center">
-                                <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }"></div>
-                                <div class="ml-3">
-                                    <div class="name">Phương Linh</div>
-                                    <div class="lastest-chat">Chào</div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 noti-group">
-                                <div class="noti-number chat">1</div>
+                                <div class="noti-number chat" v-if="item.newMessage > 0 && !item.isRead">{{ item.newMessage }}</div>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -41,7 +32,17 @@
                         <span slot="label">
                             <font-awesome-icon :icon="['fas', 'address-book']" />
                         </span>
-                        <div></div>
+                        <div class="chat-list" v-for="(item, index) in listUser" :key="index">
+                            <div class="col-12 d-flex align-items-center">
+                                <div>
+                                    <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.avatar})` }" v-if="item.avatar"></div>
+                                    <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
+                                </div>
+                                <div class="ml-3">
+                                    <div class="name">{{ item.fullName ? item.fullName : '' }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -58,6 +59,7 @@ export default {
             search: '',
             NoAvatar
         }
-    }
+    },
+    props:['listConversation', 'listUser']
 }
 </script>
