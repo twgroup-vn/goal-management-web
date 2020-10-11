@@ -32,7 +32,8 @@
 </template>
 
 <script>
-import { routes } from '../router/routes'
+import { routes } from '../router/routes';
+import { mapGetters } from "vuex";
 import commonData from '../utils/common-data/index';
 import Avatar from "../components/avatar"
 import MainLogo from '../assets/svgs/mainLogo/TWG.svg'
@@ -45,14 +46,40 @@ export default {
     return {
       routes,
       commonData,
-      MainLogo
+      MainLogo,
+      connection: null,
+      pathname: '',
     };
   },
   created() {
+    var _this = this;
+    _this.pathname = window.location.pathname;
+    _this.listeningSocket();
   },
   computed: {
+      ...mapGetters({
+        currentUser: "$_loginPage/getCurrentUser",
+      }),
   },
   methods: {
+    listeningSocket(){
+      var _this = this;
+      const signalR = require("@aspnet/signalr");
+      _this.connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/chatHub").build();
+      _this.connection.start().then(() => {
+        _this.connection.on("ReceiveMessage", async function (user, message, func, params, type) {
+          switch(type){
+            case "sendTextMessage":
+                if (_this.pathname.includes(`conversation`) && _this.currentUser.id === user) {
+                  await _this.$store.dispatch(func, params);
+                }
+              break;
+            default:
+              break;
+          }
+        });
+      });    
+    },
     redirectTo: function (path) {
       if (path) {
         this.$router.push(path);

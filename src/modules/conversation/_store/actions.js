@@ -13,7 +13,6 @@ const getConversationDetail = async (context, request) => {
 };
 
 const setUserInfoConversation = async (context, request) => {
-  console.log(request);
   context.commit('SET_USER_INFO_CONVERSATION', request);
 };
 

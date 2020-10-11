@@ -77,6 +77,7 @@ export default {
             try{
                 _this.formData.conversationId = _this.conversationId;
                 await _this.$store.dispatch("$_conversation/sendMessage", _this.formData);
+                await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: _this.userInfoOfConversation.id, messageInput: _this.formData.content, functionInput: "$_conversation/getConversationDetail", paramsInput: _this.conversationId, typeInput: "sendTextMessage" }));
                 await _this.$store.dispatch("$_conversation/getConversationDetail", _this.conversationId);
                 await _this.$store.dispatch("$_conversation/getListConversation");
                 _this.formData.content = "";

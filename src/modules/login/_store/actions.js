@@ -49,6 +49,16 @@ const decodeToken = async (context, request) => {
   return response.data;
 };
 
+const sendSocket = (context, request) => {
+  const signalR = require("@aspnet/signalr");
+  var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/chatHub").build();
+  connection.start().then(() => {
+    connection.invoke("SendMessage", request.userInput, request.messageInput, request.functionInput, request.paramsInput, request.typeInput).catch(function (err) {
+      return console.error(err.toString());
+    });
+  });
+};
+
 export default {
   login,
   getCompanyOfUser,
@@ -58,5 +68,6 @@ export default {
   refreshToken,
   getCurrentUser,
   getNotAuthorazation,
-  getCompanyDetails
+  getCompanyDetails,
+  sendSocket
 }
