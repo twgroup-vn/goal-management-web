@@ -5,7 +5,7 @@
         <conversation-list :list-conversation="dataConversation" :list-user="userList"></conversation-list>
       </div>
       <div class="col-md-9 pl-0">
-        <chat-box :user-chat="dataConversation"></chat-box>
+        <chat-box :user-chat="conversationDetail"></chat-box>
       </div>
     </div>
   </div>
@@ -33,6 +33,7 @@ export default {
       searchRequest: state => state.$_conversation.searchRequest,
     }),
     ...mapGetters({
+        conversationDetail: "$_conversation/getConversationDetail",
         dataConversation: "$_conversation/getListConversation",
         userList: "$_conversation/getUserList",
     }),
@@ -43,8 +44,19 @@ export default {
     if (!(STORE_KEY in this.$store._modules.root._children)) {
       _this.$store.registerModule(STORE_KEY, store);
     }
-    await _this.$store.dispatch("$_conversation/getListConversation");
     await _this.$store.dispatch("$_conversation/getUserList");
+    await _this.$store.dispatch("$_conversation/getListConversation");
+    if(localStorage.getItem("conversationId") && localStorage.getItem("userInfoOfConversation")){
+      await _this.$store.dispatch("$_conversation/setUserInfoConversation", JSON.parse(localStorage.getItem("userInfoOfConversation")));
+      await _this.$store.dispatch("$_conversation/getConversationDetail", localStorage.getItem("conversationId"));
+    }
+    else{
+      if(_this.dataConversation && _this.dataConversation.length){
+        localStorage.setItem("userInfoOfConversation", JSON.stringify(_this.dataConversation[0].userInfo));
+        await _this.$store.dispatch("$_conversation/setUserInfoConversation", _this.dataConversation[0].userInfo);
+        await _this.$store.dispatch("$_conversation/getConversationDetail", _this.dataConversation[0].id);
+      }
+    }
   },
   methods: {
     // async handleSearch(){

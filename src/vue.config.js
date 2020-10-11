@@ -1,6 +1,6 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'development'
-    ? 'http://172.20.10.25:5000/'
+    ? 'http://localhost:5000/'
     : 'http://localhost:8080/',
   module: {
     rules: [
