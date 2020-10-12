@@ -13,7 +13,7 @@
                             <font-awesome-icon :icon="['fas', 'history']" />
                         </span>
                         <div class="group-chatList" v-on:scroll="handleScroll">
-                            <div class="chat-list" v-for="(item, index) in listConversation" :key="index" @click="getConversationDetail(item)">
+                            <div class="chat-list" :class="conversationId == item.id ? 'active' : ''" v-for="(item, index) in listConversation" :key="index" @click="getConversationDetail(item)">
                                 <div class="d-flex align-items-center">
                                     <div>
                                         <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.userInfo.avatar})` }" v-if="item.userInfo.avatar"></div>
@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="ml-3">
                                         <div class="name">{{ item.userInfo.fullName ? item.userInfo.fullName : '' }}</div>
-                                        <div class="lastest-chat" :class="{isRead: !item.isRead}" >{{ item.latestMessage ? item.latestMessage : '' }}</div>
+                                        <div class="lastest-chat" :class="{isRead: !item.isRead}">{{ item.latestMessage ? item.latestMessage : '' }}</div>
                                     </div>
                                 </div>
                                 <div class="noti-group">
@@ -75,6 +75,7 @@ export default {
     computed: {
         ...mapState({
             searchRequest: state => state.$_conversation.searchRequest,
+            conversationId: state => state.$_conversation.conversationId,
         }),
   },
     methods: {

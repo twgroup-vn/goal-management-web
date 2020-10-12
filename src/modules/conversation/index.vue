@@ -59,12 +59,6 @@ export default {
       }
     }
   },
-  methods: {
-    // async handleSearch(){
-    //   var _this = this;
-    //   _this.searchRequest.description = _this.description;
-    //   await _this.$store.dispatch("$_replyAdmin/getData");
-    // },
-  },
+  methods: {},
 };
 </script>
