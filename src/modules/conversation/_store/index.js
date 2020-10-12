@@ -8,10 +8,11 @@ const state = {
   userInfoConversation: null,
   conversationId: null,
   userList: null,
+  stickerList: null,
   total: 0,
   searchRequest: {
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: 30,
   },
   conversationRequest: {
     pageIndex: 1,

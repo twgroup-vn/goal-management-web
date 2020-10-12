@@ -51,7 +51,7 @@ const decodeToken = async (context, request) => {
 
 const sendSocket = (context, request) => {
   const signalR = require("@aspnet/signalr");
-  var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/chatHub").build();
+  var connection = new signalR.HubConnectionBuilder().withUrl("http://172.20.10.25:5000/chatHub").build();
   connection.start().then(() => {
     connection.invoke("SendMessage", request.userInput, request.messageInput, request.functionInput, request.paramsInput, request.typeInput).catch(function (err) {
       return console.error(err.toString());

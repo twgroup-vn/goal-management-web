@@ -40,8 +40,19 @@ const getUserList = (state) => {
   return data;
 };
 
+const getStickerList = (state) => {
+  var data = {};
+  if (state.stickerList) {
+    data = _.map(state.stickerList, (v) => {
+      return v;
+    });
+  }
+  return data;
+};
+
 export default {
   getListConversation,
   getConversationDetail,
-  getUserList
+  getUserList,
+  getStickerList
 };

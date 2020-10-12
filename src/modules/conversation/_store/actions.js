@@ -32,11 +32,23 @@ const createConversation = async (context, request) => {
   return response.data;
 };
 
+const uploadImage = async (context, request) => {
+  let response = await api.uploadImage(request);
+  return response.data;
+};
+
+const getStickerList = async (context, request) => {
+  let response = await api.getStickerList(request);
+  context.commit('SET_STICKER_LIST', response.data);
+};
+
 export default {
   getListConversation,
   getConversationDetail,
   getUserList,
   createConversation,
   sendMessage,
-  setUserInfoConversation
+  setUserInfoConversation,
+  uploadImage,
+  getStickerList
 }
