@@ -6,7 +6,8 @@
     "userNav":{
         "checkin": "Tiến độ cá nhân",
         "companyCheckin": "Tiến độ công ty",
-        "conversation": "Hội thoại"
+        "conversation": "Hội thoại",
+        "board": "Quản lý công việc"
     },
     "nav":{
         "dashboard": "Bảng điều khiển",
@@ -25,6 +26,12 @@
     "dashboardPage": {
     },
     "checkinPage": {
+    },
+    "checkinCompanyPage": {
+    },
+    "boardPage": {
+        "titleRecentView": "Nội dung vừa xem",
+        "titlePersonalBoard": "Nội dung cá nhân"
     },
     "dashboardPageAdmin": {
     },

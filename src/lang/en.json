@@ -6,7 +6,8 @@
     "userNav":{
         "checkin": "Personal Check-in",
         "companyCheckin": "Company Check-in",
-        "conversation": "Conversation"
+        "conversation": "Conversation",
+        "board": "Board"
     },
     "nav":{
         "dashboard": "Dashboard",
@@ -25,6 +26,12 @@
     "dashboardPage": {
     },
     "checkinPage": {
+    },
+    "checkinCompanyPage": {
+    },
+    "boardPage": {
+        "titleRecentView": "Recently Viewed",
+        "titlePersonalBoard": "Personal Board"
     },
     "dashboardPageAdmin": {
     },

@@ -34,19 +34,21 @@
                         <span slot="label">
                             <font-awesome-icon :icon="['fas', 'address-book']" />
                         </span>
-                        <div class="chat-list mb-2" v-for="(item, index) in listUser" :key="index" @click="createConversationDetail(item.id)">
-                            <div v-if="item.id !== userId">
-                                <div class="d-flex align-items-center">
-                                    <div>
-                                        <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.avatar})` }" v-if="item.avatar"></div>
-                                        <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
-                                    </div>
-                                    <div class="ml-3">
-                                        <div class="name">{{ item.fullName ? item.fullName : '' }}</div>
+                        <div class="group-chatList">
+                            <div class="chat-list mb-2" v-for="(item, index) in listUser" :key="index" @click="createConversationDetail(item.id)">
+                                <div v-if="item.id !== userId">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.avatar})` }" v-if="item.avatar"></div>
+                                            <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="name">{{ item.fullName ? item.fullName : '' }}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                         </div>
                     </el-tab-pane>
                 </el-tabs>
             </div>

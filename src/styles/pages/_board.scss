@@ -1,0 +1,62 @@
+.board-title{
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    .icon{
+        margin-right: 8px;
+    }
+    .text{
+        font-family: $Primary-Semibold;
+    }
+}
+
+.list-group-item{
+    &.ghost {
+        background: rgba($primary, 0.2);
+    }
+}
+
+.flip-list-move {
+    transition: transform 0.5s;
+  }
+  .no-move {
+    transition: transform 0s;
+  }
+  .ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+  }
+  .list-group {
+    min-height: 20px;
+  }
+  .list-group-item {
+    cursor: move;
+  }
+  .list-group-item i {
+    cursor: pointer;
+  }
+
+.card{
+    &.boardCreate{
+        height: 150px;
+        border: 0;
+        .card-body{
+            background: rgba($gray-100, 0.5);
+            cursor: pointer;
+            .text-inside{
+                font-family: $Primary-Semibold;
+            }
+        }
+    }
+    &.boardCard{
+        height: 150px;
+        border: 0;
+        .card-body{
+            background: rgba($primary-100, 0.3);
+            cursor: pointer;
+            .text-inside{
+                font-family: $Primary-Semibold;
+            }
+        }
+    }
+}
