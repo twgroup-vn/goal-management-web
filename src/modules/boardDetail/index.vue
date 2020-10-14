@@ -1,31 +1,39 @@
 <template>
   <div>
+    <div class="white-background">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-md-6">
+          <button class="btn btn-primary btn-medium" @click="openCreateTask">Tạo task</button>
+        </div>
+        <div class="col-md-6 text-right">
+          <a href="javascript:;">
+            <font-awesome-icon :icon="['fas', 'ellipsis-h']" />
+            <span class="ml-2">Show menu</span>
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="main container-fluid">
       <div class="row">
-        <div class="col-3">
-          <h3>Công việc của Thuận</h3>
-          <draggable class="list-group" :list="work1" group="people" @change="log">
-            <div
-              class="list-group-item"
-              v-for="item in work1" :key="item.id">
-              {{ item.name }} {{ item.GroupId }}
+        <div class="col-3" v-for="item in list" :key="item.id">
+          <div class="wrapper-list">
+            <div class="list-title">{{item.title}}</div>
+            <draggable class="list-group" v-model="item.work" group="working" ghost-class="ghost" :move="checkMove">
+              <div
+                class="list-group-item"
+                v-for="working in item.work" :key="working.id">
+                {{ working.name }}, GroupId: {{ working.GroupId }}
+              </div>
+            </draggable>
+            <div class="list-add-item" v-if="showInput && item.id == selectedId">
+              <input class="input-primary medium mb-3" placeholder="Enter title for this group" />
+              <button class="btn btn-secondary">Thêm</button>
             </div>
-          </draggable>
-          <button class="btn btn-secondary mt-4" @click="addTask">Thêm</button>
-        </div>
-
-        <div class="col-3">
-          <h3>Công việc của Nhựt</h3>
-          <draggable class="list-group" :list="work2" group="people" @change="log">
-            <div
-              class="list-group-item"
-              v-for="item in work2"
-              :key="item.id"
-            >
-              {{ item.name }} {{ item.GroupId }}
-            </div>
-          </draggable>
-          <button class="btn btn-secondary mt-4" @click="addTask">Thêm</button>
+            <button class="btn btn-secondary btn-small" @click="openAddInput(item)" v-if="!showInput || item.id != selectedId">
+              <font-awesome-icon :icon="['fas', 'plus']" class="mr-2" />
+              <span>Thêm công việc</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -44,23 +52,39 @@ export default {
   data() {
     return {
       enabled: true,
-      list: [
-        { name: "Công việc của Thuận", id: 1, ordinal: 1 },
-        { name: "Công việc của Nhựt", id: 2, ordinal: 2 },
+      list:[
+        {
+          id: 1,
+          title: "Starting",
+          work: [
+            { name: 'Task 1', GroupId: 1, ordinal: 1},
+            { name: 'Task 2', GroupId: 1, ordinal: 2},
+            { name: 'Task 3', GroupId: 1, ordinal: 3},
+          ],
+        },
+        {
+          id: 2,
+          title: "Process",
+          work: [
+            { name: 'Task 1', GroupId: 2, ordinal: 1},
+            { name: 'Task 2', GroupId: 2, ordinal: 2},
+            { name: 'Task 3', GroupId: 2, ordinal: 3},
+          ],
+        },
+        {
+          id: 3,
+          title: "Done",
+          work: [
+            { name: 'Task 1', GroupId: 3, ordinal: 1},
+            { name: 'Task 2', GroupId: 3, ordinal: 2},
+            { name: 'Task 3', GroupId: 3, ordinal: 3},
+          ],
+        }
       ],
-      work1: [
-        { name: 'Task 1', GroupId: 1, ordinal: 1},
-        { name: 'Task 2', GroupId: 1, ordinal: 2},
-        { name: 'Task 3', GroupId: 1, ordinal: 3},
-
-      ],
-      work2: [
-        { name: 'Task 1', GroupId: 2, ordinal: 1},
-        { name: 'Task 2', GroupId: 2, ordinal: 2},
-        { name: 'Task 3', GroupId: 2, ordinal: 3},
-
-      ],
-      dragging: false
+      dragging: false,
+      showInput: false,
+      modalCreateTask: false,
+      selectedId: null
     };
   },
   computed: {
@@ -80,16 +104,20 @@ export default {
     // await _this.$store.dispatch("$_boardDetail/getData");
   },
   methods: {
-    addTask() {
+    openCreateTask(){
       var _this = this;
-      _this.work2.push({ name: ""});
+      _this.modalCreateTask = true;
     },
-    log(e) {
-      console.log(e.added);
-      if(e.added && e.added.element && e.added.element.length){
-        e.added.element.GroupId = e.added.newIndex;
+    openAddInput(item){
+      var _this = this;
+      _this.selectedId = item.id;
+      _this.showInput = true;
+    },
+    checkMove(e){
+      if(e && e.draggedContext && e.relatedContext){
+        e.draggedContext.element.GroupId = e.relatedContext.element.GroupId;
       }
-    },
+    }
   },
 };
 </script>
