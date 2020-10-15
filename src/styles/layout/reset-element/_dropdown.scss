@@ -4,19 +4,19 @@
         &.is-focus{
             .el-input{
                 &__inner{
-                    border-color: $primary !important;
+                    border-color: $blue !important;
                 }
             }
         }
         &__inner{
             &:hover{
-                border-color: $primary !important;
+                border-color: $blue !important;
             }
             &:focus{
-                border-color: $primary !important;
+                border-color: $blue !important;
             }
             &.is-active{
-                border-color: $primary !important;
+                border-color: $blue !important;
             }
         }
     }
@@ -26,7 +26,7 @@
     .el-select-dropdown{
         &__item{
             &.selected{
-                color: $primary;
+                color: $blue;
             }
         }
     }

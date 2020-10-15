@@ -5,10 +5,10 @@
       <div class="col-md-6">
         <div class="row align-items-center">
           <div class="col-md-8">
-            <input class="input-primary medium" placeholder="Tìm kiếm" v-model="description" />  
-          </div>
-          <div class="col-md-4">
-            <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
+            <div class="position-relative">
+              <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" @keyup="handleSearch"/>
+              <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
+            </div>  
           </div>
         </div>
       </div>
