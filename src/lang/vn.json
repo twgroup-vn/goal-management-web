@@ -26,6 +26,8 @@
     "dashboardPage": {
     },
     "checkinPage": {
+        "createGoalBtn": "Tạo mục tiêu",
+        "placeholderSearch": "Tìm kiếm"
     },
     "checkinCompanyPage": {
     },

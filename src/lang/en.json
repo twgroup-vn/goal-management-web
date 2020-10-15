@@ -26,6 +26,8 @@
     "dashboardPage": {
     },
     "checkinPage": {
+        "createGoalBtn": "Create Goal",
+        "placeholderSearch": "Search"
     },
     "checkinCompanyPage": {
     },

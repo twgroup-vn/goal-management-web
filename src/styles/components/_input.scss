@@ -21,13 +21,13 @@ input{
 			padding: 11px 16px;
 		}
 		&:hover{
-			border: 1px solid $primary-400;
+			border: 1px solid $blue;
 		}
 		&:focus{
-			border: 1px solid $primary-400;
+			border: 1px solid $blue;
 		}
 		&:hover{
-			border: 1px solid $primary-400;
+			border: 1px solid $blue;
 		}
 		&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 			color: $gray-200;
@@ -46,13 +46,13 @@ textarea{
 	border: 1px solid $gray-200;
 	outline: none;
 	&:hover{
-		border-color: $primary;
+		border-color: $blue;
 	}
 	&:focus{
-		border-color: $primary;
+		border-color: $blue;
 	}
 	&:active{
-		border-color: $primary;
+		border-color: $blue;
 	}
 	&::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 		color: $gray-200;
