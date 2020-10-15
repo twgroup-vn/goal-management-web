@@ -17,6 +17,20 @@
             padding: 8px 20px;
             font-size: 16px;
         }
+        &.circle{
+            position: relative;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            svg{
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                left: 4px;
+                top: 4px;
+            }
+        }
         &:hover{
             background: $primary-400;
             border: 1px solid transparent;

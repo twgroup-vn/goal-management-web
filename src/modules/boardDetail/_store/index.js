@@ -5,6 +5,7 @@ import mutations from '../_store/mutations';
 const state = {
   data: null,
   total: 0,
+  userList: null,
   searchRequest: {
     description: '',
     pageIndex: 1,

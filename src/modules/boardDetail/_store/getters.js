@@ -1,4 +1,4 @@
-// import _ from 'lodash'
+import _ from 'lodash'
 
 // const getData = (state) => {
 //   var data = {};
@@ -13,6 +13,17 @@
 //   return data;
 // };
 
-// export default {
-//   getData,
-// };
+const getUserList = (state) => {
+    var data = {};
+    if (state.userList) {
+      data = _.map(state.userList, (v) => {
+        return v;
+      });
+    }
+    return data;
+};
+
+
+export default {
+    getUserList,
+};

@@ -98,6 +98,38 @@ const relationTypeDisplay = {
   sameTime: 'Song song'
 }
 
+const visibilityBoard = [
+  { code: 'public', name: 'Công khai'},
+  { code: 'private', name: 'Riêng tư'}
+]
+
+const visibilityBoardDisplay = {
+  public: 'Công khai',
+  private: 'Riêng tư',
+}
+
+const cardGroupStatus = [
+  { code: 'lock', name: 'Khóa'},
+  { code: 'unlock', name: 'Mở khóa'},
+]
+
+const cardGroupStatusDisplay = {
+  lock: 'Khóa',
+  unlock: 'Mở khóa',
+}
+
+const cardStatus = [
+  { code: 'toDo', name: 'Sẽ làm'},
+  { code: 'inProgress', name: 'Đang làm'},
+  { code: 'done', name: 'Hoàn thành'}
+]
+
+const cardStatusDisplay = {
+  toDo: 'Sẽ làm',
+  inProgress: 'Đang làm',
+  done: 'Hoàn thành'
+}
+
 export default{
   theme,
   optionLangEN,
@@ -111,5 +143,11 @@ export default{
   goalStatus,
   goalStatusDisplay,
   relationshipType,
-  relationTypeDisplay
+  relationTypeDisplay,
+  visibilityBoard,
+  visibilityBoardDisplay,
+  cardGroupStatus,
+  cardGroupStatusDisplay,
+  cardStatus,
+  cardStatusDisplay
 }

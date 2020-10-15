@@ -106,7 +106,7 @@ export default {
       // searchRequest: state => state.$_boardDetail.searchRequest,
     }),
     ...mapGetters({
-        // data: "$_boardDetail/getData",
+        userList: "$_boardDetail/getUserList",
     }),
   },
   async created() {
@@ -115,7 +115,7 @@ export default {
     if (!(STORE_KEY in this.$store._modules.root._children)) {
       _this.$store.registerModule(STORE_KEY, store);
     }
-    // await _this.$store.dispatch("$_boardDetail/getData");
+    await _this.$store.dispatch("$_boardDetail/getUserList");
   },
   methods: {
     openCreateTask(){

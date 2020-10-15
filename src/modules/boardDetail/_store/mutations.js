@@ -3,6 +3,10 @@
 //     state.total = messages.total;
 // }
 
-// export default{
-//     SET_DATA
-// }
+const SET_USER_LIST = (state, messages) => {
+    state.userList = messages;
+}
+
+export default{
+    SET_USER_LIST
+}

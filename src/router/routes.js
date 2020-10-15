@@ -15,7 +15,7 @@ export const routes = [
         path: '/board', name: 'board', component: () => import('../views/board.vue'), display: 'Quản lý công việc', beforeEnter: auth
     },
     {
-        path: '/boardDetail', name: 'boardDetail', component: () => import('../views/boardDetail.vue'), display: 'Chi tiết quản lý công việc', beforeEnter: auth
+        path: '/boardDetail/:id', name: 'boardDetail', component: () => import('../views/boardDetail.vue'), display: 'Chi tiết quản lý công việc', beforeEnter: auth
     },
     {
         path: '/createCompany', name: 'createCompany', component: () => import('../views/createCompany.vue'), display: 'Tạo công ty', beforeEnter: noAuth
