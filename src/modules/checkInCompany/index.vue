@@ -16,14 +16,18 @@
         <div class="col-md-6">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" />
-            </div>
-            <div class="col-md-4">
-              <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
+              <div class="position-relative">
+                <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" @keyup="handleSearch"/>
+                <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-md-4 text-right">
+          <a class="btn btn-secondary btn-switchLayout mr-3" @click="handleSwitchLayout">
+            <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
+            <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
+          </a>
           <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Phản hồi</button>
         </div>
       </div>
@@ -48,10 +52,6 @@
         </div>
       </div>
       <div class="d-flex justify-content-end align-items-center">
-        <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
-          <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
-          <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
-        </a>
         <el-pagination  @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         background
@@ -180,7 +180,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary btn-medium mr-3" @click="modalCheckIn = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" @click="modalCheckIn = false">
@@ -264,7 +264,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary btn-medium mr-3" @click="modalFeedback = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalFeedback = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" @click="submitResponse">

@@ -33,6 +33,14 @@
             }
         }
     }
+    .list-add-item{
+        svg{
+            cursor: pointer;
+            path{
+                fill: $gray-300;
+            }
+        }
+    }
 }
 
 .card{
@@ -58,6 +66,39 @@
             cursor: pointer;
             .text-inside{
                 font-family: $Primary-Semibold;
+            }
+        }
+    }
+}
+
+.modal-sticky-right{
+    bottom: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition-property: transform,width;
+    transition-duration: .1s;
+    transition-timing-function: ease-in;
+    transform: translateX(340px);
+    width: 340px;
+    z-index: 5;
+    background-color: $gray-100;
+    &.active{
+        box-shadow: 0 12px 24px -6px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+        transform: translateX(0);
+    }
+    &.hide{
+        display: none;
+    }
+    .header{
+        display: flex;
+        padding: 20px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $gray-200;
+        svg{
+            path{
+                fill: $gray;
             }
         }
     }

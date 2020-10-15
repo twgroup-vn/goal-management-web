@@ -13,16 +13,34 @@
     &.active {
         width: 18%;
     }
+    nav{
+        height: calc(100vh - 100px);
         .sidebar-nav{
             list-style: none;
             padding-left: 0;
+            height: 100%;
+            position: relative;
+            padding-top: 25px;
                 .nav-brand{
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
                     display: flex;
                     align-items: center;
                     height: 60px;
                     padding: 0 20px;
                     justify-content: center;
                     color: $primary-400;
+                    height: auto;
+                    .bg-logo-company{
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        width: 150px;
+                        height: 150px;
+                        margin: auto;
+                    }
                 }
                 .nav-item{
                     .nav-link-wrapper{
@@ -68,6 +86,7 @@
                    
                 }
         }
+    }
 }
 
 .page-wrap{

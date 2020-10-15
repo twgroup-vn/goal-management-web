@@ -73,8 +73,15 @@ $green-700:       mix(black,$green, 30%);
 $green-800:       mix(black,$green, 50%);
 $green-900:       mix(black,$green, 70%);
 
-
-
+$teal:          #00D8FF;
+$teal-100:       mix(white,$teal, 70%);
+$teal-200:       mix(white,$teal, 50%);
+$teal-300:       mix(white,$teal, 30%);
+$teal-400:       mix(white,$teal, 10%);
+$teal-600:       mix(black,$teal, 10%);
+$teal-700:       mix(black,$teal, 30%);
+$teal-800:       mix(black,$teal, 50%);
+$teal-900:       mix(black,$teal, 70%);
 
 
 
