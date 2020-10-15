@@ -72,6 +72,7 @@ export default {
             case "sendTextMessage":
                 if (_this.pathname.includes(`conversation`) && _this.currentUser.id === user) {
                   await _this.$store.dispatch(func, params);
+                  await _this.$store.dispatch("$_conversation/getListConversation");
                 }
               break;
             default:
