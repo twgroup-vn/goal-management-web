@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-3 pr-0">
+      <div class="col-3 pr-0">
         <conversation-list :list-conversation="dataConversation" :list-user="userList"></conversation-list>
       </div>
-      <div class="col-md-9 pl-0">
+      <div class="col-9 pl-0">
         <chat-box :user-chat="conversationDetail"></chat-box>
       </div>
     </div>
@@ -46,6 +46,7 @@ export default {
     }
     await _this.$store.dispatch("$_conversation/getUserList");
     await _this.$store.dispatch("$_conversation/getListConversation");
+    await _this.$store.dispatch("$_conversation/getStickerList");
     if(localStorage.getItem("conversationId") && localStorage.getItem("userInfoOfConversation")){
       await _this.$store.dispatch("$_conversation/setUserInfoConversation", JSON.parse(localStorage.getItem("userInfoOfConversation")));
       await _this.$store.dispatch("$_conversation/getConversationDetail", localStorage.getItem("conversationId"));
@@ -58,12 +59,6 @@ export default {
       }
     }
   },
-  methods: {
-    // async handleSearch(){
-    //   var _this = this;
-    //   _this.searchRequest.description = _this.description;
-    //   await _this.$store.dispatch("$_replyAdmin/getData");
-    // },
-  },
+  methods: {},
 };
 </script>

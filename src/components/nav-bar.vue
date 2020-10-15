@@ -20,6 +20,9 @@
             <div class="nav-link-wrapper" v-if="route.name =='conversation'">
               <a class="nav-link">{{ $t("userNav.conversation") }}</a>
             </div>
+            <div class="nav-link-wrapper" v-if="route.name =='board'">
+              <a class="nav-link">{{ $t("userNav.board") }}</a>
+            </div>
           </router-link>
           </li>
         </ul>
@@ -65,7 +68,7 @@ export default {
     listeningSocket(){
       var _this = this;
       const signalR = require("@aspnet/signalr");
-      _this.connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/chatHub").build();
+      _this.connection = new signalR.HubConnectionBuilder().withUrl("http://172.20.10.26:5000/chatHub").build();
       _this.connection.start().then(() => {
         _this.connection.on("ReceiveMessage", async function (user, message, func, params, type) {
           switch(type){

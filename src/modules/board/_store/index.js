@@ -3,21 +3,13 @@ import getters from '../_store/getters';
 import mutations from '../_store/mutations';
 
 const state = {
-  listConversation: null,
-  conversationDetail: null,
-  userInfoConversation: null,
-  conversationId: null,
-  userList: null,
-  stickerList: null,
+  data: null,
   total: 0,
   searchRequest: {
+    description: '',
     pageIndex: 1,
-    pageSize: 30,
+    pageSize: 10,
   },
-  conversationRequest: {
-    pageIndex: 1,
-    pageSize: 30,
-  }
 }
 
 export default {

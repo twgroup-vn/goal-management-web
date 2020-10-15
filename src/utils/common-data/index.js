@@ -3,17 +3,13 @@ import VN from '../../assets/svgs/flags/vn.svg'
 
 const theme = [
   {
-    code: "cyan",
-    text: "Cyan"
+    code: "light",
+    text: "Sáng"
   },
   {
-    code: "red",
-    text: "Red"
+    code: "dark",
+    text: "Tối"
   },
-  {
-    code: "yellow",
-    text: "Yellow"
-  }
 ]
 
 const optionLangEN = [

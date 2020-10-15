@@ -19,10 +19,15 @@ const SET_USER_LIST = (state, messages) => {
     state.userList = messages;
 }
 
+const SET_STICKER_LIST = (state, messages) => {
+    state.stickerList = messages.data;
+}
+
 export default{
     SET_LIST_CONVERSATION,
     SET_CONVERSATION_DETAIL,
     SET_CONVERSATION_FOCUS,
     SET_USER_INFO_CONVERSATION,
-    SET_USER_LIST
+    SET_USER_LIST,
+    SET_STICKER_LIST
 }
