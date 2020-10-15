@@ -1,22 +1,25 @@
 .tag{
     width: 80px;
     height: 100%;
-    color: $white !important;
     text-align: center;
     font-size: 12px;
     border-radius: 12px;
     padding: 4px 8px;
     font-family: $Primary-Semibold;
     &.primary{
-        background: $primary;
+        background: rgba($primary, 0.3);
+        color: $primary;
     }
     &.info{
-        background: $yellow;
+        background: rgba($teal, 0.3);
+        color: $teal;
     }
     &.success{
-        background: $green;
+        background: rgba($green, 0.3);
+        color: $green;
     }
     &.danger{
-        background: $red;
+        background: rgba($red, 0.3);
+        color: $red
     }
 }

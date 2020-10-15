@@ -1,25 +1,36 @@
 .status{
     width: 100%;
-    border-radius: 10px;
-    padding: 4px;
-    max-width: 120px;
-    font-size: 12px;
+    border-radius: 4px;
+    padding: 8px 20px;
+    width: 100%;
+    max-width: 160px;
+    font-size: 16px;
     font-family: $Primary-Semibold;
     color: $white;
     text-align: center;
     border: 1px solid transparent;
     &.success{
         border: 1px solid $green;
-        background: $green;
+        background: $white;
+        color: $green;
         a{
-            color: $white;
+            color: $green;
+        }
+    }
+    &.warning{
+        border: 1px solid $yellow;
+        background: $white;
+        color: $yellow;
+        a{
+            color: $yellow;
         }
     }
     &.danger{
         border: 1px solid $red;
-        background: $red;
+        background: $white;
+        color: $red;
         a{
-            color: $white;
+            color: $red;
         }
     }
 }

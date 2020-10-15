@@ -16,24 +16,24 @@
         <div class="col-md-6">
           <div class="row align-items-center">
             <div class="col-md-8">
-              <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" />
-            </div>
-            <div class="col-md-4">
-              <button class="btn btn-secondary btn-medium" @click="handleSearch">Tìm kiếm</button>
+              <div class="position-relative">
+                <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" @keyup="handleSearch"/>
+                <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-md-4 text-right">
+          <a class="btn btn-secondary btn-switchLayout mr-3" @click="handleSwitchLayout">
+            <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
+            <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
+          </a>
           <button class="btn btn-primary btn-medium" @click="openCreateGoal">Tạo mục tiêu</button>
         </div>
       </div>
     </div>
     <div class="main container-fluid">
       <div class="d-flex justify-content-end align-items-center">
-        <a class="btn btn-secondary btn-small" @click="handleSwitchLayout">
-          <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
-          <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
-        </a>
         <el-pagination  @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         background
@@ -48,10 +48,13 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row align-items-center">
-                <div class="col-md-6">
-                  <div class="created-date">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                <div :class="switchLayout == false ? 'col-md-6 d-flex align-items-center' : 'col-12 d-flex align-items-center'">
+                  <div class="created-date mr-3">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                  <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
+                      {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
+                  </div>
                 </div>
-                <div class="col-md-6 d-flex align-items-center justify-content-end">
+                <div :class="switchLayout == false ? 'col-md-6 d-flex align-items-center justify-content-end' : 'col-12 d-flex align-items-center justify-content-between mt-4'">
                   <a class="relative-group-icon mr-4" @click="handleModalViewRalation(item)">
                       <div class="number">{{ item.relation.length }}</div>
                       <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
@@ -70,7 +73,7 @@
               </div>
               <hr class=""/>
               <div class="row">
-                <div :class="switchLayout == false ? 'col-md-1 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">Mục tiêu</div>
                   <div class="content">{{ item.name ? item.name : ''}}</div>
                 </div>
@@ -95,14 +98,6 @@
                   <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Check-in</div>
-                  <div class="content">
-                    <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
-                      {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
-                    </div>
-                  </div>
-                </div>
-                <div :class="switchLayout == false ? 'col-md-1 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">Trạng thái</div>
                   <div class="content">
                     <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
@@ -174,7 +169,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary btn-medium mr-3" @click="modalCheckIn = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" @click="submitCheckIn">
@@ -284,7 +279,7 @@
         </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary btn-medium mr-3" @click="modalCreateGoal = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" @click="submit">
@@ -395,7 +390,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-secondary btn-medium mr-3" @click="modalViewRalation = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalViewRalation = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" @click="updateRelation">

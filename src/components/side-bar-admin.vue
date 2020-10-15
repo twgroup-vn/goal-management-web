@@ -2,10 +2,6 @@
   <div>
     <nav>
       <ul class="sidebar-nav">
-        <li class="nav-brand" v-if="companyDetail && companyDetail.logo">
-            <img :src="companyDetail.logo" width="100" height="50" />
-        </li>
-        <li class="nav-brand" v-else>Logo</li>
         <li class="nav-item" v-for="(route, index) in routes" :key="index">
           <router-link :to="route.path" exact-active-class="active">
             <!-- <div class="nav-link-wrapper" v-if="route.name =='dashboardAdmin'">
@@ -67,6 +63,9 @@
               <a class="nav-link">{{ $t("nav.goalAdmin") }}</a>
             </div>
           </router-link>
+        </li>
+         <li class="nav-brand" v-if="companyDetail && companyDetail.logo">
+            <div class="bg-logo-company" :style="{ backgroundImage: `url(${companyDetail && companyDetail.logo ? companyDetail.logo : ''})` }"></div>
         </li>
       </ul>
     </nav>

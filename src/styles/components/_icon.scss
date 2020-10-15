@@ -65,3 +65,13 @@
         display: block;
     }
 }
+
+.icon-search{
+    position: absolute;
+    right: 20px;
+    top: 12px;
+    pointer-events: none;
+    path{
+        fill: $gray-200;
+    }
+}

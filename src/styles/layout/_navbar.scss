@@ -15,16 +15,16 @@
                 }
             }
             a{
-                color: $gray-700;
+                color: $gray-400;
                 &:hover{
-                    color: $gray-700;
+                    color: $gray-400;
                 }
                 &:focus{
-                    color: $gray-700;
+                    color: $gray-400;
                 }
                 &.active{
                     .nav-link{
-                        color: $gray-700;
+                        color: $primary;
                         background: $primary-100;
                         box-shadow: inset 0px -3px 0px $primary;
                     }
