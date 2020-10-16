@@ -1,17 +1,12 @@
 import _ from 'lodash'
 
-// const getData = (state) => {
-//   var data = {};
-//   if (state.data) {
-//     data = _.map(state.data, (v) => {
-//       return v;
-//     });
-//     data = _.filter(data, (o) => { return !o.isDelete });
-//     data.data = data;
-//     data.total = state.total;
-//   }
-//   return data;
-// };
+const getBoardDetail = (state) => {
+  var data = {};
+  if (state.boardDetail) {
+    data = _.cloneDeep(state.boardDetail);
+  }
+  return data;
+};
 
 const getUserList = (state) => {
     var data = {};
@@ -23,7 +18,18 @@ const getUserList = (state) => {
     return data;
 };
 
+const getListCard = (state) => {
+  var data = [];
+  if (state.card) {
+    data = _.map(state.card, o => {
+      return o;
+    });
+  }
+  return data;
+};
 
 export default {
     getUserList,
+    getBoardDetail,
+    getListCard
 };

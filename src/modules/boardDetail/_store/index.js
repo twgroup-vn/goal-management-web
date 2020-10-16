@@ -6,6 +6,9 @@ const state = {
   data: null,
   total: 0,
   userList: null,
+  boardDetail: null,
+  card: {},
+  cardGroup: [],
   searchRequest: {
     description: '',
     pageIndex: 1,

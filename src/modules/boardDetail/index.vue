@@ -15,14 +15,14 @@
     </div>
     <div class="main container-fluid">
       <div class="row">
-        <div class="col-3" v-for="item in list" :key="item.id">
+        <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list">
-            <div class="list-title">{{item.title}}</div>
+            <div class="list-title">{{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}</div>
             <draggable class="list-group" v-model="item.work" group="working" ghost-class="ghost" :move="checkMove">
               <div
                 class="list-group-item"
-                v-for="working in item.work" :key="working.id">
-                {{ working.name }}, GroupId: {{ working.GroupId }}
+                v-for="card in item" :key="card.id">
+                {{ card.title }}
               </div>
             </draggable>
             <div class="list-add-item" v-if="showInput && item.id == selectedId">
@@ -103,10 +103,12 @@ export default {
   },
   computed: {
     ...mapState({
-      // searchRequest: state => state.$_boardDetail.searchRequest,
+      cardGroup: state => state.$_boardDetail.cardGroup,
     }),
     ...mapGetters({
         userList: "$_boardDetail/getUserList",
+        listCard: "$_boardDetail/getListCard",
+        boardDetail: "$_boardDetail/getBoardDetail",
     }),
   },
   async created() {
@@ -116,6 +118,9 @@ export default {
       _this.$store.registerModule(STORE_KEY, store);
     }
     await _this.$store.dispatch("$_boardDetail/getUserList");
+    if (_this.$route.params.id) {
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+    }
   },
   methods: {
     openCreateTask(){
