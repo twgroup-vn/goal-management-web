@@ -26,7 +26,10 @@
     .el-select-dropdown{
         &__item{
             &.selected{
-                color: $blue;
+                color: $blue-600;
+            }
+            &.hover{
+                background-color: rgba($blue, 0.03);
             }
         }
     }

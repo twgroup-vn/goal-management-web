@@ -17,7 +17,7 @@
           <div class="row align-items-center">
             <div class="col-md-8">
               <div class="position-relative">
-                <input placeholder="Tìm kiếm" class="input-primary medium" v-model="description" @keyup="handleSearch"/>
+                <input :placeholder="$t('checkinPage.placeholderSearch')" class="input-primary medium" v-model="description" @keyup="handleSearch"/>
                 <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
               </div>
             </div>
@@ -49,7 +49,7 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div :class="switchLayout == false ? 'col-md-6 d-flex align-items-center' : 'col-12 d-flex align-items-center'">
-                  <div class="created-date mr-3">Ngày tạo: {{ item.createdAt.slice(0,10) }}</div>
+                  <div class="created-date mr-3">{{  $t("checkinPage.createDate") }}: {{ item.createdAt.slice(0,10) }}</div>
                   <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
                       {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
                   </div>
@@ -74,31 +74,31 @@
               <hr class=""/>
               <div class="row">
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Mục tiêu</div>
+                  <div class="title">{{ $t("checkinPage.table.goal") }}</div>
                   <div class="content">{{ item.name ? item.name : ''}}</div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Kết quả chính</div>
+                  <div class="title">{{ $t("checkinPage.table.mainResult") }}</div>
                   <div class="content">
                     <a href="javascript:;" @click="handleModalViewCheckIn(item.id)" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
                   </div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Tiến độ</div>
+                  <div class="title">{{ $t("checkinPage.table.progress") }}</div>
                   <div class="content">
                     <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
                   </div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Thay đổi</div>
+                  <div class="title">{{ $t("checkinPage.table.changing") }}</div>
                   <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Mức độ tự tin</div>
+                  <div class="title">{{ $t("checkinPage.table.confidenceLevel") }}</div>
                   <div class="content">{{ item.confidenceLevel ?  commonData.confidenceLevelDisplay[item.confidenceLevel] : ''}}</div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                  <div class="title">Trạng thái</div>
+                  <div class="title">{{ $t("checkinPage.table.status") }}</div>
                   <div class="content">
                     <div class="tag" :class="`${commonData.goalStatusDisplay[item.status].color}`">
                       {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
@@ -117,13 +117,13 @@
         <el-tabs v-model="activeTab">
           <el-tab-pane label="Check-in" name="check-in" v-if="goalDetails">
             <div class="row my-2">
-              <div class="col-md-4 title">Mục tiêu</div>
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.goal") }}</div>
               <div class="col-md-8">
                 {{ goalDetails.name ?  goalDetails.name : "" }}
               </div>
             </div>
             <div class="row my-2">
-              <div class="col-md-4 title">Mức độ tự tin</div>
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
               <div class="col-md-8">
                <el-radio-group v-model="formCheckIn.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
                 <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
@@ -131,13 +131,13 @@
               </div>
             </div>
             <div class="row my-2">
-              <div class="col-md-4 title">Kết quả</div>
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}</div>
               <div class="col-md-8">
                 <input class="input-primary medium" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
               </div>
             </div>
             <div class="row my-2">
-              <div class="col-md-4 title">Tiến độ</div>
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}</div>
               <div class="col-md-8">
                 <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
               </div> 

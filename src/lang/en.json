@@ -26,8 +26,23 @@
     "dashboardPage": {
     },
     "checkinPage": {
-        "createGoalBtn": "Create Goal",
-        "placeholderSearch": "Search"
+        "createGoalBtn": "Create goal",
+        "placeholderSearch": "Search",
+        "createDate": "Create date",
+        "table": {
+            "goal": "Goal",
+            "mainResult": "Main result",
+            "progress": "Progress",
+            "changing": "Changing",
+            "confidenceLevel": "Confidence level",
+            "status": "Status"
+        },
+        "checkInForm": {
+            "goal": "Goal",
+            "confidenceLevel": "Confidence level",
+            "result": "Result",
+            "progress": "Progress"
+        }
     },
     "checkinCompanyPage": {
     },

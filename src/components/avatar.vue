@@ -64,7 +64,7 @@ export default {
     return {
       opened: false,
       lang: 'vn',
-      theme: 'cyan',
+      theme: 'Sáng',
       commonData,
       convertName: ''
     };

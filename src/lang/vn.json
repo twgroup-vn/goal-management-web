@@ -27,7 +27,22 @@
     },
     "checkinPage": {
         "createGoalBtn": "Tạo mục tiêu",
-        "placeholderSearch": "Tìm kiếm"
+        "placeholderSearch": "Tìm kiếm",
+        "createDate": "Ngày tạo",
+        "table": {
+            "goal": "Mục tiêu",
+            "mainResult": "Kết quả chính",
+            "progress": "Tiến độ",
+            "changing": "Thay đổi",
+            "confidenceLevel": "Mức độ tự tin",
+            "status": "Trạng thái"
+        },
+        "checkInForm": {
+            "goal": "Mục tiêu",
+            "confidenceLevel": "Mức độ tự tin",
+            "result": "Kết quả",
+            "progress": "Tiến độ"
+        }
     },
     "checkinCompanyPage": {
     },
