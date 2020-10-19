@@ -23,6 +23,10 @@ a {
     }
 }
 
+.theme-dark{
+    background: $gray-900 !important;
+}
+
 @import "../styles/layout/_common-layout";
 @import "../styles/layout/_reset-bootstrap";
 @import "../styles/layout/_navbar";

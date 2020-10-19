@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav-menu params="route: route"></nav-menu>
-    <div>
+    <nav-menu params="route: route" v-on:handle-theme="updateParentTheme"></nav-menu>
+    <div :class="currentTheme">
       <CheckIn />
     </div>
   </div>
@@ -13,13 +13,19 @@ import CheckIn from "../modules/checkIn";
 export default {
   name: "checkInUser",
   data() {
-    return {};
+    return {
+      currentTheme: localStorage.getItem("theme-color"),
+    };
   },
   components: {
     CheckIn,
     "nav-menu": NavMenu
   },
   methods: {
+    updateParentTheme(val) {
+      var _this = this;
+      _this.currentTheme = val;
+    },
   },
 };
 </script>

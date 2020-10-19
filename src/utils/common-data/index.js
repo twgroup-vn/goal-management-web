@@ -1,17 +1,6 @@
 import EN from '../../assets/svgs/flags/en.svg'
 import VN from '../../assets/svgs/flags/vn.svg'
 
-const theme = [
-  {
-    code: "light",
-    text: "Sáng"
-  },
-  {
-    code: "dark",
-    text: "Tối"
-  },
-]
-
 const optionLangEN = [
     {
       flag: VN,
@@ -131,7 +120,6 @@ const cardStatusDisplay = {
 }
 
 export default{
-  theme,
   optionLangEN,
   optionLangVN,
   replyType,
