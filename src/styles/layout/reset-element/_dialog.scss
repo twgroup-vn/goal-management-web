@@ -25,6 +25,9 @@
             &__body{
                 font-size: 16px;
                 padding: 24px;
+                height: 100%;
+                max-height: calc(100vh - 300px);
+                overflow: auto;
             }
             &__footer{
                 padding: 24px;

@@ -112,7 +112,7 @@
       </div>
     </div>
 
-    <el-dialog title="Form check-in hàng tuần" :visible.sync="modalCheckIn" class="transition-box-center" width="80%" top="0vh" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Form check-in hàng tuần" :visible.sync="modalCheckIn" class="transition-box-center" width="80%" top="5vh" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="modal-body">
         <el-tabs v-model="activeTab">
           <el-tab-pane label="Check-in" name="check-in" v-if="goalDetails">
