@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav-menu params="route: route"></nav-menu>
-    <div>
+    <nav-menu params="route: route" v-on:handle-theme="updateParentTheme"></nav-menu>
+    <div :class="currentTheme">
       <Board />
     </div>
   </div>
@@ -14,7 +14,7 @@ export default {
   name: "createCompany",
   data() {
     return {
-      target: true,
+      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light',
     };
   },
   components: {
@@ -22,6 +22,10 @@ export default {
     "nav-menu": NavMenu
   },
   methods: {
+    updateParentTheme(val) {
+      var _this = this;
+      _this.currentTheme = val;
+    },
   },
 };
 </script>

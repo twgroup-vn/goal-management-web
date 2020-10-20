@@ -1,55 +1,12 @@
 <template>
     <div>
-      <a href="javascript:;" class="d-flex align-items-center group-avatar" v-click-outside="hide" @click="toggle">
+      <a href="javascript:;" class="d-flex align-items-center group-avatar" v-click-outside="hideDropdown" @click="toggle">
         <div class="avatar-circle original">
           <div v-if="!currentUser.avatar" class="avatar-without-img">{{convertName}}</div>
           <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${currentUser && currentUser.avatar ? currentUser.avatar : ''})` }"></div>
         </div>
-        <div class="ml-2 mr-2">{{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</div>
-        <font-awesome-icon :icon="['fas', 'chevron-down']" />
-        <div class="dropdown-menu" :class="{ show : opened}">
-          <div class="dropdown-item d-flex align-items-center justify-content-between">
-            <div class="col-md-4 px-0">{{ $t("common.selectLang") }}:</div>
-            <el-select v-model="lang" placeholder="Language" @change="handleChangeLang" class="col-md-8">
-              <div v-if="lang == 'en'">
-                <el-option v-for="(item, index) in commonData.optionLangEN" :key="index" :label="item.text" :value="item.value">
-                  <div class="d-flex align-items-center">
-                    <img class="logo-lang" :src="item.flag" />
-                    <div class="ml-2">{{ item.text }}</div>
-                  </div>
-                </el-option>
-              </div>
-              <div v-else>
-                <el-option v-for="(item, index) in commonData.optionLangVN" :key="index" :label="item.text" :value="item.value">
-                  <div class="d-flex align-items-center">
-                    <img class="logo-lang" :src="item.flag" />
-                    <div class="ml-2">{{ item.text }}</div>
-                  </div>
-                </el-option>
-              </div>
-            </el-select>
-          </div>
-          <div class="dropdown-item d-flex align-items-center justify-content-between">
-            <div class="col-md-4 px-0">{{ $t("common.theme") }}:</div>
-            <el-select v-model="theme" placeholder="Theme" class="col-md-8">
-              <el-option v-for="(item, index) in commonData.theme" :key="index" :label="item.text" :value="item.code">
-                  <div class="d-flex align-items-center">
-                    <div class="theme-info"></div>
-                    <div class="ml-2">{{ item.text }}</div>
-                  </div>
-              </el-option>
-            </el-select>
-          </div>
-          <div class="dropdown-item">
-            <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">Thông tin tài khoản</a>
-          </div>
-          <div class="dropdown-item">
-            <a href="javascript:;" @click="redirectTo(`/admin/company`)" class="d-block">Quản trị thông tin</a>
-          </div>
-          <div class="dropdown-item">
-            <a href="javascript:;" class="d-block" @click="logout">Đăng xuất</a>
-          </div>
-        </div>
+        <div class="avatar-text ml-2 mr-2">{{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</div>
+        <font-awesome-icon :icon="['fas', 'chevron-down']" class="avatar-icon"/>
       </a>
     </div>
 </template>
@@ -62,11 +19,9 @@ import ClickOutside from 'vue-click-outside'
 export default {
   data() {
     return {
-      opened: false,
-      lang: 'vn',
-      theme: 'Sáng',
       commonData,
-      convertName: ''
+      convertName: '',
+      opened: false,
     };
   },
   components: {
@@ -99,21 +54,14 @@ export default {
       }
     },
     toggle () {
-      this.opened = !this.opened;
-    },
-    hide () {
-      this.opened = false
-    },
-    handleChangeLang: function (val) {
       var _this = this;
-      _this.lang = val
-      this.$store.dispatch('setLang', _this.lang);
+      _this.opened = !_this.opened;
+      _this.$emit('toggle', _this.opened);
     },
-    async logout() {
+    hideDropdown () {
       var _this = this;
-      await _this.$store.dispatch("$_loginPage/logout");
-      _this.user = null;
-      _this.$router.push("/login");
+      _this.opened = false;
+      _this.$emit('hide-dropdown', _this.opened);
     },
   },
 };

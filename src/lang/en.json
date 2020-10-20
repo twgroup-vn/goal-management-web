@@ -1,7 +1,7 @@
 {
     "common": {
         "selectLang": "Language",
-        "theme": "Theme"
+        "theme": "Dark theme"
     },
     "userNav":{
         "checkin": "Personal Check-in",

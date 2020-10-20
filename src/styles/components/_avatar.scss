@@ -7,11 +7,6 @@
     &:focus{
         color: $gray-900;
     }
-    svg{
-        path{
-            fill: $gray-900;
-        }
-    }
     .avatar-without-img{
         border: 1px solid $gray-100;
         border-radius: 50%;
@@ -30,6 +25,16 @@
         height: 40px;
         width: 40px;
         border-radius: 50%;
+    }
+}
+
+.avatar-text{
+    color: $gray-400;
+}
+
+.avatar-icon{
+    path{
+        fill: $gray-400;
     }
 }
 

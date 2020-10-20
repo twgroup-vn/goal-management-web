@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light" :class="currentTheme">
       <router-link class="navbar-brand" to="/">
         <img class="img-fluid" :src="MainLogo"/>
       </router-link>
@@ -27,7 +27,50 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-          <avatar></avatar>
+          <avatar v-on:toggle="updateParentOpened" v-on:hide-dropdown="updateParentHideDropdown"></avatar>
+          <div class="position-relative">
+            <div class="dropdown-menu" :class="{ show : opened}">
+                <div class="dropdown-item d-flex align-items-center justify-content-between">
+                  <div class="col-md-4 px-0">{{ $t("common.selectLang") }}:</div>
+                  <el-select v-model="lang" placeholder="Language" @change="handleChangeLang" class="col-md-8">
+                    <div v-if="lang == 'en'">
+                      <el-option v-for="(item, index) in commonData.optionLangEN" :key="index" :label="item.text" :value="item.value">
+                        <div class="d-flex align-items-center">
+                          <img class="logo-lang" :src="item.flag" />
+                          <div class="ml-2">{{ item.text }}</div>
+                        </div>
+                      </el-option>
+                    </div>
+                    <div v-else>
+                      <el-option v-for="(item, index) in commonData.optionLangVN" :key="index" :label="item.text" :value="item.value">
+                        <div class="d-flex align-items-center">
+                          <img class="logo-lang" :src="item.flag" />
+                          <div class="ml-2">{{ item.text }}</div>
+                        </div>
+                      </el-option>
+                    </div>
+                  </el-select>
+                </div>
+                <div class="dropdown-item d-flex align-items-center justify-content-between">
+                  <div class="col-md-4 px-0">{{ $t("common.theme") }}:</div>
+                  <div class="col-md-8">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="switch" :checked="currentTheme == 'theme-dark'" @change="handleTheme()">
+                      <label class="custom-control-label" for="switch"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-item">
+                  <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">Thông tin tài khoản</a>
+                </div>
+                <div class="dropdown-item">
+                  <a href="javascript:;" @click="redirectTo(`/admin/company`)" class="d-block">Quản trị thông tin</a>
+                </div>
+                <div class="dropdown-item">
+                  <a href="javascript:;" class="d-block" @click="logout">Đăng xuất</a>
+                </div>
+            </div>
+          </div>
         </ul>
       </div>
     </nav>
@@ -40,11 +83,12 @@ import { mapGetters } from "vuex";
 import commonData from '../utils/common-data/index';
 import Avatar from "../components/avatar"
 import MainLogo from '../assets/svgs/mainLogo/TWG.svg'
+import ClickOutside from 'vue-click-outside'
 export default {
   components: {
     'avatar': Avatar
   },
-  directives: {},
+  directives: {ClickOutside},
   data() {
     return {
       routes,
@@ -52,6 +96,9 @@ export default {
       MainLogo,
       connection: null,
       pathname: '',
+      opened: false,
+      lang: 'vn',
+      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light'
     };
   },
   created() {
@@ -65,6 +112,31 @@ export default {
       }),
   },
   methods: {
+    updateParentOpened(val) {
+      var _this = this;
+      _this.opened = val;
+    },
+    updateParentHideDropdown(val) {
+      var _this = this;
+      _this.opened = val;
+    },
+    handleChangeLang: function (val) {
+      var _this = this;
+      _this.lang = val
+      this.$store.dispatch('setLang', _this.lang);
+    },
+    handleTheme(){
+      var _this = this;
+      var storedTheme = localStorage.getItem("theme-color");
+      if(storedTheme === "theme-dark"){
+        localStorage.setItem("theme-color", "theme-light");
+        _this.currentTheme = localStorage.getItem("theme-color");
+      }else{
+        localStorage.setItem("theme-color", "theme-dark");
+        _this.currentTheme = localStorage.getItem("theme-color");
+      }
+      _this.$emit('handle-theme', _this.currentTheme);
+    },
     listeningSocket(){
       var _this = this;
       const signalR = require("@aspnet/signalr");
@@ -95,6 +167,12 @@ export default {
       } else {
         this.$router.go(-1);
       }
+    },
+    async logout() {
+      var _this = this;
+      await _this.$store.dispatch("$_loginPage/logout");
+      _this.user = null;
+      _this.$router.push("/login");
     },
   },
 };
