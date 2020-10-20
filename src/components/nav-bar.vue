@@ -78,6 +78,11 @@ export default {
                   await _this.$store.dispatch("$_conversation/getListConversation");
                 }
               break;
+            case "moveCard":
+              if(_this.pathname.includes(`boardDetail/${params}`)){
+                  await _this.$store.dispatch(func, params);
+              }
+              break;
             default:
               break;
           }

@@ -16,6 +16,7 @@ const getCardOfGroup = async (context, request) => {
     if(request && request.cardGroup && request.cardGroup.length){
         let card = {};
         let cardGroup = [];
+        request.cardGroup = request.cardGroup.sort((a, b) => parseFloat(a.ordinalNumber) - parseFloat(b.ordinalNumber));
         for(let i = 0; i < request.cardGroup.length; i++){
             card[request.cardGroup[i].id] = [];
             cardGroup.push(request.cardGroup[i].id);
@@ -30,9 +31,27 @@ const getCardOfGroup = async (context, request) => {
     }
 };
 
+const createCard = async (context, request) => {
+    let response = await api.createCard(request);
+    return response.data;
+};
+
+const updateCard = async (context, request) => {
+    let response = await api.updateCard(request);
+    return response.data;
+};
+
+const moveCard = async (context, request) => {
+    let response = await api.moveCard(request);
+    return response.data;
+};
+
 
 export default {
     getUserList,
     getBoardDetail,
-    getCardOfGroup
+    getCardOfGroup,
+    createCard,
+    updateCard,
+    moveCard
 }

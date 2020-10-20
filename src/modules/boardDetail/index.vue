@@ -18,21 +18,21 @@
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list">
             <div class="list-title">{{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}</div>
-            <draggable class="list-group" v-model="item.work" group="working" ghost-class="ghost" :move="checkMove">
+            <draggable class="list-group" :value="item" group="working" ghost-class="ghost" :move="checkMove">
               <div
                 class="list-group-item"
                 v-for="card in item" :key="card.id">
                 {{ card.title }}
               </div>
             </draggable>
-            <div class="list-add-item" v-if="showInput && item.id == selectedId">
-              <input class="input-primary medium mb-3" placeholder="Enter title for this group" />
+            <div class="list-add-item" v-if="showInput && boardDetail.cardGroup[index].id === selectedId">
+              <input class="input-primary medium mb-3" placeholder="Enter title for this group" v-model="formCard.title" />
               <div class="d-flex">
-                <button class="btn btn-secondary btn-small mr-3">Thêm</button>
-                <font-awesome-icon :icon="['fas', 'times']" @click="closeAddInput(item)"/>
+                <button class="btn btn-secondary btn-small mr-3" @click="createCard">Thêm</button>
+                <font-awesome-icon :icon="['fas', 'times']" @click="closeAddInput()"/>
               </div>
             </div>
-            <button class="btn btn-secondary btn-small" @click="openAddInput(item)" v-if="!showInput || item.id != selectedId">
+            <button class="btn btn-secondary btn-small" @click="openAddInput(index)" v-if="!showInput || boardDetail.cardGroup[index].id != selectedId">
               <font-awesome-icon :icon="['fas', 'plus']" class="mr-2" />
               <span>Thêm công việc</span>
             </button>
@@ -56,7 +56,6 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import store from "./_store";
-// import _ from 'lodash';
 import draggable from "vuedraggable";
 export default {
   components: {
@@ -65,40 +64,17 @@ export default {
   data() {
     return {
       enabled: true,
-      list:[
-        {
-          id: 1,
-          title: "Starting",
-          work: [
-            { name: 'Task 1', GroupId: 1, ordinal: 1},
-            { name: 'Task 2', GroupId: 1, ordinal: 2},
-            { name: 'Task 3', GroupId: 1, ordinal: 3},
-          ],
-        },
-        {
-          id: 2,
-          title: "Process",
-          work: [
-            { name: 'Task 4', GroupId: 2, ordinal: 1},
-            { name: 'Task 5', GroupId: 2, ordinal: 2},
-            { name: 'Task 6', GroupId: 2, ordinal: 3},
-          ],
-        },
-        {
-          id: 3,
-          title: "Done",
-          work: [
-            { name: 'Task 7', GroupId: 3, ordinal: 1},
-            { name: 'Task 8', GroupId: 3, ordinal: 2},
-            { name: 'Task 9', GroupId: 3, ordinal: 3},
-          ],
-        }
-      ],
       dragging: false,
       showInput: false,
       modalCreateTask: false,
       stickyMenu: false,
-      selectedId: null
+      selectedId: null,
+      formCard: {
+        title: "",
+        ordinalNumber: 1,
+        cardGroupId: "",
+        isDelete: false,
+      },
     };
   },
   computed: {
@@ -127,14 +103,14 @@ export default {
       var _this = this;
       _this.modalCreateTask = true;
     },
-    openAddInput(item){
+    openAddInput(index){
       var _this = this;
-      _this.selectedId = item.id;
+      _this.selectedId = _this.boardDetail.cardGroup[index].id;
       _this.showInput = true;
     },
-    closeAddInput(item){
+    closeAddInput(){
       var _this = this;
-      _this.selectedId = item.id;
+      _this.selectedId = null;
       _this.showInput = false;
     },
     showStickyMenu(){
@@ -145,11 +121,35 @@ export default {
       var _this = this;
       _this.stickyMenu = false;
     },
-    checkMove(e){
+    async checkMove(e){
+      var _this = this;
       if(e && e.draggedContext && e.relatedContext){
-        e.draggedContext.element.GroupId = e.relatedContext.element.GroupId;
+          e.draggedContext.element.ordinalNumber = e.relatedContext.element.ordinalNumber;
+          e.draggedContext.element.cardGroupId = e.relatedContext.element.cardGroupId;
+          let cardNeedToMove = {
+            cardId: e.draggedContext.element.id,
+            cardGroupId: e.draggedContext.element.cardGroupId,
+            moveTo: e.draggedContext.element.ordinalNumber
+          }
+          await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
+          setTimeout( async () => {
+            await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+            await _this.sendSocket();
+          },1000);
       }
+    },
+    async createCard(){
+      var _this = this;
+      _this.formCard.cardGroupId = _this.selectedId;
+      await _this.$store.dispatch("$_boardDetail/createCard", _this.formCard);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      _this.formCard.title = "";
+      _this.closeAddInput();
+    },
+    async sendSocket(){
+      var _this = this;
+      await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: null, messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
     }
-  },
+  },  
 };
 </script>
