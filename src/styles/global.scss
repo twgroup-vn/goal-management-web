@@ -23,20 +23,18 @@ a {
     }
 }
 
-.theme-dark{
-    background: $gray-900 !important;
-}
-
 @import "../styles/layout/_common-layout";
 @import "../styles/layout/_reset-bootstrap";
 @import "../styles/layout/_navbar";
 @import "../styles/layout/_sidebar";
 @import "../styles/layout/_authen";
 @import "../styles/layout/_general-form";
+@import "../styles/layout/_theme";
 @import "../styles/layout/reset-element/_dialog";
 @import "../styles/layout/reset-element/_pagination";
 @import "../styles/layout/reset-element/_dropdown";
 @import "../styles/layout/reset-element/_checkbox";
+
 
 @import "../styles/components/_style-guide";
 @import "../styles/components/_cards";

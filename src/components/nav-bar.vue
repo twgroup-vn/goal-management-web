@@ -98,7 +98,7 @@ export default {
       pathname: '',
       opened: false,
       lang: 'vn',
-      currentTheme: localStorage.getItem("theme-color")
+      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light'
     };
   },
   created() {

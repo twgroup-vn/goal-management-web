@@ -14,7 +14,7 @@ export default {
   name: "checkInUser",
   data() {
     return {
-      currentTheme: localStorage.getItem("theme-color"),
+      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light',
     };
   },
   components: {

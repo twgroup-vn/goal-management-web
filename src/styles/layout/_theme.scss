@@ -1,0 +1,13 @@
+.theme-dark{
+    background-color: $dark;
+    &.navbar{
+        background: $dark;
+    }
+    .white-background{
+        background-color: $dark;
+    }
+    .main{
+        height: 100%;
+        min-height: calc(100vh - 157px);
+    }
+}

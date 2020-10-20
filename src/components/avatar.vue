@@ -5,8 +5,8 @@
           <div v-if="!currentUser.avatar" class="avatar-without-img">{{convertName}}</div>
           <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${currentUser && currentUser.avatar ? currentUser.avatar : ''})` }"></div>
         </div>
-        <div class="ml-2 mr-2">{{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</div>
-        <font-awesome-icon :icon="['fas', 'chevron-down']" />
+        <div class="avatar-text ml-2 mr-2">{{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</div>
+        <font-awesome-icon :icon="['fas', 'chevron-down']" class="avatar-icon"/>
       </a>
     </div>
 </template>
