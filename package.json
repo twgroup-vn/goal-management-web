@@ -7,7 +7,7 @@
     "npm": "6.14.8"
   },
   "scripts": {
-    "start": "./node_modules/.bin/vue-cli-service serve --modern",
+    "start": "vue-cli-service serve --host 0.0.0.0 --public",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
