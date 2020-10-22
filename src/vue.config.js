@@ -2,9 +2,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true
   },
-  publicPath: process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000/'
-    : 'http://localhost:8080/',
   module: {
     rules: [
       {
