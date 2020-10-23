@@ -67,9 +67,6 @@
             .content{
                 color: $white;
             }
-            .group-avatar{
-                
-            }
             .name-avatar{
                 color: $white;
             }
@@ -81,6 +78,11 @@
             background-color: transparent;
             border: 1px solid $gray-400;
             color: $white;
+            &:hover,
+            &:focus,
+            &:active{
+                border: 1px solid $gray-400;
+            }
         }
     }
     .btn{
