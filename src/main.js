@@ -25,7 +25,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
-import configPlugin from '../src/vue.config'
+import configPlugin from '../vue.config'
 Vue.use(configPlugin)
 
 Vue.prototype.$http = axios

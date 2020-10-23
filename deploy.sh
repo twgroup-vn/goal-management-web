@@ -10,5 +10,5 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-git push -f git@github.com:nhut2236/twgroup-vn/goal-management-web.git master:gh-pages
+git push -f https://github.com/twgroup-vn/goal-management-web.git master:gh-pages
 cd -
