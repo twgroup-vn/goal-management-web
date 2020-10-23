@@ -1,13 +1,196 @@
 .theme-dark{
-    background-color: $dark;
+    background-color: $gray-900;
     &.navbar{
-        background: $dark;
+        background: $gray-800;
+        box-shadow: none;
+        border-bottom: 1px solid $gray-400;
+        .navbar-nav{
+            .nav-item{
+                a{
+                    &.active{
+                        .nav-link{
+                            box-shadow: none;
+                            background: $gray-900;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
     }
     .white-background{
-        background-color: $dark;
+        background-color: $gray-800;
+        border-bottom: 0;
     }
     .main{
         height: 100%;
-        min-height: calc(100vh - 157px);
+        min-height: calc(100vh - 157px); 
+        .wrapper-target{
+            background: $gray-800;
+            color: $white;
+        }
+    }
+
+    .card{
+        background-color: $gray-800;
+        .card-body{
+            .created-date{
+                color: $white;
+            }
+            .status{
+                background: transparent;
+            } 
+            .relative-group-icon{
+                &:first-child{
+                    color: $white;
+                    .number{
+                        color: $white;
+                    }
+                    svg{
+                        path{
+                            fill: $white;
+                        }
+                    }
+                }
+                &:last-child{
+                    color: $white;
+                    .number{
+                        color: $white;
+                    }
+                    svg{
+                        path{
+                            fill: $white;
+                        }
+                    }
+                }
+            }
+            .content{
+                color: $white;
+            }
+            .group-avatar{
+                
+            }
+            .name-avatar{
+                color: $white;
+            }
+        }
+    }
+    
+    input{
+        &.input-primary{
+            background-color: transparent;
+            border: 1px solid $gray-400;
+            color: $white;
+        }
+    }
+    .btn{
+        &.btn-secondary{
+            &.btn-switchLayout{
+                background: transparent;
+                &:hover{
+                    border: 1px solid $primary;
+                    color: $primary;
+                }
+                &:focus{
+                    border: 1px solid $primary;
+                    color: $primary;
+                }
+                &:focus{
+                    border: 1px solid $primary;
+                    color: $primary;
+                }
+            }
+        }
+    }
+
+    .el-select{
+        .el-input{
+            .el-input{
+                &__inner{
+                    color: $white;
+                    background-color: transparent;
+                    border: 1px solid $gray-400;
+                    &:hover{
+                        border: 1px solid $gray-400;
+                    }
+                    &:focus{
+                        border: 1px solid $gray-400;
+                    }
+                    &:active{
+                        border: 1px solid $gray-400;
+                    }
+                }
+            }
+            .el-input{
+                &__suffix{
+                    .el-input{
+                        &__suffix-inner{
+                            .el-select{
+                                &__caret{
+                                    color: $white;
+                                }
+                            }     
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .el-pagination{
+        &__sizes{
+            .el-select {
+                &.el-select--mini{
+                    .el-input{
+                        &__inner{
+                            background-color: $gray-800;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .el-pagination{
+        &.is-background{
+            .btn-prev{
+                background-color: $gray-800;
+                .el-icon{
+                    color: $white;
+                }
+            }
+            .btn-next{
+                background-color: $gray-800;
+                .el-icon{
+                    color: $white;
+                }
+            }
+            .el-pagination{
+                &__jump{
+                    color: $white;
+                    .el-input{
+                        &.el-pagination{
+                            &__editor{
+                                .el-input{
+                                    &__inner{
+                                        background-color: $gray-800;
+                                        color: $white;
+                                        border: 1px solid transparent;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .el-progress {
+        &.el-progress--line{
+            .el-progress{
+                &__text{
+                    color: $white;
+                }
+            }
+        }
     }
 }

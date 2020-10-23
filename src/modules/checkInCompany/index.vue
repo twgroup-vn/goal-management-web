@@ -66,18 +66,18 @@
             <div class="card mb-4">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-12 d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
+                  <div class="col-md-12 d-flex flex-wrap align-items-center justify-content-between">
+                    <div :class="switchLayout == false ? 'd-flex align-items-center' : 'col-12 d-flex align-items-center px-0 mb-4'">
                       <div class="group-avatar">
                         <div v-if="!item.avatar" class="avatar-without-img">{{item.convertName}}</div>
                         <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${item && item.avatar ? item.avatar : ''})` }"></div>
                       </div>
                       <div class="ml-2 mr-2">
-                        <div class="">{{ item && item.fullName ? item.fullName : '' }}</div>
+                        <div class="name-avatar">{{ item && item.fullName ? item.fullName : '' }}</div>
                         <div class="created-date">{{ item.createdAt.slice(0,10) }}</div>
                       </div>
                     </div>
-                    <div class="d-flex align-items-center">
+                    <div :class="switchLayout == false ? 'd-flex align-items-center' : 'col-12 d-flex justify-content-between align-items-center px-0'">
                       <a class="relative-group-icon mr-4" @click="handleModalRelation(item.id)">
                         <div class="number">{{ item.relation.length }}</div>
                         <font-awesome-icon :icon="['fas', 'project-diagram']" class="icon diagram" />
