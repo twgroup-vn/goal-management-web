@@ -1,22 +1,24 @@
 .el-select{
     width: 100%;
     .el-input{
-        &.is-focus{
-            .el-input{
-                &__inner{
-                    border-color: $blue !important;
+        .el-input{
+            &.is-focus{
+                .el-input{
+                    &__inner{
+                        border-color: $blue;
+                    }
                 }
             }
-        }
-        &__inner{
-            &:hover{
-                border-color: $blue !important;
-            }
-            &:focus{
-                border-color: $blue !important;
-            }
-            &.is-active{
-                border-color: $blue !important;
+            &__inner{
+                &:hover{
+                    border-color: $blue;
+                }
+                &:focus{
+                    border-color: $blue;
+                }
+                &.is-active{
+                    border-color: $blue;
+                }
             }
         }
     }
