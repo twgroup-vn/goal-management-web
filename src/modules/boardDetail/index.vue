@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="white-background">
+    <div class="white-background board-detail-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-md-6">
           <button class="btn btn-primary btn-medium" @click="openCreateTask">Tạo task</button>
@@ -13,10 +13,10 @@
         </div>
       </div>
     </div>
-    <div class="main container-fluid">
-      <div class="row">
+    <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
+      <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
-          <div class="wrapper-list">
+          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
             <div class="list-title">{{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}</div>
             <draggable class="list-group" :value="item" group="working" ghost-class="ghost" :move="checkMove">
               <div
@@ -47,7 +47,14 @@
         <font-awesome-icon :icon="['fas', 'times']" @click="closeStickyMenu"/>
       </div>
       <div class="content">
-        
+        <el-collapse v-model="activeSettingNames">
+          <el-collapse-item title="Thông tin" name="1">
+            <div>a</div>
+          </el-collapse-item>
+          <el-collapse-item title="Hình nền" name="2">
+            <div>b</div>
+          </el-collapse-item>
+        </el-collapse>
       </div>
     </div>
     <el-dialog
@@ -180,6 +187,7 @@ export default {
       commonData,
       activeNames: ['1'],   
       modalCardDetail: false,
+      activeSettingNames: ['1'],
       enabled: true,
       dragging: false,
       showInput: false,

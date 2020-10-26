@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-menu params="route: route" v-on:handle-theme="updateParentTheme"></nav-menu>
+    <nav-menu params="route: route" v-on:handle-theme="updateParentTheme" class="board-detail-nav"></nav-menu>
     <div :class="currentTheme">
       <BoardDetail />
     </div>

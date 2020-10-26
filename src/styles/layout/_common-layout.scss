@@ -11,6 +11,19 @@
 
 .main{
     padding: 36px 56px 0 56px;
+    &.board-detail-background{
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: fixed;
+        z-index: -1;
+        overflow: auto;
+        height: 100%;
+        .board-detail-content{
+            flex-wrap: nowrap;
+            margin-top: 140px;
+        }
+    }
 }
 
 hr{
@@ -22,6 +35,12 @@ hr{
     background-color: $white;
     padding: 24px;
     border-bottom: 1px solid $gray-100;
+    &.board-detail-header{
+        position: fixed;
+        top: 51px;
+        left: 0;
+        right: 0;
+    }
 }
 
 .border-radius-0{

@@ -21,6 +21,9 @@
     .white-background{
         background-color: $gray-800;
         border-bottom: 0;
+        a{
+            color: $white;
+        }
     }
     .main{
         height: 100%;
