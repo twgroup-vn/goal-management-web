@@ -27,7 +27,121 @@
         min-height: calc(100vh - 157px); 
         .wrapper-target{
             background: $gray-800;
+        }
+    }
+
+    .group-conversationList{
+        background-color: $gray-800;
+        .main-title{
             color: $white;
+        }
+        .group-search{
+            svg{
+                path{
+                    fill: $white;
+                }
+            }
+            .el-input{
+                input{
+                    background-color: transparent;
+                    color: $white;
+                    &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                        color: $gray-200;
+                    }
+                    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+                        color: $gray-200;
+                    }
+                    &::-ms-input-placeholder { /* Microsoft Edge */
+                        color: $gray-200;
+                    }
+                }
+            } 
+        }
+        .group-tab{
+            .el-tabs{
+                &--border-card{
+                    background-color: transparent;
+                    .el-tabs{
+                        &__header{
+                            .el-tabs{
+                                &__item{
+                                    background-color: $gray-800;
+                                    svg{
+                                        path{
+                                            fill: $white;
+                                        }
+                                    }
+                                    &.is-active{
+                                        svg{
+                                            path{
+                                                fill: $primary;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .el-tabs{
+                        &__nav{
+                            background-color: $gray-800;
+                        }
+                    }
+                }
+            }
+        }
+        .group-chatList{
+            .chat-list{
+                .name, 
+                .latest-chat{
+                   color: $white;
+                }
+                &.active{
+                    background: $gray-700;
+                }
+            }
+           
+        } 
+    }
+
+    .group-chatBox{
+        background-color: $gray-800;
+        color: $white;
+        .header{
+            color: $white;
+        }
+        .footer{
+            textarea{
+                background-color: $gray-800;
+                color: $white;
+                border-bottom: 0;
+            }
+        }
+    }
+    
+    .group-infoBox {
+        background-color: $gray-800;
+        color: $white;
+    }
+
+    .navbar-nav {
+        .dropdown-menu{
+            background-color: $gray-700;
+            .dropdown-item{
+                color: $white;
+                a{
+                    color: $white;
+                }
+                &:hover{
+                    background-color: $gray-800;
+                }
+                &:focus{
+                    background-color: $gray-800;
+                }
+                &:active{
+                    background-color: $gray-800;
+                }
+            }
         }
     }
 
@@ -186,6 +300,7 @@
             }
         }
     }
+
     .el-progress {
         &.el-progress--line{
             .el-progress{
@@ -194,5 +309,21 @@
                 }
             }
         }
+    }
+
+    ::-webkit-scrollbar {
+        width: 7px;
+        height: 10px;
+        background: $white;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: $gray-600;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px $gray-100;
+        border-radius: 10px;
     }
 }
