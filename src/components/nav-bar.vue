@@ -106,6 +106,15 @@ export default {
     _this.pathname = window.location.pathname;
     _this.listeningSocket();
   },
+  mounted(){
+    var _this = this;
+    var body = document.body;
+    if(_this.currentTheme == 'theme-dark'){
+      body.classList.add("theme-dark");
+    }else{
+      body.classList.remove("theme-dark");
+    }
+  },
   computed: {
       ...mapGetters({
         currentUser: "$_loginPage/getCurrentUser",
@@ -128,12 +137,15 @@ export default {
     handleTheme(){
       var _this = this;
       var storedTheme = localStorage.getItem("theme-color");
+      var body = document.body;
       if(storedTheme === "theme-dark"){
         localStorage.setItem("theme-color", "theme-light");
         _this.currentTheme = localStorage.getItem("theme-color");
+        body.classList.remove("theme-dark");
       }else{
         localStorage.setItem("theme-color", "theme-dark");
         _this.currentTheme = localStorage.getItem("theme-color");
+        body.classList.add("theme-dark");
       }
       _this.$emit('handle-theme', _this.currentTheme);
     },
