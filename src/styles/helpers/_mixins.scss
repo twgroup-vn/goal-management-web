@@ -4,8 +4,7 @@
     src: url('#{$fonts-path}.eot#{$fonts-version}');
     src: url('#{$fonts-path}.eot?#iefix#{$fonts-version}') format('embedded-opentype'),
     	 url('#{$fonts-path}.woff#{$fonts-version}') format('woff'),
-         url('#{$fonts-path}.ttf#{$fonts-version}')  format('truetype'),
-         url('#{$fonts-path}.svg##{$font-name}') format('svg');
+         url('#{$fonts-path}.ttf#{$fonts-version}')  format('truetype');
     font-weight: normal;
     font-style: normal;
 }
