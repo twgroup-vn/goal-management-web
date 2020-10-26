@@ -52,7 +52,11 @@
             <div>a</div>
           </el-collapse-item>
           <el-collapse-item title="Hình nền" name="2">
-            <div>b</div>
+            <div class="row">
+              <div class="col-md-6 mb-3" v-for="(item, index) in commonData.landscapeImages" :key="index">
+                <img class="img-fluid img-thumbnail" :src="require(`@/assets/landscapes/${item}`)" />
+              </div>
+            </div>
           </el-collapse-item>
         </el-collapse>
       </div>
