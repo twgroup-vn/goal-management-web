@@ -2,9 +2,9 @@ import auth from '../middleware/auth'
 import noAuth from '../middleware/noAuth'
 
 export const routes = [
-    // {
-    //     path: '/', name: 'login', component: () => import('../views/login.vue'), display: 'Đăng nhập', beforeEnter: noAuth
-    // },
+    {
+        path: '/', name: 'login', component: () => import('../views/login.vue'), display: 'Đăng nhập', beforeEnter: noAuth
+    },
     {
         path: '/checkIn', name: 'checkIn', component: () => import('../views/checkIn.vue'), display: 'Tiến độ', beforeEnter: auth
     },
