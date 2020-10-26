@@ -28,7 +28,9 @@ Vue.use(ElementUI, { locale })
 import configPlugin from '../vue.config'
 Vue.use(configPlugin)
 
+axios.defaults.baseURL = process.env.VUE_APP_API_ROOT;
 Vue.prototype.$http = axios
+
 const app = new Vue({
   router,
   store,

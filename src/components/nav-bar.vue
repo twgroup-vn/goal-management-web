@@ -140,7 +140,7 @@ export default {
     listeningSocket(){
       var _this = this;
       const signalR = require("@aspnet/signalr");
-      _this.connection = new signalR.HubConnectionBuilder().withUrl("https://dev-kpi-api.twgroup.vn/chatHub").build();
+      _this.connection = new signalR.HubConnectionBuilder().withUrl(`${process.env.VUE_APP_API_ROOT}/chatHub`).build();
       _this.connection.start().then(() => {
         _this.connection.on("ReceiveMessage", async function (user, message, func, params, type) {
           switch(type){

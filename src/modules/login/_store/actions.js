@@ -51,7 +51,7 @@ const decodeToken = async (context, request) => {
 
 const sendSocket = (context, request) => {
   const signalR = require("@aspnet/signalr");
-  var connection = new signalR.HubConnectionBuilder().withUrl("https://dev-kpi-api.twgroup.vn/chatHub").build();
+  var connection = new signalR.HubConnectionBuilder().withUrl(`${process.env.VUE_APP_API_ROOT}/chatHub`).build();
   connection.start().then(() => {
     connection.invoke("SendMessage", request.userInput, request.messageInput, request.functionInput, request.paramsInput, request.typeInput).catch(function (err) {
       return console.error(err.toString());
