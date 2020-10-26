@@ -110,6 +110,9 @@
         .header{
             color: $white;
         }
+        .content{
+            background-color: $gray-900;
+        }
         .footer{
             textarea{
                 background-color: $gray-800;
@@ -314,11 +317,11 @@
     ::-webkit-scrollbar {
         width: 7px;
         height: 10px;
-        background: $white;
+        background: $gray-300;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: $gray-600;
+        background: $gray-700;
         border-radius: 10px;
     }
     
