@@ -21,7 +21,7 @@
             <draggable class="list-group" :value="item" group="working" ghost-class="ghost" :move="checkMove">
               <div
                 class="list-group-item"
-                v-for="card in item" :key="card.id">
+                v-for="card in item" :key="card.id" @click="openCardDetail(card)">
                 {{ card.title }}
               </div>
             </draggable>
@@ -50,6 +50,116 @@
         
       </div>
     </div>
+    <el-dialog
+      title="Chi tiết"
+      :visible.sync="modalCardDetail"
+      class="transition-box-center"
+      width="60%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label class="control-label font-weight-bold">Tiêu đề</label>
+              <div class="mb-20">
+                <input
+                  type="text"
+                  class="input-primary medium"
+                  placeholder="Nhập tiêu đề"
+                  v-model="formUpdate.title"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label font-weight-bold">Mô tả</label>
+              <div class="mb-20">
+                <vue-editor v-model="formUpdate.description" placeholder="Nhập nội dung" name="content"></vue-editor>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"><br>
+            <el-collapse v-model="activeNames">
+              <el-collapse-item title="Người phụ trách" name="1">
+                <div v-if="formUpdate.userListArray" class="d-flex">
+                  <div class="avatar-circle board" v-for="user in formUpdate.userListArray" :key="user.id">
+                    <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${user && user.avatar ? user.avatar : ''})` }"></div>
+                  </div>
+                </div>
+                <el-select
+                  v-model="formUpdate.assign"
+                  clearable
+                  multiple
+                  placeholder="Chọn người phụ trách"
+                  class="w-100 p-2"
+                  >
+                  <el-option
+                    v-for="user in boardDetail.userList"
+                    :key="user.id"
+                    :label="user.fullName"
+                    :value="user.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-collapse-item>
+              <el-collapse-item title="Hạn hoàn thành" name="2">
+                <div class="p-2">
+                  <el-date-picker
+                    class="w-100"
+                    v-model="formUpdate.dueDate"
+                    type="datetime"
+                    placeholder="Chọn ngày bắt đầu"
+                    format="dd/MM/yyyy HH:mm"
+                    value-format="dd/MM/yyyy HH:mm">
+                  </el-date-picker>
+                </div>
+              </el-collapse-item>
+              <el-collapse-item title="Label" name="3">
+                  <el-select
+                    v-model="formUpdate.label"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    placeholder="Chọn label">
+                    <el-option
+                      v-for="label in commonData.labelList"
+                      :key="label.code"
+                      :label="label.code"
+                      :value="label.code">
+                    </el-option>
+                  </el-select>
+              </el-collapse-item>
+              <el-collapse-item title="Trạng thái" name="4">
+                <div v-for="status in commonData.cardStatus" :key="status.code" class="p-2">
+                  <div class="label-style" :style="{backgroundColor: status.color }">{{status.name}}</div>
+                </div>
+                <div class="p-2">
+                  <el-select
+                    v-model="formUpdate.status"
+                    placeholder="Chọn trạng thái">
+                    <el-option
+                      v-for="status in commonData.cardStatus"
+                      :key="status.code"
+                      :label="status.name"
+                      :value="status.code">
+                    </el-option>
+                  </el-select>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </div>   
+        </div>
+        <div class="text-right mt-2">
+          <span slot="footer" class="dialog-footer">
+              <button class="btn btn-primary btn-medium" @click="updateCard">
+                Cập nhật
+            </button>
+          </span>
+        </div>
+      </div>     
+    </el-dialog>
   </div>
 </template>
 
@@ -57,12 +167,19 @@
 import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import draggable from "vuedraggable";
+import _ from "lodash";
+import commonData from "../../utils/common-data";
+import { VueEditor } from "vue2-editor";
 export default {
   components: {
+    VueEditor,
     draggable
   },
   data() {
     return {
+      commonData,
+      activeNames: ['1'],   
+      modalCardDetail: false,
       enabled: true,
       dragging: false,
       showInput: false,
@@ -74,6 +191,9 @@ export default {
         ordinalNumber: 1,
         cardGroupId: "",
         isDelete: false,
+      },
+      formUpdate: {
+        title: "",
       },
     };
   },
@@ -99,6 +219,22 @@ export default {
     }
   },
   methods: {
+    openCardDetail(card){
+      var _this = this;
+      _this.formUpdate = _.cloneDeep(card);
+      if(_this.formUpdate && _this.formUpdate.assign){
+        _this.formUpdate.assign = JSON.parse(_this.formUpdate.assign.replace(/'/g, '"'));
+        _this.formUpdate.userListArray = [];
+        for(let i = 0; i < _this.formUpdate.assign.length; i++){
+          let user = _.find(_this.userList, o => {return o.id === _this.formUpdate.assign[i]});
+          _this.formUpdate.userListArray.push(user);
+        }
+      }
+       if(_this.formUpdate && _this.formUpdate.label){
+        _this.formUpdate.label = JSON.parse(_this.formUpdate.label.replace(/'/g, '"'));
+      }
+      _this.modalCardDetail = true;
+    },
     openCreateTask(){
       var _this = this;
       _this.modalCreateTask = true;
@@ -146,6 +282,21 @@ export default {
       _this.formCard.title = "";
       _this.closeAddInput();
     },
+    async updateCard(){
+      var _this = this;
+      if(_this.formUpdate && _this.formUpdate.assign && _this.formUpdate.assign.length){
+        _this.formUpdate.assign = JSON.stringify(_this.formUpdate.assign);
+        _this.formUpdate.assign = _this.formUpdate.assign.replace(/"/g,"'");
+      }
+      if(_this.formUpdate && _this.formUpdate.label && _this.formUpdate.label.length){
+        _this.formUpdate.label = JSON.stringify(_this.formUpdate.label);
+        _this.formUpdate.label = _this.formUpdate.label.replace(/"/g,"'");
+      }
+      await _this.$store.dispatch("$_boardDetail/updateCard", _this.formUpdate);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      _this.formUpdate.title = "";
+      _this.modalCardDetail = false;
+    },
     async sendSocket(){
       var _this = this;
       await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: null, messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
@@ -153,3 +304,13 @@ export default {
   },  
 };
 </script>
+<style scoped>
+.label-style{
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+</style>

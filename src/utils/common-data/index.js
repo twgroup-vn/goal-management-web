@@ -108,9 +108,9 @@ const cardGroupStatusDisplay = {
 }
 
 const cardStatus = [
-  { code: 'toDo', name: 'Sẽ làm'},
-  { code: 'inProgress', name: 'Đang làm'},
-  { code: 'done', name: 'Hoàn thành'}
+  { code: 'toDo', name: 'Sẽ làm', color: "#eb5a46"},
+  { code: 'inProgress', name: 'Đang làm', color: "#0079bf"},
+  { code: 'done', name: 'Hoàn thành',  color: "#61bd4f"}
 ]
 
 const cardStatusDisplay = {
@@ -118,6 +118,13 @@ const cardStatusDisplay = {
   inProgress: 'Đang làm',
   done: 'Hoàn thành'
 }
+
+const labelList = [
+  { code: "backend", color: "#61bd4f"},
+  { code: "frontend", color: "#f2d600"},
+  { code: "design", color: "#eb5a46"},
+  { code: "BA", color: "#0079bf"}
+];
 
 export default{
   optionLangEN,
@@ -137,5 +144,6 @@ export default{
   cardGroupStatus,
   cardGroupStatusDisplay,
   cardStatus,
-  cardStatusDisplay
+  cardStatusDisplay,
+  labelList
 }
