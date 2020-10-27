@@ -33,6 +33,7 @@
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.0",
     "vue-click-outside": "^1.1.0",
+    "vue-context": "^6.0.0",
     "vue-i18n": "^8.21.1",
     "vue-router": "^3.4.3",
     "vue2-editor": "^2.10.2",

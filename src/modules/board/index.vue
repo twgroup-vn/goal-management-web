@@ -42,9 +42,8 @@
           <font-awesome-icon :icon="['fas', 'users']" class="icon" />
           <div class="text">Bảng toàn công ty</div>
         </div>
-        <div v-for="(item, key) in boardList.data" :key="key" class="col-md-3">
-          <router-link :to="`/boardDetail`">
-            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}">
+        <div v-for="(item, key) in boardList.data" :key="key" class="col-md-3">  
+            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}" @click="showMessage('noPermission')">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between">
                   <div class="text-inside">{{ item.title }}</div>
@@ -58,7 +57,6 @@
                 </div>
               </div>
             </div>
-          </router-link>
         </div>
       </div>
     </div>
@@ -151,6 +149,21 @@ export default {
     await _this.$store.dispatch("$_board/getData");
   },
   methods: {
+    showMessage(type){
+      var _this = this;
+      let message = "";
+      let color = "success";
+      switch(type){
+        case "noPermission":
+          color = "error";
+          message = "Bạn không có quyền truy cập";
+          break;
+        default:
+          break;
+      }
+      _this.$message({message: message, type: color});
+
+    },
     redirectTo: function(path) {
       if (path) {
         this.$router.push(path);

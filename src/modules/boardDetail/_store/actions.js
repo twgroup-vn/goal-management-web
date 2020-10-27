@@ -46,6 +46,10 @@ const moveCard = async (context, request) => {
     return response.data;
 };
 
+const createCardGroup = async (context, request) => {
+    let response = await api.createCardGroup(request);
+    return response.data;
+};
 
 export default {
     getUserList,
@@ -53,5 +57,6 @@ export default {
     getCardOfGroup,
     createCard,
     updateCard,
-    moveCard
+    moveCard,
+    createCardGroup
 }
