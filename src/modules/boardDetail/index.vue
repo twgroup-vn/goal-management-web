@@ -18,12 +18,14 @@
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
             <div class="list-title">{{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}</div>
-            <draggable class="list-group" :value="item" group="working" ghost-class="ghost" :move="checkMove">
-              <div
-                class="list-group-item"
-                v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
-                {{ card.title }}
-              </div>
+            <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
+              <transition-group>
+                <div
+                  class="list-group-item"
+                  v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
+                  {{ card.title }}
+                </div>
+              </transition-group>
             </draggable>
             <div class="list-add-item" v-if="showInput && boardDetail.cardGroup[index].id === selectedId">
               <input class="input-primary medium mb-3" placeholder="Enter title for this group" v-model="formCard.title" />
@@ -63,7 +65,9 @@
       <div class="content">
         <el-collapse v-model="activeSettingNames">
           <el-collapse-item title="Thông tin" name="1">
-            <div>a</div>
+            <div>
+              abc
+            </div>
           </el-collapse-item>
           <el-collapse-item title="Hình nền" name="2">
             <div class="row">
@@ -336,11 +340,10 @@ export default {
             cardGroupId: e.draggedContext.element.cardGroupId,
             moveTo: e.draggedContext.element.ordinalNumber
           }
-          await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
           setTimeout( async () => {
-            await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+            await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
             await _this.sendSocket();
-          },1000);
+          },3000);
       }
     },
     async createCard(){
