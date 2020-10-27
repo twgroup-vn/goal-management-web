@@ -2,11 +2,20 @@
   <div>
     <div class="white-background board-detail-header">
       <div class="row justify-content-between align-items-center">
-        <div class="col-md-6">
-          <button class="btn btn-primary btn-medium" @click="openCreateColumn">Tạo cột</button>
+        <div class="col-md-6 d-flex" :class="{ 'text-white' : boardDetail.backgroundColor }">
+          <div class="title">{{ boardDetail && boardDetail.title ? boardDetail.title : ''}}</div>
+          <div class="ml-2" v-for="user in boardDetail.userList" :key="user.id">
+            <div v-if="boardDetail.userList">
+              <el-tooltip class="item" effect="dark" :content="user.fullName" placement="top-start">
+                <div class="avatar-circle board">
+                  <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${user && user.avatar ? user.avatar : ''})` }"></div>
+                </div>
+              </el-tooltip>
+            </div>
+          </div>
         </div>
         <div class="col-md-6 text-right">
-          <a href="javascript:;" @click="showStickyMenu">
+          <a href="javascript:;" @click="showStickyMenu" :class="{ 'text-white' : boardDetail.backgroundColor }">
             <font-awesome-icon :icon="['fas', 'ellipsis-h']" />
             <span class="ml-2">Show menu</span>
           </a>
@@ -41,6 +50,18 @@
           </div>
         </div>
       </div>
+      <circle-menu type="top" :number="2" animate="animated jello" mask='white' circle>
+        <button type="button" slot="item_btn">
+           <font-awesome-icon :icon="['fas', 'plus']" />
+        </button>
+        
+        <a slot="item_1" @click="openCreateColumn">
+          <el-tooltip class="item" effect="light" content="Tạo cột" placement="top-start">
+            <font-awesome-icon :icon="['fas', 'adjust']" />
+          </el-tooltip>
+        </a>
+        <a slot="item_2"><font-awesome-icon :icon="['fas', 'adjust']" /></a>
+      </circle-menu>
     </div>
    <vue-context ref="card" v-slot="{ data }">
       <template v-if="data">
@@ -316,11 +337,13 @@ import { VueEditor } from "vue2-editor";
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
 import moment from 'moment';
+import CircleMenu from 'vue-circle-menu'
 export default {
   components: {
     VueEditor,
     draggable,
-    VueContext
+    VueContext,
+    CircleMenu
   },
   data() {
     return {

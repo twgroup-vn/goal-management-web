@@ -20,6 +20,45 @@
     }
 }
 
+#CircleMenu{
+    .oy-mask-white{
+        background: transparent;
+    }
+    .oy-menu-group{
+        position: fixed;
+        bottom: 30px;
+        float: inherit;
+        .oy-menu-btn{
+            &:focus{
+                outline: none;
+            }
+            &.pink{
+                background: $primary;
+            }
+            button{
+                border: 0;
+                background: transparent;
+                svg{
+                    path{
+                        fill: $white;
+                    }
+                }
+                &:focus{
+                    outline: none;
+                }
+            }
+        }
+    }
+    .btn-list{
+        svg{
+            path{
+                fill: $white;
+            }
+        }
+    }
+}
+
+
 .countdown{
     font-size: 12px;
     color: $yellow;
@@ -50,6 +89,12 @@ hr{
         top: 51px;
         left: 0;
         right: 0;
+        background-color: rgba($white, 0.24);
+        padding: 10px 24px;
+        .title{
+            font-family: $Primary-Semibold;
+            font-size: 18px;
+        }
     }
 }
 
