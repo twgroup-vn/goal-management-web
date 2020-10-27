@@ -30,6 +30,10 @@ const moveCard = async (request) => {
 const createCardGroup = async (request) => {
     return Vue.prototype.$http.post(`/api/cardGroup/create`, request);
 }
+
+const updateBoard = async (request) => {
+    return Vue.prototype.$http.post(`/api/board/update`, request);
+}
   
 export default {
     getUserList,
@@ -38,5 +42,6 @@ export default {
     createCard,
     updateCard,
     moveCard,
-    createCardGroup
+    createCardGroup,
+    updateBoard
 }

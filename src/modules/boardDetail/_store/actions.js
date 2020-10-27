@@ -51,6 +51,11 @@ const createCardGroup = async (context, request) => {
     return response.data;
 };
 
+const updateBoard = async (context, request) => {
+    let response = await api.updateBoard(request);
+    return response.data;
+};
+
 export default {
     getUserList,
     getBoardDetail,
@@ -58,5 +63,6 @@ export default {
     createCard,
     updateCard,
     moveCard,
-    createCardGroup
+    createCardGroup,
+    updateBoard
 }

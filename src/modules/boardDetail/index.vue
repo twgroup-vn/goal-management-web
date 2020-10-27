@@ -66,7 +66,38 @@
         <el-collapse v-model="activeSettingNames">
           <el-collapse-item title="Thông tin" name="1">
             <div>
-              abc
+              <div class="form-group">
+                <label class="control-label font-weight-bold">Tiêu đề
+                  <font-awesome-icon :icon="['fas', 'edit']" class="ml-2" @click="showEdit('title')" v-if="!boardEdit.title"/>
+                  <font-awesome-icon :icon="['fas', 'redo']" class="ml-2" @click="undoEdit('title')" v-if="boardEdit.title"/>
+                </label>
+                <div class="mb-20">
+                  <span v-if="!boardEdit.title">{{ boardDetail.title ? boardDetail.title : "" }}</span>
+                  <input
+                    v-if="boardEdit.title"
+                    type="text"
+                    class="input-primary medium"
+                    placeholder="Nhập tiêu đề"
+                    v-model="boardDetail.title"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label font-weight-bold">Mô tả
+                  <font-awesome-icon :icon="['fas', 'edit']" class="ml-2" @click="showEdit('description')" v-if="!boardEdit.description"/>
+                  <font-awesome-icon :icon="['fas', 'redo']" class="ml-2" @click="undoEdit('description')" v-if="boardEdit.description"/>
+                </label>
+                <div class="mb-20">
+                  <span v-if="boardDetail.description"> {{ boardDetail.description }} </span>
+                  <span v-if="!boardDetail.description && !boardEdit.description">Chưa có mô tả</span>
+                  <textarea placeholder="Nhập mô tả" rows="4" class="w-100" v-if="boardEdit.description" v-model="boardDetail.description"></textarea>
+                </div>
+              </div>
+              <div class="text-right" v-if="boardEdit.title || boardEdit.description">
+                <button class="btn btn-primary btn-medium" @click="updateBoard">
+                    Cập nhật
+                </button>
+              </div>
             </div>
           </el-collapse-item>
           <el-collapse-item title="Hình nền" name="2">
@@ -316,7 +347,12 @@ export default {
         title: "",
         isDelete: false,
         status: "unblock"
-      }
+      },
+      boardEdit: {
+        title: false,
+        description: false
+      },
+      showButtonUpdateBoard: false,
     };
   },
   computed: {
@@ -346,6 +382,14 @@ export default {
     },
     remove(id) {
       alert(id);
+    },
+    showEdit(type){
+      var _this = this;
+      _this.boardEdit[type] = true;
+    },
+    undoEdit(type){
+      var _this = this;
+      _this.boardEdit[type] = false;
     },
     openCardDetail(card){
       var _this = this;
@@ -444,6 +488,11 @@ export default {
       _this.formCardGroup.title = "";
       _this.modalCreateColumn = false;
     },
+    async updateBoard(){
+      var _this = this;
+      await _this.$store.dispatch("$_boardDetail/updateBoard", _this.boardDetail);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+    }, 
     async sendSocket(){
       var _this = this;
       await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: localStorage.getItem("userId"), messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
@@ -451,13 +500,3 @@ export default {
   },  
 };
 </script>
-<style scoped>
-.label-style{
-  width: 100%;
-  height: 30px;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
-  text-align: center;
-}
-</style>
