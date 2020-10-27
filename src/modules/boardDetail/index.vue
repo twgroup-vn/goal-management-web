@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="white-background board-detail-header">
+    <div class="board-detail-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-md-6 d-flex" :class="{ 'text-white' : boardDetail.backgroundColor }">
           <div class="title">{{ boardDetail && boardDetail.title ? boardDetail.title : ''}}</div>
@@ -57,7 +57,7 @@
         
         <a slot="item_1" @click="openCreateColumn">
           <el-tooltip class="item" effect="light" content="Tạo cột" placement="top-start">
-            <font-awesome-icon :icon="['fas', 'adjust']" />
+            <font-awesome-icon :icon="['fas', 'columns']" />
           </el-tooltip>
         </a>
         <a slot="item_2"><font-awesome-icon :icon="['fas', 'adjust']" /></a>
