@@ -76,14 +76,67 @@
       </div>
     </div>
     <el-dialog
-      title="Chi tiết"
       :visible.sync="modalCardDetail"
       class="transition-box-center"
       width="60%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
-      <div>
+      <div slot="title" class="dialog-custom-title">
+        <div v-if="formUpdate.showCountDown">
+          <vue-countdown-timer
+            :start-time="formUpdate.countDownStart"
+            :end-time="formUpdate.countDownEnd"
+            :interval="1000"
+            :end-text="'Hết hạn'"
+            :day-txt="'ngày'"
+            :hour-txt="'giờ'"
+            :minutes-txt="'phút'"
+            :seconds-txt="'giây'">
+            <template slot="countdown" slot-scope="scope">
+              <div class="countdown d-flex">
+                <div v-if="scope.props.days > 0" class="mr-2">
+                  {{scope.props.days}} {{scope.props.dayTxt}}
+                </div>
+                <div v-if="scope.props.hours > 0" class="mr-2">
+                  {{scope.props.hours}} {{scope.props.hourTxt}}
+                </div>
+                <div v-if="scope.props.minutes > 0" class="mr-2">
+                  {{scope.props.minutes}} {{scope.props.minutesTxt}}
+                </div>
+                <div>
+                  {{scope.props.seconds}} {{scope.props.secondsTxt}}
+                </div>
+              </div>
+            </template>
+          </vue-countdown-timer>
+        </div>
+        <div class="countdown due" v-if="!formUpdate.showCountDown && formUpdate.dueDate">
+          <el-tooltip class="item" effect="dark" content="Hạn hoàn thành" placement="top-start">
+            <span>{{ formUpdate.dueDate }}</span>
+          </el-tooltip>
+          <font-awesome-icon :icon="['fas', 'bell']" class="ml-2"/>
+        </div>
+        <div>
+          <div class="mr-2 d-inline">{{ formUpdate.title }}</div>
+          <div class="d-inline tag" :style="{backgroundColor: commonData.cardStatus.find(o=>{ return o.code === formUpdate.status }).color }" v-if="formUpdate.status">
+            {{ commonData.cardStatus.find(o=>{ return o.code === formUpdate.status }).name }}
+          </div>
+        </div>
+        <el-tag type="info" class="mr-2 mt-2"  v-for="(label, index) in formUpdate.label" :key="index">{{label}}</el-tag>
+        <div class="d-flex mt-2" >
+          <div class="mr-2" v-for="user in formUpdate.userListArray" :key="user.id">
+            <div v-if="formUpdate.userListArray">
+              <el-tooltip class="item" effect="dark" :content="user.fullName" placement="top-start">
+                <div class="avatar-circle board">
+                  <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${user && user.avatar ? user.avatar : ''})` }"></div>
+                </div>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
         <div class="row">
           <div class="col-md-8">
             <div class="form-group">
@@ -107,11 +160,6 @@
           <div class="col-md-4"><br>
             <el-collapse v-model="activeNames">
               <el-collapse-item title="Người phụ trách" name="1">
-                <div v-if="formUpdate.userListArray" class="d-flex">
-                  <div class="avatar-circle board" v-for="user in formUpdate.userListArray" :key="user.id">
-                    <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${user && user.avatar ? user.avatar : ''})` }"></div>
-                  </div>
-                </div>
                 <el-select
                   v-model="formUpdate.assign"
                   clearable
@@ -157,9 +205,6 @@
                   </el-select>
               </el-collapse-item>
               <el-collapse-item title="Trạng thái" name="4">
-                <div v-for="status in commonData.cardStatus" :key="status.code" class="p-2">
-                  <div class="label-style" :style="{backgroundColor: status.color }">{{status.name}}</div>
-                </div>
                 <div class="p-2">
                   <el-select
                     v-model="formUpdate.status"
@@ -176,14 +221,16 @@
             </el-collapse>
           </div>   
         </div>
-        <div class="text-right mt-2">
-          <span slot="footer" class="dialog-footer">
-              <button class="btn btn-primary btn-medium" @click="updateCard">
-                Cập nhật
-            </button>
-          </span>
-        </div>
       </div>     
+       <div slot="footer">
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+                <button class="btn btn-primary btn-medium" @click="updateCard">
+                  Cập nhật
+              </button>
+            </span>
+          </div>
+       </div>
     </el-dialog>
      <el-dialog
       title="Tạo cột mới"
@@ -226,6 +273,7 @@ import commonData from "../../utils/common-data";
 import { VueEditor } from "vue2-editor";
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
+import moment from 'moment';
 export default {
   components: {
     VueEditor,
@@ -301,6 +349,14 @@ export default {
       }
        if(_this.formUpdate && _this.formUpdate.label){
         _this.formUpdate.label = JSON.parse(_this.formUpdate.label.replace(/'/g, '"'));
+      }
+      let currentDate = moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
+      if(_this.formUpdate && _this.formUpdate.dueDate){
+        _this.formUpdate.showCountDown = _this.formUpdate.dueDate.slice(0,10) === currentDate.slice(0,10) ? true : false;
+        _this.formUpdate.countDownStart = moment(currentDate, 'DD/MM/YYYY HH:mm:ss').format("X");
+        _this.formUpdate.countDownStart = parseInt(_this.formUpdate.countDownStart);
+        _this.formUpdate.countDownEnd = moment(_this.formUpdate.dueDate, 'DD/MM/YYYY HH:mm:ss').format("X");
+        _this.formUpdate.countDownEnd = parseInt(_this.formUpdate.countDownEnd);
       }
       _this.modalCardDetail = true;
     },

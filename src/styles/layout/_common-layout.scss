@@ -3,12 +3,6 @@
     height: 20px;
 }
 
-// svg{
-//     path{
-//         fill: $gray-900;
-//     }
-// }
-
 .main{
     padding: 36px 56px 0 56px;
     &.board-detail-background{
@@ -23,6 +17,16 @@
             flex-wrap: nowrap;
             margin-top: 140px;
         }
+    }
+}
+
+.countdown{
+    font-size: 12px;
+    color: $yellow;
+    margin-bottom: 8px;
+    font-family: $Primary-Semibold;
+    &.due{
+        color: $red;
     }
 }
 

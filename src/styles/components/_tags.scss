@@ -1,11 +1,13 @@
 .tag{
-    width: 80px;
+    width: 100%;
+    max-width: 85px;
     height: 100%;
     text-align: center;
     font-size: 12px;
     border-radius: 12px;
     padding: 4px 8px;
     font-family: $Primary-Semibold;
+    color: $white;
     &.primary{
         background: rgba($primary, 0.3);
         color: $primary;
