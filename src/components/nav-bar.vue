@@ -163,7 +163,7 @@ export default {
                 }
               break;
             case "moveCard":
-              if(_this.pathname.includes(`boardDetail/${params}`)){
+              if(_this.pathname.includes(`boardDetail/${params}`) && _this.currentUser.id !== user){
                   await _this.$store.dispatch(func, params);
               }
               break;

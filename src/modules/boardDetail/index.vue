@@ -439,7 +439,7 @@ export default {
     },
     async sendSocket(){
       var _this = this;
-      await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: null, messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
+      await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: localStorage.getItem("userId"), messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
     }
   },  
 };
