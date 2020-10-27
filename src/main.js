@@ -16,6 +16,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import axios from 'axios'
 import store from './store/index'
 import i18n from './lang/i18n'
+import VueCountdownTimer from 'vuejs-countdown-timer';
 Vue.config.productionTip = false
 
 library.add(fas)
@@ -27,6 +28,7 @@ Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
 import configPlugin from '../vue.config'
 Vue.use(configPlugin)
+Vue.use(VueCountdownTimer);
 
 axios.defaults.baseURL = process.env.VUE_APP_API_ROOT;
 Vue.prototype.$http = axios
