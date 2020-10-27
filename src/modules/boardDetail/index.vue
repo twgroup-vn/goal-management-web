@@ -113,9 +113,12 @@
                 </div>
               </div>
             </template>
+            <template slot="end-text" slot-scope="scope">
+              <span class="countdown due">{{ scope.props.endText}}</span>
+            </template>
           </vue-countdown-timer>
         </div>
-        <div class="countdown due" v-if="!formUpdate.showCountDown && formUpdate.dueDate">
+        <div class="countdown" v-if="!formUpdate.showCountDown && formUpdate.dueDate">
           <el-tooltip class="item" effect="dark" content="Hạn hoàn thành" placement="top-start">
             <span>{{ formUpdate.dueDate }}</span>
           </el-tooltip>
@@ -218,6 +221,10 @@
                       :key="status.code"
                       :label="status.name"
                       :value="status.code">
+                      <div class="d-flex align-items-center">
+                        <div class="circle-dot" :style="{backgroundColor: status.color }"></div>
+                        <div class="ml-2">{{ status.name }}</div>
+                      </div>
                     </el-option>
                   </el-select>
                 </div>
