@@ -17,6 +17,7 @@ import axios from 'axios'
 import store from './store/index'
 import i18n from './lang/i18n'
 import VueCountdownTimer from 'vuejs-countdown-timer';
+import CircleMenu from 'vue-circle-menu'
 Vue.config.productionTip = false
 
 library.add(fas)
@@ -29,6 +30,7 @@ Vue.use(ElementUI, { locale })
 import configPlugin from '../vue.config'
 Vue.use(configPlugin)
 Vue.use(VueCountdownTimer);
+Vue.component('CircleMenu', CircleMenu)
 
 axios.defaults.baseURL = process.env.VUE_APP_API_ROOT;
 Vue.prototype.$http = axios
