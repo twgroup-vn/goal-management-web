@@ -128,7 +128,7 @@ export default {
             var _this = this;
             _this.rightInfo = ! _this.rightInfo;
         },
-        scrollAutoBottom(){
+        scrollTop(){
             var _this = this;
             var container = _this.$refs.containerChat;
             container.scrollTop = container.scrollHeight;
@@ -210,10 +210,12 @@ export default {
         }
     },
     updated () {
-        this.scrollAutoBottom(); 
+        var _this = this;
+        _this.scrollTop(); 
     },
     mounted () {
-        this.scrollAutoBottom();	
+        var _this = this;
+        _this.scrollTop();	
     },
     props:['userChat']
 }

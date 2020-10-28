@@ -12,7 +12,7 @@ const state = {
   searchRequest: {
     description: '',
     pageIndex: 1,
-    pageSize: 10,
+    pageSize: 15,
   },
 }
 

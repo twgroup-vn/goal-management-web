@@ -33,7 +33,7 @@
     <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
       <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
-          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
+          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''" v-on:scroll="handleScroll($event, index)">
             <div class="list-title">
               <div class="col-md-12">
                 <span v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
@@ -66,6 +66,10 @@
                 <button class="btn btn-secondary btn-small mr-3" @click="createCard">Thêm</button>
                 <font-awesome-icon :icon="['fas', 'times']" @click="closeAddInput()"/>
               </div>
+            </div>
+            <div class="spinner-loading" v-if="loading && loadingId == index">
+              <span class="mr-2">Loading</span>
+              <font-awesome-icon :icon="['fas', 'spinner']" /> 
             </div>
             <button class="btn btn-secondary btn-small" @click="openAddInput(index)" v-if="!showInput || boardDetail.cardGroup[index].id != selectedId">
               <font-awesome-icon :icon="['fas', 'plus']" class="mr-2" />
@@ -591,6 +595,7 @@ export default {
       selectedId: null,
       cardIdNeedToDelete: "",
       description: "",
+      loadingId: null,
       formCard: {
         title: "",
         ordinalNumber: 1,
@@ -613,11 +618,13 @@ export default {
       formMoveManual: {
         title: "",
       },
+      loading: false
     };
   },
   computed: {
     ...mapState({
       cardGroup: state => state.$_boardDetail.cardGroup,
+      searchRequest: state => state.$_boardDetail.searchRequest,
     }),
     ...mapGetters({
         userList: "$_boardDetail/getUserList",
@@ -641,6 +648,12 @@ export default {
         _this.openCardDetail(cardInfo);
       }
     }
+  },
+  mounted: function () {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed: function () {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     async handleSearch(){
@@ -838,7 +851,17 @@ export default {
     async sendSocket(){
       var _this = this;
       await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: localStorage.getItem("userId"), messageInput: null, functionInput: "$_boardDetail/getBoardDetail", paramsInput: _this.$route.params.id, typeInput: "moveCard" }));
-    }
+    },
+    async handleScroll(event, index) {
+      var _this = this;
+      _this.loadingId = index;
+      if((event.target.clientHeight + event.target.scrollTop) >= event.target.scrollHeight) {
+        _this.loading = true;
+        _this.searchRequest.pageSize = _this.searchRequest.pageSize + 5;
+        await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+        _this.loading = false;
+      }
+    },
   },  
 };
 </script>
