@@ -70,7 +70,11 @@
             <font-awesome-icon :icon="['fas', 'columns']" />
           </el-tooltip>
         </a>
-        <a slot="item_2"><font-awesome-icon :icon="['fas', 'adjust']" /></a>
+          <a slot="item_2" @click="openAddNewMember">
+            <el-tooltip class="item" effect="light" content="Thêm thành viên" placement="top-start">
+              <font-awesome-icon :icon="['fas', 'adjust']" />
+            </el-tooltip>
+          </a>
       </circle-menu>
     </div>
     <!-- Right mouse click -->
@@ -474,6 +478,38 @@
           </div>
         </div>
       </el-dialog>
+      <!-- Add new member -->
+      <el-dialog
+        title="Thêm thành viên"
+        :visible.sync="modalAddNewMember"
+        class="transition-box-center"
+        width="30%"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false">
+        <div>
+          <el-select
+            v-model="participant"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="Chọn thành viên">
+              <el-option
+                v-for="user in userList"
+                :key="user.id"
+                :label="user.fullName"
+                :value="user.id">
+              </el-option>
+          </el-select>
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+              <button class="btn btn-primary btn-medium" @click="updateBoard">
+                Cập nhật
+              </button>
+            </span>
+          </div>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -503,7 +539,9 @@ export default {
       modalMoveCardManual: false,
       modalMoveCardGroupManual: false,
       modalEditCardGroup: false,
+      modalAddNewMember: false,
       activeSettingNames: ['1'],
+      participant: [],
       enabled: true,
       dragging: false,
       showInput: false,
@@ -554,6 +592,11 @@ export default {
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
   },
   methods: {
+    openAddNewMember(){
+      var _this = this;
+      _this.participant = _.cloneDeep(_this.boardDetail.participantOject);
+      _this.modalAddNewMember = true;
+    },
     openMoveCardGroupManual(cardGroup){
       var _this = this;
       _this.formCardGroup = _.cloneDeep(cardGroup);
@@ -718,8 +761,14 @@ export default {
     },
     async updateBoard(){
       var _this = this;
+      if(_this.participant && _this.participant.length){
+        _this.boardDetail.participant =  JSON.stringify(_this.participant);
+        _this.boardDetail.participant = _this.boardDetail.participant.replace(/"/g,"'");
+        _this.participant = [];
+      }
       await _this.$store.dispatch("$_boardDetail/updateBoard", _this.boardDetail);
       await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      _this.modalAddNewMember = false;
     }, 
     async sendSocket(){
       var _this = this;
