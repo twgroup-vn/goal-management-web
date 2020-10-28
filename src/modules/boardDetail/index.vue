@@ -30,6 +30,9 @@
           <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
             <div class="list-title">
               <div class="col-md-12">
+                <span v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
+                  <font-awesome-icon :icon="['fas', 'lock']"/>
+                </span>
                   {{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}
                 <span>
                   <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-2" @click="openMoveCardGroupManual(boardDetail.cardGroup[index])"/>
