@@ -64,6 +64,11 @@ const updateBoard = async (context, request) => {
     return response.data;
 };
 
+const getCardById = async (context, request) => {
+    let response = await api.getCardById(request);
+    return response.data;
+};
+
 export default {
     getUserList,
     getBoardDetail,
@@ -74,5 +79,6 @@ export default {
     moveCardGroup,
     createCardGroup,
     updateBoard,
-    updateCardGroup
+    updateCardGroup,
+    getCardById
 }

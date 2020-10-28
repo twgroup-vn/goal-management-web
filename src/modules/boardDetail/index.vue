@@ -93,6 +93,12 @@
           </a>
         </li>
         <li>
+          <a v-clipboard:copy="`${href}?cardId=${data.id}`">
+            <font-awesome-icon :icon="['fas', 'share-alt']" class="mr-1"/>
+              Copy link
+          </a>
+        </li>
+        <li>
           <a @click.prevent="remove(data.id)">
             <font-awesome-icon :icon="['fas', 'trash']" class="mr-1"/>
               Xóa thẻ
@@ -541,6 +547,7 @@ export default {
       modalEditCardGroup: false,
       modalAddNewMember: false,
       activeSettingNames: ['1'],
+      href: null,
       participant: [],
       enabled: true,
       dragging: false,
@@ -588,8 +595,16 @@ export default {
     if (!(STORE_KEY in this.$store._modules.root._children)) {
       _this.$store.registerModule(STORE_KEY, store);
     }
+    _this.href = window.location.href;
     await _this.$store.dispatch("$_boardDetail/getUserList");
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+    if(_this.$route.query.cardId){
+      _this.href = _this.href.replace(`?cardId=${_this.$route.query.cardId}`, "");
+      let cardInfo = await _this.$store.dispatch("$_boardDetail/getCardById", _this.$route.query.cardId);
+      if(cardInfo && cardInfo.id){
+        _this.openCardDetail(cardInfo);
+      }
+    }
   },
   methods: {
     openAddNewMember(){

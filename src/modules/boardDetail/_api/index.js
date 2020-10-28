@@ -9,6 +9,9 @@ const getBoardDetail = async (request) => {
     return Vue.prototype.$http.get(`/api/board/getById/${request}`);
 }
 
+const getCardById = async (request) => {
+    return Vue.prototype.$http.get(`/api/card/getById/${request}`);
+}
 
 const getListCard = async (pageIndex, pageSize, list) => {
     var query = { "PageIndex": pageIndex, "PageSize": pageSize, "Title": JSON.stringify(list) };
@@ -53,5 +56,6 @@ export default {
     createCardGroup,
     updateBoard,
     updateCardGroup,
-    moveCardGroup
+    moveCardGroup,
+    getCardById
 }
