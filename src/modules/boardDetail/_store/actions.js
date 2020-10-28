@@ -69,6 +69,11 @@ const getCardById = async (context, request) => {
     return response.data;
 };
 
+const deleteCard = async (context, request) => {
+    let response = await api.deleteCard(request);
+    return response.data;
+};
+
 export default {
     getUserList,
     getBoardDetail,
@@ -80,5 +85,6 @@ export default {
     createCardGroup,
     updateBoard,
     updateCardGroup,
-    getCardById
+    getCardById,
+    deleteCard
 }

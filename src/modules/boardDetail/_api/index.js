@@ -46,6 +46,10 @@ const updateBoard = async (request) => {
     return Vue.prototype.$http.post(`/api/board/update`, request);
 }
   
+const deleteCard = async (request) => {
+    return Vue.prototype.$http.get(`/api/card/delete/${request}`);
+}
+
 export default {
     getUserList,
     getBoardDetail,
@@ -57,5 +61,6 @@ export default {
     updateBoard,
     updateCardGroup,
     moveCardGroup,
-    getCardById
+    getCardById,
+    deleteCard
 }

@@ -42,7 +42,12 @@
                 <div
                   class="list-group-item"
                   v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
-                  {{ card.title }}
+                   <div>
+                      <el-tooltip class="item" effect="dark" :content="commonData.cardStatus.find(o=>{ return o.code === card.status }).name" placement="top-start" v-if="card.status">
+                        <div class="d-inline-block circle-dot" :style="{backgroundColor: commonData.cardStatus.find(o=>{ return o.code === card.status }).color }"></div>
+                      </el-tooltip>
+                      <div class="d-inline ml-2">{{ card.title }}</div>
+                  </div>
                 </div>
               </transition-group>
             </draggable>
@@ -516,6 +521,25 @@
           </div>
         </div>
       </el-dialog>
+      <!-- Remove card -->
+      <el-dialog
+        title="Xóa thẻ"
+        :visible.sync="modalDeleteCard"
+        class="transition-box-center"
+        width="30%"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false">
+        <div>
+          Bạn có chắc muốn xóa thẻ này không ?
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+              <button class="btn btn-primary btn-medium" @click="deleteCard">
+                Đồng ý
+              </button>
+            </span>
+          </div>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -540,7 +564,8 @@ export default {
   data() {
     return {
       commonData,
-      activeNames: ['1'],   
+      activeNames: ['1'],
+      modalDeleteCard: false,   
       modalCardDetail: false,
       modalMoveCardManual: false,
       modalMoveCardGroupManual: false,
@@ -555,6 +580,7 @@ export default {
       modalCreateColumn: false,
       stickyMenu: false,
       selectedId: null,
+      cardIdNeedToDelete: "",
       formCard: {
         title: "",
         ordinalNumber: 1,
@@ -599,7 +625,7 @@ export default {
     await _this.$store.dispatch("$_boardDetail/getUserList");
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
     if(_this.$route.query.cardId){
-      _this.href = _this.href.replace(`?cardId=${_this.$route.query.cardId}`, "");
+      _this.href = _this.href.replace(`?cardId=${_this.$route.query.cardId}`,"");
       let cardInfo = await _this.$store.dispatch("$_boardDetail/getCardById", _this.$route.query.cardId);
       if(cardInfo && cardInfo.id){
         _this.openCardDetail(cardInfo);
@@ -634,6 +660,14 @@ export default {
         status: "unblock"
       }
     },
+    async deleteCard(){
+      var _this = this;
+      await _this.$store.dispatch("$_boardDetail/deleteCard", _this.cardIdNeedToDelete);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      await _this.sendSocket();
+      _this.cardIdNeedToDelete = "";
+      _this.modalDeleteCard = false;
+    },
     openMoveCard(card){
       var _this = this;
       _this.formMoveManual = _.cloneDeep(card);
@@ -643,7 +677,9 @@ export default {
       alert(`You clicked on "${name}"!`);
     },
     remove(id) {
-      alert(id);
+      var _this = this;
+      _this.cardIdNeedToDelete = id;
+      _this.modalDeleteCard = true;
     },
     showEdit(type){
       var _this = this;
