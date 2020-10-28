@@ -14,6 +14,12 @@
               </el-tooltip>
             </div>
           </div>
+          <div class="ml-5">
+            <div class="position-relative">
+              <input :placeholder="$t('checkinPage.placeholderSearch')" class="input-primary small" v-model="description" @keyup="handleSearch"/>
+              <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
+            </div>
+          </div>
         </div>
         <div class="col-md-6 text-right">
           <a href="javascript:;" @click="showStickyMenu" :class="{ 'text-white' : boardDetail.backgroundColor }">
@@ -584,6 +590,7 @@ export default {
       stickyMenu: false,
       selectedId: null,
       cardIdNeedToDelete: "",
+      description: "",
       formCard: {
         title: "",
         ordinalNumber: 1,
@@ -636,6 +643,10 @@ export default {
     }
   },
   methods: {
+    async handleSearch(){
+      var _this = this;
+      console.log(_this.description);
+    },
     openAddNewMember(){
       var _this = this;
       _this.participant = _.cloneDeep(_this.boardDetail.participantOject);
