@@ -13,6 +13,9 @@
               </el-tooltip>
             </div>
           </div>
+          <div class="ml-2">
+            
+          </div>
         </div>
         <div class="col-md-6 text-right">
           <a href="javascript:;" @click="showStickyMenu" :class="{ 'text-white' : boardDetail.backgroundColor }">
@@ -67,12 +70,20 @@
       <template v-if="data">
           <li>
               <a @click.prevent="openCardDetail(data)">
-                  Chỉnh sửa
+                <font-awesome-icon :icon="['fas', 'edit']" class="mr-1"/>
+                Chỉnh sửa
+              </a>
+          </li>
+          <li>
+              <a @click.prevent="openMoveCard(data)">
+                <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-1"/>
+                Di chuyển
               </a>
           </li>
           <li>
               <a @click.prevent="remove(data.id)">
-                  Xóa card
+                <font-awesome-icon :icon="['fas', 'trash']" class="mr-1"/>
+                Xóa thẻ
               </a>
           </li>
       </template>
@@ -299,7 +310,7 @@
       title="Tạo cột mới"
       :visible.sync="modalCreateColumn"
       class="transition-box-center"
-      width="60%"
+      width="30%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
@@ -319,6 +330,47 @@
           <span slot="footer" class="dialog-footer">
               <button class="btn btn-primary btn-medium" @click="createCardGroup">
                 Tạo cột
+            </button>
+          </span>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="Di chuyển"
+      :visible.sync="modalMoveCardManual"
+      class="transition-box-center"
+      width="30%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false">
+      <div>
+        <div class="form-group">
+          <label class="control-label font-weight-bold">Tên thẻ</label>
+            <div class="mb-20">
+              <div>{{formMoveManual.title}}</div>
+            </div>       
+        </div>
+        <div class="form-group">
+          <label class="control-label font-weight-bold">Di chuyển tới cột</label>
+            <div class="mb-20">
+              <el-select
+                  v-model="formMoveManual.cardGroupId"
+                  placeholder="Chọn cột muốn chuyển tới"
+                  class="w-100"
+                  >
+                  <el-option
+                    v-for="column in boardDetail.cardGroup"
+                    :key="column.id"
+                    :label="column.title"
+                    :value="column.id"
+                  >
+                  </el-option>
+                </el-select>
+            </div>       
+        </div>
+        <div class="text-right mt-2">
+          <span slot="footer" class="dialog-footer">
+            <button class="btn btn-primary btn-medium" @click="moveManual">
+              Đồng ý
             </button>
           </span>
         </div>
@@ -350,6 +402,7 @@ export default {
       commonData,
       activeNames: ['1'],   
       modalCardDetail: false,
+      modalMoveCardManual: false,
       activeSettingNames: ['1'],
       enabled: true,
       dragging: false,
@@ -376,6 +429,9 @@ export default {
         description: false
       },
       showButtonUpdateBoard: false,
+      formMoveManual: {
+        title: "",
+      }
     };
   },
   computed: {
@@ -398,6 +454,11 @@ export default {
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
   },
   methods: {
+    openMoveCard(card){
+      var _this = this;
+      _this.formMoveManual = _.cloneDeep(card);
+      _this.modalMoveCardManual = true;
+    },
     alertName(name) {
       alert(`You clicked on "${name}"!`);
     },
@@ -428,7 +489,7 @@ export default {
       }
       let currentDate = moment(new Date()).format('DD/MM/YYYY HH:mm:ss');
       if(_this.formUpdate && _this.formUpdate.dueDate){
-        _this.formUpdate.showCountDown = _this.formUpdate.dueDate.slice(0,10) === currentDate.slice(0,10) ? true : false;
+        _this.formUpdate.showCountDown =  true ;
         _this.formUpdate.countDownStart = moment(currentDate, 'DD/MM/YYYY HH:mm:ss').format("X");
         _this.formUpdate.countDownStart = parseInt(_this.formUpdate.countDownStart);
         _this.formUpdate.countDownEnd = moment(_this.formUpdate.dueDate, 'DD/MM/YYYY HH:mm:ss').format("X");
@@ -473,6 +534,21 @@ export default {
             await _this.sendSocket();
           },3000);
       }
+    },
+    async moveManual(){
+      var _this = this;
+      let index = _this.cardGroup.indexOf(_this.formMoveManual.cardGroupId);
+      let maxOrdinal = _this.listCard && _this.listCard.length && _this.listCard[index] && _this.listCard[index].length ? _this.listCard[index].length : 0;
+      _this.formMoveManual.ordinalNumber = maxOrdinal+1;
+      let cardNeedToMove = {
+        cardId: _this.formMoveManual.id,
+        cardGroupId: _this.formMoveManual.cardGroupId,
+        moveTo: _this.formMoveManual.ordinalNumber
+      }
+      await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      await _this.sendSocket();
+      _this.modalMoveCardManual = false;
     },
     async createCard(){
       var _this = this;

@@ -28,7 +28,7 @@
             <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
             <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
           </a>
-          <button class="btn btn-primary btn-medium" @click="openCreateFeedback">{{ $t("checkinPage.createGoalBtn") }}</button>
+          <button class="btn btn-primary btn-medium" @click="openCreateFeedback">Tạo phản hồi</button>
         </div>
       </div>
     </div>

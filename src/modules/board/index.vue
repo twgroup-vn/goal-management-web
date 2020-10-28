@@ -64,7 +64,7 @@
       title="Tạo bảng mới"
       :visible.sync="modalCreateBoard"
       class="transition-box-center"
-      width="60%"
+      width="30%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
