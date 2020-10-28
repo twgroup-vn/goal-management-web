@@ -395,9 +395,7 @@ export default {
       _this.$store.registerModule(STORE_KEY, store);
     }
     await _this.$store.dispatch("$_boardDetail/getUserList");
-    if (_this.$route.params.id) {
-      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
-    }
+    await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
   },
   methods: {
     alertName(name) {
