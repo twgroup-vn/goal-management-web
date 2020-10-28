@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Header -->
     <div class="board-detail-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-md-6 d-flex" :class="{ 'text-white' : boardDetail.backgroundColor }">
@@ -13,9 +14,6 @@
               </el-tooltip>
             </div>
           </div>
-          <div class="ml-2">
-            
-          </div>
         </div>
         <div class="col-md-6 text-right">
           <a href="javascript:;" @click="showStickyMenu" :class="{ 'text-white' : boardDetail.backgroundColor }">
@@ -25,11 +23,20 @@
         </div>
       </div>
     </div>
+    <!-- Content -->
     <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
       <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
-            <div class="list-title">{{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}</div>
+            <div class="list-title">
+              <div class="col-md-12">
+                  {{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}
+                <span>
+                  <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-2" @click="openMoveCardGroupManual(boardDetail.cardGroup[index])"/>
+                  <font-awesome-icon :icon="['fas', 'ellipsis-h']" @click="openEditCardGroup(boardDetail.cardGroup[index])"/>
+                </span>
+              </div>
+            </div>
             <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
               <transition-group>
                 <div
@@ -53,11 +60,11 @@
           </div>
         </div>
       </div>
+      <!-- Float menu button -->
       <circle-menu type="top" :number="2" animate="animated jello" mask='white' circle>
         <button type="button" slot="item_btn">
            <font-awesome-icon :icon="['fas', 'plus']" />
         </button>
-        
         <a slot="item_1" @click="openCreateColumn">
           <el-tooltip class="item" effect="light" content="Tạo cột" placement="top-start">
             <font-awesome-icon :icon="['fas', 'columns']" />
@@ -66,29 +73,30 @@
         <a slot="item_2"><font-awesome-icon :icon="['fas', 'adjust']" /></a>
       </circle-menu>
     </div>
-   <vue-context ref="card" v-slot="{ data }">
+    <!-- Right mouse click -->
+    <vue-context ref="card" v-slot="{ data }">
       <template v-if="data">
-          <li>
-              <a @click.prevent="openCardDetail(data)">
-                <font-awesome-icon :icon="['fas', 'edit']" class="mr-1"/>
-                Chỉnh sửa
-              </a>
-          </li>
-          <li>
-              <a @click.prevent="openMoveCard(data)">
-                <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-1"/>
-                Di chuyển
-              </a>
-          </li>
-          <li>
-              <a @click.prevent="remove(data.id)">
-                <font-awesome-icon :icon="['fas', 'trash']" class="mr-1"/>
-                Xóa thẻ
-              </a>
-          </li>
+        <li>
+          <a @click.prevent="openCardDetail(data)">
+            <font-awesome-icon :icon="['fas', 'edit']" class="mr-1"/>
+              Chỉnh sửa
+          </a>
+        </li>
+        <li>
+          <a @click.prevent="openMoveCard(data)">
+            <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-1"/>
+              Di chuyển
+          </a>
+        </li>
+        <li>
+          <a @click.prevent="remove(data.id)">
+            <font-awesome-icon :icon="['fas', 'trash']" class="mr-1"/>
+              Xóa thẻ
+          </a>
+        </li>
       </template>
     </vue-context>  
-
+    <!-- Board menu setting -->
     <div class="modal-sticky-right" :class="stickyMenu == false ? '' : 'active'">
       <div class="header">
         <div>Menu</div>
@@ -142,6 +150,7 @@
         </el-collapse>
       </div>
     </div>
+    <!-- modal card details -->
     <el-dialog
       :visible.sync="modalCardDetail"
       class="transition-box-center"
@@ -301,11 +310,12 @@
             <span slot="footer" class="dialog-footer">
                 <button class="btn btn-primary btn-medium" @click="updateCard">
                   Cập nhật
-              </button>
+                </button>
             </span>
           </div>
        </div>
     </el-dialog>
+    <!-- Create new column -->
      <el-dialog
       title="Tạo cột mới"
       :visible.sync="modalCreateColumn"
@@ -335,6 +345,7 @@
         </div>
       </div>
     </el-dialog>
+    <!-- move card manual -->
     <el-dialog
       title="Di chuyển"
       :visible.sync="modalMoveCardManual"
@@ -376,6 +387,93 @@
         </div>
       </div>
     </el-dialog>
+    <!-- update column -->
+    <el-dialog
+      title="Cập nhật cột"
+      :visible.sync="modalEditCardGroup"
+      class="transition-box-center"
+      width="30%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false">
+      <div>
+        <div class="form-group">
+          <label class="control-label font-weight-bold">Tiêu đề</label>
+          <div class="mb-20">
+            <input
+              type="text"
+              class="input-primary medium"
+              placeholder="Nhập tiêu đề"
+              v-model="formCardGroup.title"
+            />
+          </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label font-weight-bold">Chế độ</label>
+            <el-select
+              v-model="formCardGroup.status"
+              placeholder="Chọn cột muốn chuyển tới"
+              class="w-100"
+            >
+              <el-option
+                v-for="status in commonData.cardGroupStatus"
+                :key="status.code"
+                :label="status.name"
+                :value="status.code"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+              <button class="btn btn-primary btn-medium" @click="updateCardGroup">
+                Cập nhật
+              </button>
+            </span>
+          </div>
+      </div>
+      </el-dialog>
+      <!-- Move card group manual -->
+      <el-dialog
+        title="Di chuyển"
+        :visible.sync="modalMoveCardGroupManual"
+        class="transition-box-center"
+        width="30%"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false">
+        <div>
+          <div class="form-group">
+            <label class="control-label font-weight-bold">Tên cột</label>
+              <div class="mb-20">
+                <div>{{formCardGroup.title}}</div>
+              </div>       
+          </div>
+          <div class="form-group">
+            <label class="control-label font-weight-bold">Di chuyển tới cột</label>
+              <div class="mb-20">
+                <el-select
+                    v-model="formCardGroup.ordinalNumber"
+                    placeholder="Chọn cột muốn chuyển tới"
+                    class="w-100"
+                    >
+                    <el-option
+                      v-for="(column, index) in cardGroup"
+                      :key="index"
+                      :label="index"
+                      :value="index"
+                    >
+                    </el-option>
+                  </el-select>
+              </div>       
+          </div>
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+              <button class="btn btn-primary btn-medium" @click="moveCardGroupManual">
+                Đồng ý
+              </button>
+            </span>
+          </div>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -403,6 +501,8 @@ export default {
       activeNames: ['1'],   
       modalCardDetail: false,
       modalMoveCardManual: false,
+      modalMoveCardGroupManual: false,
+      modalEditCardGroup: false,
       activeSettingNames: ['1'],
       enabled: true,
       dragging: false,
@@ -431,7 +531,7 @@ export default {
       showButtonUpdateBoard: false,
       formMoveManual: {
         title: "",
-      }
+      },
     };
   },
   computed: {
@@ -454,6 +554,28 @@ export default {
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
   },
   methods: {
+    openMoveCardGroupManual(cardGroup){
+      var _this = this;
+      _this.formCardGroup = _.cloneDeep(cardGroup);
+      _this.modalMoveCardGroupManual = true;
+    },
+    openEditCardGroup(cardGroup){
+      var _this = this;
+      _this.formCardGroup = _.cloneDeep(cardGroup);
+      _this.modalEditCardGroup = true;
+    },
+    async updateCardGroup(){
+      var _this = this;
+      await _this.$store.dispatch("$_boardDetail/updateCardGroup", _this.formCardGroup);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      await _this.sendSocket();
+      _this.modalEditCardGroup = false;
+      _this.formCardGroup = {
+        title: "",
+        isDelete: false,
+        status: "unblock"
+      }
+    },
     openMoveCard(card){
       var _this = this;
       _this.formMoveManual = _.cloneDeep(card);
@@ -529,10 +651,8 @@ export default {
             cardGroupId: e.draggedContext.element.cardGroupId,
             moveTo: e.draggedContext.element.ordinalNumber
           }
-          setTimeout( async () => {
-            await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
-            await _this.sendSocket();
-          },3000);
+          await _this.$store.dispatch("$_boardDetail/moveCard", cardNeedToMove);
+          await _this.sendSocket();
       }
     },
     async moveManual(){
@@ -549,6 +669,17 @@ export default {
       await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
       await _this.sendSocket();
       _this.modalMoveCardManual = false;
+    },
+    async moveCardGroupManual(){
+      var _this = this;
+      let cardGroupNeedToMove = {
+        cardGroupId: _this.formCardGroup.id,
+        moveTo: _this.formCardGroup.ordinalNumber
+      }
+      await _this.$store.dispatch("$_boardDetail/moveCardGroup", cardGroupNeedToMove);
+      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+      await _this.sendSocket();
+      _this.modalMoveCardGroupManual = false;
     },
     async createCard(){
       var _this = this;
