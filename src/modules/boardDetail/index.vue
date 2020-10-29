@@ -39,7 +39,7 @@
     <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
       <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
-          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''" v-on:scroll="handleScroll($event, index)">
+          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
             <div class="list-title">
               <div class="col-md-12">
                 <span v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
@@ -53,6 +53,7 @@
               </div>
             </div>
             <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
+              <div class="list-group-event" v-on:scroll="handleScroll($event, index)">
               <transition-group>
                 <div
                   class="list-group-item"
@@ -65,6 +66,7 @@
                   </div>
                 </div>
               </transition-group>
+              </div>
             </draggable>
             <div class="list-add-item" v-if="showInput && boardDetail.cardGroup[index].id === selectedId">
               <input class="input-primary medium mb-3" placeholder="Enter title for this group" v-model="formCard.title" />
