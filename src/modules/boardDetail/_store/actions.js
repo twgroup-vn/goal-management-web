@@ -74,6 +74,11 @@ const deleteCard = async (context, request) => {
     return response.data;
 };
 
+const advanceSearch = async (context, request) => {
+    let response = await api.advanceSearch(request);
+    return response.data;
+};
+
 export default {
     getUserList,
     getBoardDetail,
@@ -86,5 +91,6 @@ export default {
     updateBoard,
     updateCardGroup,
     getCardById,
-    deleteCard
+    deleteCard,
+    advanceSearch
 }

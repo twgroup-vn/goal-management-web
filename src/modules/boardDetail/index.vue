@@ -16,7 +16,13 @@
           </div>
           <div class="ml-5">
             <div class="position-relative">
-              <input :placeholder="$t('checkinPage.placeholderSearch')" class="input-primary small" v-model="description" @keyup="handleSearch"/>
+              <el-autocomplete
+                class="input-primary small"
+                v-model="description"
+                :fetch-suggestions="advanceSearch"
+                :placeholder="$t('checkinPage.placeholderSearch')"
+                @select="handleSelect"
+              ></el-autocomplete>
               <font-awesome-icon :icon="['fas', 'search']" class="icon-search"/>
             </div>
           </div>
@@ -656,9 +662,22 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
-    async handleSearch(){
+    handleSelect(item){
       var _this = this;
-      console.log(_this.description);
+      _this.openCardDetail(item);
+    },
+    async advanceSearch(queryString, cb){
+      var _this = this;
+      let fromSearch = {
+        boardId: _this.$route.params.id,
+        description: _this.description
+      };
+      let response =  await _this.$store.dispatch("$_boardDetail/advanceSearch", fromSearch);
+      response.data = _.map(response.data, o => {
+        o.value = o.title;
+        return o;
+      });
+      cb(response.data);
     },
     openAddNewMember(){
       var _this = this;

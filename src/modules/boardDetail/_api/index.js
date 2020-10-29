@@ -50,6 +50,10 @@ const deleteCard = async (request) => {
     return Vue.prototype.$http.get(`/api/card/delete/${request}`);
 }
 
+const advanceSearch = async (request) => {
+    return Vue.prototype.$http.get(`/api/card/advanceSearch?boardId=${request.boardId}&description=${request.description}`);
+}
+
 export default {
     getUserList,
     getBoardDetail,
@@ -62,5 +66,6 @@ export default {
     updateCardGroup,
     moveCardGroup,
     getCardById,
-    deleteCard
+    deleteCard,
+    advanceSearch
 }
