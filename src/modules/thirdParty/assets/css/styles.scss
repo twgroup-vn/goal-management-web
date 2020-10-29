@@ -1,0 +1,49 @@
+.wrapper{
+    background:#343a40;
+    height:100vh;
+    padding: 20px;
+    color: white;
+    .box{
+        background: #5f6369;
+        height: 250px;
+        width: 30%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #abafb6;
+        border-radius: 10px;
+        padding: 30px;
+        .title{
+          font-size: 1.2rem;
+        }
+        .main-logo{
+          width: 70px;
+        }
+        .icon-loading{
+          font-size: 30px;
+        }
+    }
+  }
+
+  // mobile devides styles
+  @media screen and (max-width: 320px){
+    .wrapper{
+      .box{
+        width: 80%;
+        .title{
+          font-size: 14px;
+        }
+      }  
+    }
+  }
+  @media screen and (max-width: 640px){
+    .wrapper{
+      .box{
+        width: 80%;
+        .title{
+          font-size: 14px;
+        }
+      }  
+    }
+  }
