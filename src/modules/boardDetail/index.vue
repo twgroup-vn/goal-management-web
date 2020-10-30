@@ -41,12 +41,12 @@
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''" >
             <div class="list-title">
-              <div class="col-md-12">
-                <span v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
+              <div class="col-md-12 d-flex justify-content-between">
+                <span class="cursor-pointer" v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
                   <font-awesome-icon :icon="['fas', 'lock']"/>
                 </span>
                   {{ boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] ? boardDetail.cardGroup[index].title : "" }}
-                <span>
+                <span class="cursor-pointer">
                   <font-awesome-icon :icon="['fas', 'arrows-alt']" class="mr-2" @click="openMoveCardGroupManual(boardDetail.cardGroup[index])"/>
                   <font-awesome-icon :icon="['fas', 'ellipsis-h']" @click="openEditCardGroup(boardDetail.cardGroup[index])"/>
                 </span>
@@ -79,7 +79,7 @@
               <span class="mr-2">Loading</span>
               <font-awesome-icon :icon="['fas', 'spinner']" /> 
             </div>
-            <button class="btn btn-secondary btn-small" @click="openAddInput(index)" v-if="!showInput || boardDetail.cardGroup[index].id != selectedId">
+            <button class="btn btn-secondary btn-small mt-4" @click="openAddInput(index)" v-if="!showInput || boardDetail.cardGroup[index].id != selectedId">
               <font-awesome-icon :icon="['fas', 'plus']" class="mr-2" />
               <span>Thêm công việc</span>
             </button>
