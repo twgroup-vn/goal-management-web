@@ -878,8 +878,9 @@ export default {
       _this.loadingId = index;
       if((event.target.clientHeight + event.target.scrollTop) >= event.target.scrollHeight) {
         _this.loading = true;
-        _this.searchRequest.pageIndex = _this.searchRequest.pageIndex ++;
-        _this.searchRequest.pageSize = _this.searchRequest.pageSize + 5;
+        _this.searchRequest.pageIndex += 1;
+        _this.searchRequest.pageSize = _this.searchRequest.pageSize*_this.searchRequest.pageIndex;
+        _this.searchRequest.pageIndex = 1;
         await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
         _this.loading = false;
       }
