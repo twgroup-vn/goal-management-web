@@ -39,7 +39,7 @@
     <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
       <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
-          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''">
+          <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''" >
             <div class="list-title">
               <div class="col-md-12">
                 <span v-if="boardDetail && boardDetail.cardGroup && boardDetail.cardGroup.length && boardDetail.cardGroup[index] && boardDetail.cardGroup[index].status === 'lock' ">
@@ -52,22 +52,22 @@
                 </span>
               </div>
             </div>
-            <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
-              <div class="list-group-event" v-on:scroll="handleScroll($event, index)">
-              <transition-group>
-                <div
-                  class="list-group-item"
-                  v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
-                   <div>
-                      <el-tooltip class="item" effect="dark" :content="commonData.cardStatus.find(o=>{ return o.code === card.status }).name" placement="top-start" v-if="card.status">
-                        <div class="d-inline-block circle-dot" :style="{backgroundColor: commonData.cardStatus.find(o=>{ return o.code === card.status }).color }"></div>
-                      </el-tooltip>
-                      <div class="d-inline ml-2">{{ card.title }}</div>
+            <div class="list-group-event" v-on:scroll="handleScroll($event, index)">
+              <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
+                <transition-group>
+                  <div
+                    class="list-group-item"
+                    v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
+                    <div>
+                        <el-tooltip class="item" effect="dark" :content="commonData.cardStatus.find(o=>{ return o.code === card.status }).name" placement="top-start" v-if="card.status">
+                          <div class="d-inline-block circle-dot" :style="{backgroundColor: commonData.cardStatus.find(o=>{ return o.code === card.status }).color }"></div>
+                        </el-tooltip>
+                        <div class="d-inline ml-2">{{ card.title }}</div>
+                    </div>
                   </div>
-                </div>
-              </transition-group>
-              </div>
-            </draggable>
+                </transition-group>
+              </draggable>
+            </div>
             <div class="list-add-item" v-if="showInput && boardDetail.cardGroup[index].id === selectedId">
               <input class="input-primary medium mb-3" placeholder="Enter title for this group" v-model="formCard.title" />
               <div class="d-flex">
@@ -878,6 +878,7 @@ export default {
       _this.loadingId = index;
       if((event.target.clientHeight + event.target.scrollTop) >= event.target.scrollHeight) {
         _this.loading = true;
+        _this.searchRequest.pageIndex = _this.searchRequest.pageIndex ++;
         _this.searchRequest.pageSize = _this.searchRequest.pageSize + 5;
         await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
         _this.loading = false;
