@@ -185,6 +185,7 @@ export default {
       var _this = this;
       await _this.$store.dispatch("$_loginPage/logout");
       _this.user = null;
+      document.body.classList.remove("theme-dark");
       _this.$router.push("/login");
     },
   },
