@@ -61,13 +61,13 @@
                   </div>
                 </div>
                 <div class="dropdown-item">
-                  <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">Thông tin tài khoản</a>
+                  <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">{{ $t("common.accountInfo") }}</a>
                 </div>
                 <div class="dropdown-item">
-                  <a href="javascript:;" @click="redirectTo(`/admin/company`)" class="d-block">Quản trị thông tin</a>
+                  <a href="javascript:;" @click="redirectTo(`/admin/company`)" class="d-block">{{ $t("common.infoManagement") }}</a>
                 </div>
                 <div class="dropdown-item">
-                  <a href="javascript:;" class="d-block" @click="logout">Đăng xuất</a>
+                  <a href="javascript:;" class="d-block" @click="logout">{{ $t("common.logout") }}</a>
                 </div>
             </div>
           </div>

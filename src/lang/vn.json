@@ -1,7 +1,10 @@
 {
     "common": {
         "selectLang": "Ngôn ngữ",
-        "theme": "Chủ đề tối"
+        "theme": "Chủ đề tối",
+        "accountInfo": "Thông tin tài khoản",
+        "infoManagement": "Quản trị thông tin",
+        "logout": "Đăng xuất"
     },
     "userNav":{
         "checkin": "Tiến độ cá nhân",

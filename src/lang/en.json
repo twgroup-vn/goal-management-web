@@ -1,7 +1,10 @@
 {
     "common": {
         "selectLang": "Language",
-        "theme": "Dark theme"
+        "theme": "Dark theme",
+        "accountInfo": "Account information",
+        "infoManagement": "Information management",
+        "logout": "Logout"
     },
     "userNav":{
         "checkin": "Personal Check-in",
