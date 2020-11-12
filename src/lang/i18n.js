@@ -11,7 +11,7 @@ const messages = {
 }
 
 const i18n = new VueI18n({
-  locale: 'vn', // set locale
+  locale: localStorage.getItem("lang") ? localStorage.getItem("lang") : '' , // set locale
   messages,
   fallbackLocale: 'vn',
 })

@@ -81,9 +81,9 @@
 import { routes } from '../router/routes';
 import { mapGetters } from "vuex";
 import commonData from '../utils/common-data/index';
-import Avatar from "../components/avatar"
-import MainLogo from '../assets/svgs/mainLogo/TWG.svg'
-import ClickOutside from 'vue-click-outside'
+import Avatar from "../components/avatar";
+import MainLogo from '../assets/svgs/mainLogo/TWG.svg';
+import ClickOutside from 'vue-click-outside';
 export default {
   components: {
     'avatar': Avatar
@@ -97,7 +97,7 @@ export default {
       connection: null,
       pathname: '',
       opened: false,
-      lang: 'vn',
+      lang: localStorage.getItem("lang") ? localStorage.getItem("lang") : '',
       currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light'
     };
   },
@@ -131,7 +131,8 @@ export default {
     },
     handleChangeLang: function (val) {
       var _this = this;
-      _this.lang = val
+      _this.lang = val;
+      localStorage.setItem("lang", _this.lang);
       this.$store.dispatch('setLang', _this.lang);
     },
     handleTheme(){

@@ -6,7 +6,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    
   },
   modules: {
     $_loginPage: loginModule,
@@ -18,7 +17,7 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_LANG (state, messages) {
-      app.$i18n.locale = messages
+      app.$i18n.locale = messages;
     }
   },
 })
