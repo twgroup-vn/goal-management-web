@@ -1,11 +1,11 @@
 import Vue from 'vue';
 
 const getUserList = async () => {
-    return Vue.prototype.$http.get(`https://dev-kpi-api.twgroup.vn/api/company/getRelatedUser`);
+    return Vue.prototype.$http.get(`/api/company/getRelatedUser`);
 }
 
 const getAllGoalOfCompany = async () => {
-    return Vue.prototype.$http.get(`https://dev-kpi-api.twgroup.vn/api/goal/getAllGoalOfCompany`);
+    return Vue.prototype.$http.get(`/api/goal/getAllGoalOfCompany`);
 }
 
 const getGoalListOfUser = async (pageIndex, pageSize, description, title) => {
