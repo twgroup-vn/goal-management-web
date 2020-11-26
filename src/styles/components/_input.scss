@@ -4,6 +4,20 @@ input{
 		border: 1px solid $gray-100;
 		width: 100%;
 		outline: none;
+		&:read-only {
+			background-color: $gray-100;
+			border: 1px solid transparent;
+			cursor: not-allowed;
+			&:hover{
+				border: 1px solid transparent;
+			}
+			&:focus{
+				border: 1px solid transparent;
+			}
+			&:hover{
+				border: 1px solid transparent;
+			}
+		}
 		&.small{
 			font-size: 12px;
 			border-radius: 2px;

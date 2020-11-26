@@ -35,6 +35,7 @@ a {
 @import "../styles/layout/reset-element/_dropdown";
 @import "../styles/layout/reset-element/_checkbox";
 @import "../styles/layout/reset-element/_tooltip";
+@import "../styles/layout/reset-element/_collapse";
 
 
 @import "../styles/components/_style-guide";
@@ -53,8 +54,8 @@ a {
 @import "../styles/components/_conversation";
 @import "../styles/components/_animation";
 
-@import "../styles/pages//management-company";
-@import "../styles/pages/checkInCompany";
-@import "../styles/pages/board";
-@import "../styles/pages/boardDetail";
+@import "../styles/pages/_management-company";
+@import "../styles/pages/_checkInCompany";
+@import "../styles/pages/_board";
+@import "../styles/pages/_boardDetail";
 

@@ -1,0 +1,11 @@
+.el-collapse{
+    &.sub-goal{
+        border-top: 0;
+        border-bottom: 0;
+    }
+    .el-collapse-item{
+        &__header{
+            border-bottom: 0;
+        }
+    }
+}

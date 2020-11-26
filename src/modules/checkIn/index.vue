@@ -53,6 +53,10 @@
                   <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
                       {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
                   </div>
+                  <button class="btn btn-primary ml-3" @click="handleCreateSubGoal(item)">
+                    <font-awesome-icon :icon="['fas', 'plus']" />    
+                    <span class="ml-2">Tạo mục tiêu con</span>
+                  </button>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-6 d-flex align-items-center justify-content-end' : 'col-12 d-flex align-items-center justify-content-between mt-4'">
                   <a class="relative-group-icon mr-4" @click="handleModalViewRalation(item)">
@@ -104,6 +108,41 @@
                       {{ item.status ?  commonData.goalStatusDisplay[item.status].name : ''}}
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <el-collapse class="sub-goal">
+                    <el-collapse-item v-if="item.subGoal && item.subGoal.length">
+                      <div slot="title" class="text-primary">Các mục tiêu con</div>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class="thead-light">
+                            <tr>
+                              <th>Tên các mục tiêu con</th>
+                              <th>Mức độ tự tin</th>
+                              <th>Trạng thái</th>
+                              <th>Ngày tạo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="sub in item.subGoal" :key="sub.id">
+                              <td>{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</td>
+                              <td>{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</td>
+                              <td>
+                                <div :class="`tag ${commonData.goalStatusDisplay[sub.status].color}`">{{ sub.status ? commonData.goalStatusDisplay[sub.status].name : '' }}</div>
+                              </td>
+                              <td>{{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item v-else>
+                      <div slot="title" class="text-primary">Các mục tiêu con</div>
+                      <div>Không có mục tiêu con</div>
+                    </el-collapse-item>
+                  </el-collapse>
                 </div>
               </div>
             </div>
@@ -288,7 +327,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="Form xem kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="table-responsive">
         <table class="table table-hover">
           <thead class="thead-light">
@@ -398,6 +437,23 @@
         </button>
       </span>
     </el-dialog>
+
+     <el-dialog title="Tạo mục tiêu con" :visible.sync="modalCreateSubGoal" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="form-group">
+          <label>Tên mục tiêu con</label>
+          <input type="text" class="input-primary medium" placeholder="Tên mục tiêu con" v-model="formCreateSubGoal.name"/>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="confirmCreateSubGoal">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -421,6 +477,7 @@ export default {
       modalViewCheckIn: false,
       modalViewFeedback: false,
       modalViewRalation: false,
+      modalCreateSubGoal: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -442,6 +499,10 @@ export default {
         answerSecond: '',
         answerThird: '',
         answerFourth: '',
+        isDelete: false
+      },
+      formCreateSubGoal: {
+        name: '',
         isDelete: false
       },
       file: null,
@@ -506,6 +567,27 @@ export default {
       _this.relationArray.push({
         GoalId: _this.updateRelationGoalId, RelatedGoalId: null, Type: null
       });
+    },
+    handleCreateSubGoal(item){
+      var _this = this;
+      _this.formCreateSubGoal = _.cloneDeep(_this.formCreate);
+      _this.formCreateSubGoal.userId = item.userId;
+      _this.formCreateSubGoal.goalId = item.id;
+      _this.formCreateSubGoal.cycleId = item.cycleId;
+      _this.formCreateSubGoal.companyId = item.companyId;
+      _this.formCreateSubGoal.higherUserId = item.higherUserId;
+      _this.modalCreateSubGoal = true;
+    },
+    async confirmCreateSubGoal(){
+      var _this = this;
+      await _this.$store.dispatch("$_checkInUser/createSubGoal", _this.formCreateSubGoal);
+      _this.modalCreateSubGoal = false;
+      _this.formCreateSubGoal.userId = null;
+      _this.formCreateSubGoal.goalId = null;
+      _this.formCreateSubGoal.cycleId = null;
+      _this.formCreateSubGoal.companyId = null;
+      _this.formCreateSubGoal.higherUserId = null;
+      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
     handleSwitchLayout(){
       var _this = this;
