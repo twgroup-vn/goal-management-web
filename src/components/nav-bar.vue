@@ -64,7 +64,7 @@
                   <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">{{ $t("common.accountInfo") }}</a>
                 </div>
                 <div class="dropdown-item">
-                  <a href="javascript:;" @click="redirectTo(`/admin/company`)" class="d-block">{{ $t("common.infoManagement") }}</a>
+                  <a href="javascript:;" @click="linkToAdmin" class="d-block">{{ $t("common.infoManagement") }}</a>
                 </div>
                 <div class="dropdown-item">
                   <a href="javascript:;" class="d-block" @click="logout">{{ $t("common.logout") }}</a>
@@ -180,6 +180,12 @@ export default {
       } else {
         this.$router.go(-1);
       }
+    },
+    linkToAdmin(){
+      var _this = this;
+      var body = document.body;
+      body.classList.remove("theme-dark");
+      _this.$router.push("/admin/company");
     },
     async logout() {
       var _this = this;
