@@ -126,7 +126,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="sub in item.subGoal" :key="sub.id">
+                            <tr v-for="sub in item.subGoal" :key="sub.id"> 
                               <td>{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</td>
                               <td>{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</td>
                               <td>
@@ -328,6 +328,46 @@
     </el-dialog>
 
     <el-dialog title="Kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-dialog width="50%" title="Thêm kết quả chính" :visible.sync="modalCreateMainResults" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
+        <div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kết quả chính</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kết quả mong muốn</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập kết quả mong muốn" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kế hoạch</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kết quả</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false">
+            Hủy
+          </button>
+          <button class="btn btn-primary btn-medium" @click="updateMainResult">
+            Cập nhật
+          </button>
+        </span>
+      </el-dialog>
       <div class="table-responsive">
         <table class="table table-hover">
           <thead class="thead-light">
@@ -353,6 +393,10 @@
             </tr>
           </tbody>
         </table>
+        <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult">
+          <font-awesome-icon :icon="['fas', 'plus-circle']" />
+          <span class="ml-2">Thêm kết quả chính</span>
+        </a>
       </div>
     </el-dialog>
 
@@ -478,6 +522,7 @@ export default {
       modalViewFeedback: false,
       modalViewRalation: false,
       modalCreateSubGoal: false,
+      modalCreateMainResults: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -588,6 +633,13 @@ export default {
       _this.formCreateSubGoal.companyId = null;
       _this.formCreateSubGoal.higherUserId = null;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+    },
+    openModalCreateMainResult(){
+      var _this = this;
+      _this.modalCreateMainResults = true;
+    },
+    updateMainResult(){
+      
     },
     handleSwitchLayout(){
       var _this = this;

@@ -32,8 +32,8 @@
             <div class="dropdown-menu" :class="{ show : opened}">
                 <div class="dropdown-item d-flex align-items-center justify-content-between">
                   <div class="col-md-4 px-0">{{ $t("common.selectLang") }}:</div>
-                  <el-select v-model="lang" placeholder="Language" @change="handleChangeLang" class="col-md-8">
-                    <div v-if="lang == 'en'">
+                  <el-select v-model="$i18n.locale" placeholder="Language" @change="handleChangeLang" class="col-md-8">
+                    <div v-if="$i18n.locale == 'en'">
                       <el-option v-for="(item, index) in commonData.optionLangEN" :key="index" :label="item.text" :value="item.value">
                         <div class="d-flex align-items-center">
                           <img class="logo-lang" :src="item.flag" />
@@ -97,7 +97,7 @@ export default {
       connection: null,
       pathname: '',
       opened: false,
-      lang: localStorage.getItem("lang") ? localStorage.getItem("lang") : '',
+      lang: localStorage.getItem("lang") ? localStorage.getItem("lang") : 'vn',
       currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light'
     };
   },
