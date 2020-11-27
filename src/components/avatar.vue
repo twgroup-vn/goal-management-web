@@ -2,7 +2,7 @@
     <div>
       <a href="javascript:;" class="d-flex align-items-center group-avatar" v-click-outside="hideDropdown" @click="toggle">
         <div class="avatar-circle original">
-          <div v-if="!currentUser.avatar" class="avatar-without-img">{{convertName}}</div>
+          <div v-if="currentUser && !currentUser.avatar" class="avatar-without-img">{{convertName}}</div>
           <div v-else class="avatar-with-img" :style="{ backgroundImage: `url(${currentUser && currentUser.avatar ? currentUser.avatar : ''})` }"></div>
         </div>
         <div class="avatar-text ml-2 mr-2">{{ currentUser && currentUser.fullName ? currentUser.fullName : '' }}</div>

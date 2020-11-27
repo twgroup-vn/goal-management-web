@@ -35,6 +35,11 @@ const editCheckIn = async (context, request) => {
   return response.data;
 };
 
+const createSubGoal = async (context, request) => {
+  let response = await api.createSubGoal(request);
+  return response;
+};
+
 export default {
   getUserList,
   uploadImage,
@@ -42,5 +47,6 @@ export default {
   getAllGoalOfCompany,
   editGoal,
   editCheckIn,
-  createRelation
+  createRelation,
+  createSubGoal
 }

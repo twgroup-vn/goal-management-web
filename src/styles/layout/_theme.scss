@@ -30,6 +30,13 @@
         min-height: calc(100vh - 157px); 
         .wrapper-target{
             background: $gray-800;
+            color: $white;
+        }
+    }
+
+    .form-group{
+        label{
+            color: $white;
         }
     }
 
@@ -375,12 +382,30 @@
                 }
             }
         }
-        .table{
-            color: $gray-200;
-            tbody{
-                tr:hover{
-                    color: $gray-200;
-                }
+    }
+
+    .table{
+        color: $gray-200;
+        tbody{
+            tr{
+                background-color: $gray-800;
+            }
+            tr:hover{
+                color: $gray-200;
+            }
+        }
+    }
+
+    .el-collapse{
+        .el-collapse-item{
+            &__wrap{
+                background-color: $gray-800;
+            }
+            &__header{
+                background-color: $gray-800;
+            }
+            &__arrow{
+                color: $white;
             }
         }
     }
