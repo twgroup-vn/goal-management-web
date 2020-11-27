@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import commonData from "../../../utils/common-data";
 
 const login = async (request) => {
     return Vue.prototype.$http.post(`/api/user/login`, request);
@@ -24,11 +25,32 @@ const getCompanyDetails = async () => {
     return Vue.prototype.$http.get(`/api/company/get`);
 }
 
+
+const authorizeHRLogin = async (request) => {
+    return Vue.prototype.$http.get(`${commonData.HR_TOKEN_AUTHORIZE}/${request}`);
+}
+
+const logOutHR = async () => {
+    return Vue.prototype.$http.get(commonData.HR_LOGOUT);
+}
+
+const getUserInfoFromHRPort = async (request) => {
+    return Vue.prototype.$http.get(`${commonData.HR_GET_USER_LOGIN}/${request}/NhanVien`);
+}
+
+const getToken = async (request) => {
+    return Vue.prototype.$http.get(`/api/user/getToken/${request}`);
+}
+
 export default {
     login,
+    logOutHR,
+    getToken,
     getCompanyOfUser,
     getNotAuthorazation,
     decodeToken,
     refreshToken,
-    getCompanyDetails
+    getCompanyDetails,
+    authorizeHRLogin,
+    getUserInfoFromHRPort
 }

@@ -1,5 +1,6 @@
 import api from '../_api/index';
 import Vue from 'vue';
+import commonData from '../../../utils/common-data';
 
 const login = async (context, request) => {
   let response = await api.login(request);
@@ -24,6 +25,8 @@ const getCompanyDetails = async (context, request) => {
 const logout = async (context) => {
   localStorage.clear();
   context.commit('LOG_OUT');
+  // await api.logOutHR();
+  window.open(commonData.HR_LOGOUT, "_self");
 };
 
 const getCurrentUser = async (context) => {
@@ -59,6 +62,22 @@ const sendSocket = (context, request) => {
   });
 };
 
+const authorizeHRLogin = async (context, request) => {
+  let response = await api.authorizeHRLogin(request);
+  return response.data;
+};
+
+const getUserInfoFromHRPort = async (context, request) => {
+  let response = await api.getUserInfoFromHRPort(request);
+  return response.data;
+};
+
+const getToken = async (context, request) => {
+  let response = await api.getToken(request);
+  localStorage.setItem("companyId", "CO_0001")
+  context.commit('SET_TOKEN', response.data);
+};
+
 export default {
   login,
   getCompanyOfUser,
@@ -69,5 +88,8 @@ export default {
   getCurrentUser,
   getNotAuthorazation,
   getCompanyDetails,
-  sendSocket
+  authorizeHRLogin,
+  getUserInfoFromHRPort,
+  sendSocket,
+  getToken
 }
