@@ -372,10 +372,7 @@
         <table class="table table-hover">
           <thead class="thead-light">
             <tr>
-              <th>{{ questionsCompany.find(x => x.orderNo === 1).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 2).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 3).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
+              <th>Kết quả chính</th>
               <th>Mức độ tự tin</th>
               <th>Phần trăm tiến độ</th>
               <th>Ngày check-in gần nhất</th>
@@ -383,13 +380,10 @@
           </thead>
          <tbody v-for="(item, index) in checkInData" :key="index">
             <tr v-for="(check, key) in item.checkIn" :key="key"> 
-              <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerThird ? check.answerThird : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerFourth ? check.answerFourth : 'Không có câu trả lời' }}</td>
-              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : ''}}</td>
+              <td>{{ check.result ? check.result : 'Không có nội dung' }}</td>
+              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : 'Không có nội dung'}}</td>
               <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
-              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : '' }}</td>
+              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : 'Không có nội dung' }}</td>
             </tr>
           </tbody>
         </table>
