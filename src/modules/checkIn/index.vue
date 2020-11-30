@@ -84,7 +84,7 @@
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.mainResult") }}</div>
                   <div class="content">
-                    <a href="javascript:;" @click="handleModalViewCheckIn(item.id)" class="result">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                    <a href="javascript:;" @click="handleModalMainResult(item.id)" class="result">{{item.mainResult && item.mainResult.length ? item.mainResult.length : 0}} kết quả</a>
                   </div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -327,7 +327,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="Kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Kết quả chính" :visible.sync="modalViewMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-dialog width="50%" title="Thêm kết quả chính" :visible.sync="modalCreateMainResults" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
         <div>
           <div class="row">
@@ -363,7 +363,7 @@
           <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false">
             Hủy
           </button>
-          <button class="btn btn-primary btn-medium" @click="updateMainResult">
+          <button class="btn btn-primary btn-medium" @click="confirmCreateMainResult">
             Cập nhật
           </button>
         </span>
@@ -373,19 +373,38 @@
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
-              <th>Mức độ tự tin</th>
-              <th>Phần trăm tiến độ</th>
-              <th>Ngày check-in gần nhất</th>
+              <th>Kết quả mong muốn</th>
+              <th>Link kế hoạch</th>
+              <th>Link kết quả</th>
+              <th></th>
             </tr>
           </thead>
-         <tbody v-for="(item, index) in checkInData" :key="index">
-            <tr v-for="(check, key) in item.checkIn" :key="key"> 
-              <td>{{ check.result ? check.result : 'Không có nội dung' }}</td>
-              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : 'Không có nội dung'}}</td>
-              <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
-              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : 'Không có nội dung' }}</td>
+         <tbody v-for="(item, index) in mainResult" :key="index">
+            <tr v-for="(result, key) in item.mainResult" :key="key"> 
+              <td>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>{{ result.title ? result.title : 'Không có nội dung' }}</div>
+                  <div><a href="javascript:;" class="text-primary" @click="openModalCheckInMainResult(result)">Check-in</a></div>
+                </div>
+              </td>
+              <td>
+                <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+              </td>
+              <td>{{ result.planLink ? result.planLink : 'Không có nội dung' }}</td>
+              <td>{{ result.resultLink ? result.resultLink : 'Không có nội dung' }}</td>
+              <td>
+                <div class="d-flex justify-content-end">
+                  <a class="d-block text-primary mr-2" href="javascript:;" @click="openModalEditMainResult(item, result)">
+                    <font-awesome-icon :icon="['fas', 'edit']" />
+                  </a>
+                  <a class="d-block text-primary" href="javascript:;" @click="openModalDeleteMainResult(result)">
+                    <font-awesome-icon :icon="['fas', 'trash']" />
+                  </a>
+                </div>
+              </td>
             </tr>
             <tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -499,6 +518,125 @@
         </button>
       </span>
     </el-dialog>
+
+    <el-dialog title="Chỉnh sửa kết quả chính" :visible.sync="modalEditMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kết quả chính</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Kết quả mong muốn</label>
+                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kế hoạch</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreateMainResult.planLink" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kết quả</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formCreateMainResult.resultLink" />
+              </div>
+            </div>
+          </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="confirmEditMainResult">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="Xoá kết quả chính" :visible.sync="modalDeleteMainResult" class="transition-box-center" width="30%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>Bạn có chắc chắn muốn xóa kết quả này?</div>
+       <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalDeleteMainResult = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="confirmDeleteMainResult(idMainResult)">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="Form check-in kết quả chính" :visible.sync="modalCheckInMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="modal-body">
+        <el-tabs v-model="activeTabMainResult">
+          <el-tab-pane label="Check-in" name="check-in" v-if="resultDetail">
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.goal") }}</div>
+              <div class="col-md-8">
+                {{ resultDetail.title ?  resultDetail.title : "" }}
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+              <div class="col-md-8">
+               <el-radio-group v-model="formCheckInMainResult.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+              </el-radio-group>
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}</div>
+              <div class="col-md-8">
+                <input class="input-primary medium" placeholder="Nhập kết quả" v-model="formCheckInMainResult.result" />
+              </div>
+            </div>
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}</div>
+              <div class="col-md-8">
+                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formCheckInMainResult.currentProgress" />
+              </div> 
+            </div>
+            <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+              <div class="col-md-4 title">{{ item.question }}</div>
+              <div class="col-md-8">
+                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInMainResult.answerFirst"></textarea>
+                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInMainResult.answerSecond"></textarea>
+                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInMainResult.answerThird"></textarea>
+                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInMainResult.answerFourth"></textarea>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Lịch sử" name="history">
+            <div class="block mt-4" v-if="resultDetail && resultDetail.checkIn && resultDetail.checkIn.length">
+              <el-timeline v-for="(item,index) in resultDetail.checkIn" :key="index">
+                <el-timeline-item :timestamp="item.createdAt.slice(0,10)" placement="top">
+                  <el-card>
+                    <div>{{item.result ? item.result : 'Không có kết quả' }}</div>
+                    <div><strong>Mức độ tự tin:</strong> {{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+                    <div><strong>Tiến độ:</strong> {{ item.currentProgress }}%</div>
+                    <div>Xem chi tiết</div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="submitCheckInMainResult">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -518,12 +656,16 @@ export default {
       description: '',
       modalCheckIn: false,
       activeTab: "check-in",
+      activeTabMainResult: "check-in",
       modalCreateGoal: false,
-      modalViewCheckIn: false,
+      modalViewMainResult: false,
       modalViewFeedback: false,
       modalViewRalation: false,
       modalCreateSubGoal: false,
       modalCreateMainResults: false,
+      modalEditMainResult: false,
+      modalDeleteMainResult: false,
+      modalCheckInMainResult: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -538,6 +680,18 @@ export default {
       },
       formCheckIn: {
         goalId: '',
+        result: '',
+        confidenceLevel: '',
+        currentProgress: 0,
+        answerFirst: '',
+        answerSecond: '',
+        answerThird: '',
+        answerFourth: '',
+        isDelete: false
+      },
+      formCheckInMainResult: {
+        goalId: '',
+        resultId: null,
         result: '',
         confidenceLevel: '',
         currentProgress: 0,
@@ -562,13 +716,15 @@ export default {
       path: null,
       goalDetails: null,
       replyData: null,
-      checkInData: null,
+      mainResult: null,
+      resultDetail: null,
       switchLayout: false,
       relationArray: [
         { GoalId: null, RelatedGoalId: null, Type: null  }
       ],
       loading: false,
       options: [],
+      idMainResult: null
     };
   },
   computed: {
@@ -646,7 +802,7 @@ export default {
       _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
     },
-    async updateMainResult(){
+    async confirmCreateMainResult(){
       var _this = this;
       _this.formCreateMainResult.targetPercent = parseInt(_this.formCreateMainResult.targetPercent);
       await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
@@ -654,6 +810,75 @@ export default {
       _this.modalCreateMainResults = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
+    openModalEditMainResult(item, result){
+      var _this = this;
+      _this.formCreateMainResult = _.cloneDeep(result);
+      _this.modalEditMainResult = true;
+    },
+    async confirmEditMainResult(){
+      var _this = this;
+      _this.formCreateMainResult.targetPercent = parseInt(_this.formCreateMainResult.targetPercent);
+      await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formCreateMainResult);
+      _this.modalEditMainResult = false;
+      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+    },
+    openModalDeleteMainResult(result){
+      var _this = this;
+      _this.idMainResult = result.id;
+      _this.modalDeleteMainResult = true;
+    },
+    async confirmDeleteMainResult(idMainResult){
+      var _this = this;
+      await _this.$store.dispatch("$_checkInUser/deleteMainResult", idMainResult);
+      _this.modalDeleteMainResult = false;
+      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+    },
+    openModalCheckInMainResult(resultDetail){
+      var _this = this;
+      _this.resultDetail = _.cloneDeep(resultDetail);
+      _this.formCheckInMainResult.goalId = resultDetail.goalId;
+      _this.formCheckInMainResult.resultId = resultDetail.id;
+      _this.formCheckInMainResult.companyId = resultDetail.companyId;
+      _this.formCheckInMainResult.currentProgress = resultDetail.progressPercent;
+      _this.formCheckInMainResult.confidenceLevel = resultDetail.confidenceLevel;
+      _this.formCheckInMainResult.result = '',
+      _this.formCheckInMainResult.answerFirst = '',
+      _this.formCheckInMainResult.answerSecond = '',
+      _this.formCheckInMainResult.answerThird = '',
+      _this.formCheckInMainResult.answerFourth = '',
+      _this.modalCheckInMainResult = true;
+    },
+    submitCheckInMainResult: _.debounce(async function () {
+      var _this = this;
+      try {
+        _this.formCheckInMainResult.currentProgress = parseFloat(_this.formCheckInMainResult.currentProgress);
+        await _this.$store.dispatch("$_checkInUser/editCheckInMainResult", _this.formCheckInMainResult);
+        _this.$notify({
+          title: "Chúc mừng",
+          message: "Cập nhật thành công",
+          type: "success",
+        });
+        _this.modalCheckInMainResult = false;
+        _this.formCheckInMainResult = {
+          goalId: '',
+          resultId: null,
+          confidenceLevel: '',
+          currentProgress: 0,
+          result: '',
+          answerFirst: '',
+          answerSecond: '',
+          answerThird: '',
+          answerFourth: '',
+          isDelete: false
+        };
+        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+      } catch (error) {
+        _this.$notify.error({
+          title: "Thất bại",
+          message: "Cập nhật thất bại",
+        });
+      }
+    }, 500),
     handleSwitchLayout(){
       var _this = this;
       _this.switchLayout = ! _this.switchLayout;
@@ -678,10 +903,10 @@ export default {
       _this.searchRequest.title = _this.cycle;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
-    handleModalViewCheckIn(val){
+    handleModalMainResult(val){
       var _this = this;
-      _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
-      _this.modalViewCheckIn = true;
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalViewMainResult = true;
     },
     async handleModalViewFeedback(val){
       var _this = this;
