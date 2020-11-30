@@ -334,13 +334,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kết quả chính</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" />
+                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kết quả mong muốn</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập kết quả mong muốn" />
+                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" />
               </div>
             </div>
           </div>
@@ -348,13 +348,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Link kế hoạch</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" />
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreateMainResult.planLink" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Link kết quả</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" />
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formCreateMainResult.resultLink" />
               </div>
             </div>
           </div>
@@ -369,7 +369,7 @@
         </span>
       </el-dialog>
       <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table">
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
@@ -385,12 +385,19 @@
               <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
               <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : 'Không có nội dung' }}</td>
             </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult(item)">
+                  <font-awesome-icon :icon="['fas', 'plus-circle']" />
+                  <span class="ml-2">Thêm kết quả chính</span>
+                </a>  
+              </td>  
+            </tr>
           </tbody>
         </table>
-        <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult">
-          <font-awesome-icon :icon="['fas', 'plus-circle']" />
-          <span class="ml-2">Thêm kết quả chính</span>
-        </a>
       </div>
     </el-dialog>
 
@@ -544,10 +551,16 @@ export default {
         name: '',
         isDelete: false
       },
+      formCreateMainResult:{
+        title: '',
+        targetPercent: null,
+        planLink: '',
+        resultLink: '',
+        isDelete: false
+      },
       file: null,
       path: null,
       goalDetails: null,
-      checkInClone: null,
       replyData: null,
       checkInData: null,
       switchLayout: false,
@@ -628,12 +641,18 @@ export default {
       _this.formCreateSubGoal.higherUserId = null;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
-    openModalCreateMainResult(){
+    openModalCreateMainResult(item){
       var _this = this;
+      _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
     },
-    updateMainResult(){
-      
+    async updateMainResult(){
+      var _this = this;
+      _this.formCreateMainResult.targetPercent = parseInt(_this.formCreateMainResult.targetPercent);
+      await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
+      _this.formCreateMainResult.goalId = null;
+      _this.modalCreateMainResults = false;
+      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
     handleSwitchLayout(){
       var _this = this;
