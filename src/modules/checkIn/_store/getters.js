@@ -27,6 +27,10 @@ const getGoalList = (state) => {
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
         v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
+        for(var x = 0; x < v.card.length; x++){
+          v.assignObject = v.card[x].assign ? JSON.parse(v.card[x].assign.replace(/'/g, '"')) : '';
+          console.log(v.assignObject);
+        }
         var higherUser = _.find(state.userList, (o)=>{ return o.id === v.higherUserId });
         v.higherUserName = higherUser && higherUser.fullName ? higherUser.fullName : '';
         if(v.checkIn && v.checkIn.length){

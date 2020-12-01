@@ -112,9 +112,42 @@
               <div class="row">
                 <div class="col-12">
                   <el-collapse class="sub-goal">
+                    <el-collapse-item v-if="item.card && item.card.length">
+                      <div slot="title" class="text-primary">Các liên kết</div>
+                      <div class="col-lg-12" v-for="(card, index) in item.card" :key="index">
+                        <div class="card mb-4">
+                          <div class="card-body">
+                            <div class="row">
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Tên liên kết</div>
+                                <div class="content">{{ card.title ? card.title : 'Không có tên liên kết' }}</div>
+                              </div>
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Người phụ trách</div>
+                                <div class="content">{{ card.assign ? userCompany.filter(x => { return x.id === card.assign }) : '' }}</div>
+                              </div>
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Ngày hết hạn</div>
+                                <div class="content">{{ card.dueDate ? card.dueDate.slice(0, 10) : 'Không có thông tin' }}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </el-collapse-item>
+                    <el-collapse-item v-else>
+                      <div slot="title" class="text-primary">Các liên kết</div>
+                      <div>Không có liên kết</div>
+                    </el-collapse-item>
+                  </el-collapse>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <el-collapse class="sub-goal">
                     <el-collapse-item v-if="item.subGoal && item.subGoal.length">
                       <div slot="title" class="text-primary">Các mục tiêu con</div>
-                      <div :class="switchLayout == false ? 'col-lg-12' : 'col-lg-12'" v-for="(sub, index) in item.subGoal" :key="index">
+                      <div class="col-lg-12" v-for="(sub, index) in item.subGoal" :key="index">
                         <div class="card mb-4">
                           <div class="card-body">
                             <div class="row">
@@ -849,7 +882,6 @@ export default {
     await _this.$store.dispatch("$_checkInUser/getUserList");
     await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     await _this.$store.dispatch("$_checkInUser/getAllGoalOfCompany");
-    console.log(_this.questionsCompany);
   },
   methods: {
     clearRelation(){

@@ -18,7 +18,7 @@
             </div>
           </div>
         </div>
-        <div v-for="(item, key) in boardList.myBoard" :key="key" class="col-md-3">
+        <div v-for="(item, key) in boardList.myBoard" :key="key" class="col-md-3 mb-3">
           <router-link :to="`/boardDetail/${item.id}`">
             <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}">
               <div class="card-body d-flex flex-column justify-content-between">
@@ -42,7 +42,7 @@
           <font-awesome-icon :icon="['fas', 'users']" class="icon" />
           <div class="text">Bảng toàn công ty</div>
         </div>
-        <div v-for="(item, key) in boardList.data" :key="key" class="col-md-3">  
+        <div v-for="(item, key) in boardList.data" :key="key" class="col-md-3 mb-3">  
             <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}" @click="showMessage('noPermission')">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between">
