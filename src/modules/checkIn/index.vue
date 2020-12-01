@@ -397,7 +397,7 @@
                   <a class="d-block text-primary mr-2" href="javascript:;" @click="openModalEditMainResult(item, result)">
                     <font-awesome-icon :icon="['fas', 'edit']" />
                   </a>
-                  <a class="d-block text-primary" href="javascript:;" @click="openModalDeleteMainResult(result)">
+                  <a class="d-block text-primary" href="javascript:;" @click="openModalDeleteMainResult(item, result)">
                     <font-awesome-icon :icon="['fas', 'trash']" />
                   </a>
                 </div>
@@ -566,7 +566,7 @@
         <button class="btn btn-standard btn-medium mr-3" @click="modalDeleteMainResult = false">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="confirmDeleteMainResult(idDeleteMainResult)">
+        <button class="btn btn-primary btn-medium" @click="confirmDeleteMainResult">
           Xác nhận
         </button>
       </span>
@@ -829,16 +829,18 @@ export default {
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
       _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idEditMainResult });
     },
-    openModalDeleteMainResult(result){
+    openModalDeleteMainResult(item, result){
       var _this = this;
+      _this.idDeleteMainItem = item.id;
       _this.idDeleteMainResult = result.id;
       _this.modalDeleteMainResult = true;
     },
-    async confirmDeleteMainResult(idMainResult){
+    async confirmDeleteMainResult(){
       var _this = this;
-      await _this.$store.dispatch("$_checkInUser/deleteMainResult", idMainResult);
+      await _this.$store.dispatch("$_checkInUser/deleteMainResult", _this.idDeleteMainResult);
       _this.modalDeleteMainResult = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idDeleteMainItem });
     },
     openModalCheckInMainResult(resultDetail){
       var _this = this;
