@@ -525,13 +525,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kết quả chính</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title"/>
+                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kết quả mong muốn</label>
-                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" />
+                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" />
               </div>
             </div>
           </div>
@@ -539,13 +539,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Link kế hoạch</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreateMainResult.planLink" />
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formEditMainResult.planLink" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Link kết quả</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formCreateMainResult.resultLink" />
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formEditMainResult.resultLink" />
               </div>
             </div>
           </div>
@@ -566,7 +566,7 @@
         <button class="btn btn-standard btn-medium mr-3" @click="modalDeleteMainResult = false">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="confirmDeleteMainResult(idMainResult)">
+        <button class="btn btn-primary btn-medium" @click="confirmDeleteMainResult(idDeleteMainResult)">
           Xác nhận
         </button>
       </span>
@@ -712,6 +712,7 @@ export default {
         resultLink: '',
         isDelete: false
       },
+      formEditMainResult:'',
       file: null,
       path: null,
       goalDetails: null,
@@ -724,7 +725,9 @@ export default {
       ],
       loading: false,
       options: [],
-      idMainResult: null
+      idCreateMainResult: null,
+      idDeleteMainResult: null,
+      idEditMainResult: null,
     };
   },
   computed: {
@@ -799,6 +802,7 @@ export default {
     },
     openModalCreateMainResult(item){
       var _this = this;
+      _this.idCreateMainResult = item.id
       _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
     },
@@ -809,22 +813,25 @@ export default {
       _this.formCreateMainResult.goalId = null;
       _this.modalCreateMainResults = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idCreateMainResult });
     },
     openModalEditMainResult(item, result){
       var _this = this;
-      _this.formCreateMainResult = _.cloneDeep(result);
+      _this.idEditMainResult = item.id
+      _this.formEditMainResult = _.cloneDeep(result);
       _this.modalEditMainResult = true;
     },
     async confirmEditMainResult(){
       var _this = this;
-      _this.formCreateMainResult.targetPercent = parseInt(_this.formCreateMainResult.targetPercent);
-      await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formCreateMainResult);
+      _this.formEditMainResult.targetPercent = parseInt(_this.formEditMainResult.targetPercent);
+      await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
       _this.modalEditMainResult = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idEditMainResult });
     },
     openModalDeleteMainResult(result){
       var _this = this;
-      _this.idMainResult = result.id;
+      _this.idDeleteMainResult = result.id;
       _this.modalDeleteMainResult = true;
     },
     async confirmDeleteMainResult(idMainResult){
