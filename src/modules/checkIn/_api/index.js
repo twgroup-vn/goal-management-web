@@ -50,6 +50,22 @@ const createSubGoal = async (request) => {
 const createMainResult = async (request) => {
     return Vue.prototype.$http.post(`/api/result/create`, request);
 }
+
+const updateMainResult = async (request) => {
+    return Vue.prototype.$http.post(`/api/result/update`, request);
+}
+
+const deleteMainResult = async (request) => {
+    return Vue.prototype.$http.delete(`/api/result/delete/${request}`);
+}
+
+const createCheckInMainResult = async (request) => {
+    return Vue.prototype.$http.post(`/api/checkIn/create`, request);
+}
+  
+const updateCheckInMainResult = async (request) => {
+    return Vue.prototype.$http.post(`/api/checkIn/update`, request);
+}
   
 export default {
     getUserList,
@@ -62,5 +78,9 @@ export default {
     getAllGoalOfCompany,
     createRelation,
     createSubGoal,
-    createMainResult
+    createMainResult,
+    updateMainResult,
+    deleteMainResult,
+    createCheckInMainResult,
+    updateCheckInMainResult
 }

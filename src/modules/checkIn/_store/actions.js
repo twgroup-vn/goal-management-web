@@ -45,6 +45,22 @@ const createMainResult = async (context, request) => {
   return response;
 };
 
+const updateMainResult = async (context, request) => {
+  let response = await api.updateMainResult(request);
+  return response;
+};
+
+const deleteMainResult = async (context, request) => {
+  let response = await api.deleteMainResult(request);
+  return response;
+};
+
+const editCheckInMainResult = async (context, request) => {
+  console.log(request.id , request);
+  let response = request.id && request.id != "" ? await api.updateCheckInMainResult(request) : await api.createCheckInMainResult(request);
+  return response.data;
+};
+
 export default {
   getUserList,
   uploadImage,
@@ -54,5 +70,8 @@ export default {
   editCheckIn,
   createRelation,
   createSubGoal,
-  createMainResult
+  createMainResult,
+  updateMainResult,
+  deleteMainResult,
+  editCheckInMainResult
 }

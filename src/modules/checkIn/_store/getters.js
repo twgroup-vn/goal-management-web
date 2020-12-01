@@ -26,6 +26,7 @@ const getGoalList = (state) => {
     var currentDate = moment(new Date()).format('DD/MM/YYYY');
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
+        v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
         var higherUser = _.find(state.userList, (o)=>{ return o.id === v.higherUserId });
         v.higherUserName = higherUser && higherUser.fullName ? higherUser.fullName : '';
         if(v.checkIn && v.checkIn.length){
