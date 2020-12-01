@@ -56,7 +56,6 @@ const deleteMainResult = async (context, request) => {
 };
 
 const editCheckInMainResult = async (context, request) => {
-  console.log(request.id , request);
   let response = request.id && request.id != "" ? await api.updateCheckInMainResult(request) : await api.createCheckInMainResult(request);
   return response.data;
 };
