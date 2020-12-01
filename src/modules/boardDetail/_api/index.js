@@ -54,6 +54,10 @@ const advanceSearch = async (request) => {
     return Vue.prototype.$http.get(`/api/card/advanceSearch?boardId=${request.boardId}&description=${request.description}`);
 }
 
+const getAllGoalOfCompany = async () => {
+    return Vue.prototype.$http.get(`/api/goal/getAllGoalOfCompany`);
+}
+
 export default {
     getUserList,
     getBoardDetail,
@@ -67,5 +71,6 @@ export default {
     moveCardGroup,
     getCardById,
     deleteCard,
-    advanceSearch
+    advanceSearch,
+    getAllGoalOfCompany
 }

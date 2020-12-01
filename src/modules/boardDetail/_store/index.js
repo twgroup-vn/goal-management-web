@@ -7,6 +7,7 @@ const state = {
   total: 0,
   userList: null,
   boardDetail: null,
+  companyGoalList: null,
   card: {},
   cardGroup: [],
   searchRequest: {

@@ -36,8 +36,19 @@ const getListCard = (state) => {
   return data;
 };
 
+const getCompanyGoalList = (state) => {
+  var data = {};
+  if (state.companyGoalList) {
+    data = _.map(state.companyGoalList, (v) => {
+      return v;
+    });
+  }
+  return data;
+};
+
 export default {
     getUserList,
     getBoardDetail,
-    getListCard
+    getListCard,
+    getCompanyGoalList
 };

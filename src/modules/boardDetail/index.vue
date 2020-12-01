@@ -337,6 +337,24 @@
                   </el-select>
                 </div>
               </el-collapse-item>
+              <el-collapse-item title="Liên kết mục tiêu" name="5">
+                <div class="p-2">
+                  <el-select
+                    v-model="formUpdate.goalId"
+                    filterable
+                    :remote-method="remoteMethod"
+                    reserve-keyword
+                    placeholder="Chọn mục tiêu liên kết"
+                    :loading="loading">
+                    <el-option
+                      v-for="goal in options"
+                      :key="goal.id"
+                      :label="goal.name"
+                      :value="goal.id">
+                    </el-option>
+                  </el-select>
+                </div>
+              </el-collapse-item>
             </el-collapse>
           </div>   
         </div>
@@ -626,7 +644,8 @@ export default {
       formMoveManual: {
         title: "",
       },
-      loading: false
+      loading: false,
+      options: [],
     };
   },
   computed: {
@@ -638,6 +657,7 @@ export default {
         userList: "$_boardDetail/getUserList",
         listCard: "$_boardDetail/getListCard",
         boardDetail: "$_boardDetail/getBoardDetail",
+        companyGoalList: "$_boardDetail/getCompanyGoalList",
     }),
   },
   async created() {
@@ -649,6 +669,8 @@ export default {
     _this.href = window.location.href;
     await _this.$store.dispatch("$_boardDetail/getUserList");
     await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+    await _this.$store.dispatch("$_boardDetail/getAllGoalOfCompany");
+    _this.options = _.cloneDeep(_this.companyGoalList);
     if(_this.$route.query.cardId){
       _this.href = _this.href.replace(`?cardId=${_this.$route.query.cardId}`,"");
       let cardInfo = await _this.$store.dispatch("$_boardDetail/getCardById", _this.$route.query.cardId);
@@ -664,6 +686,22 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    remoteMethod(query) {
+      console.log(query);
+        var _this = this;
+        if (query !== '') {
+          _this.loading = true;
+          setTimeout(() => {
+            _this.loading = false;
+            _this.options = _this.companyGoalList.filter(item => {
+              return item.name.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          _this.options = [];
+        }
+    },    
     handleSelect(item){
       var _this = this;
       _this.openCardDetail(item);

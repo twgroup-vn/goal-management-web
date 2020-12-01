@@ -79,6 +79,13 @@ const advanceSearch = async (context, request) => {
     return response.data;
 };
 
+
+const getAllGoalOfCompany = async (context, request) => {
+    let response = await api.getAllGoalOfCompany(request);
+    context.commit('SET_COMPANY_GOAL_LIST', response.data);
+  };
+  
+
 export default {
     getUserList,
     getBoardDetail,
@@ -92,5 +99,6 @@ export default {
     updateCardGroup,
     getCardById,
     deleteCard,
-    advanceSearch
+    advanceSearch,
+    getAllGoalOfCompany
 }
