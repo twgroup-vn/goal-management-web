@@ -16,11 +16,11 @@
                             <div class="chat-list" :class="conversationId == item.id ? 'active' : ''" v-for="(item, index) in listConversation" :key="index" @click="getConversationDetail(item)">
                                 <div class="d-flex align-items-center">
                                     <div>
-                                        <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.userInfo.avatar})` }" v-if="item.userInfo.avatar"></div>
+                                        <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.userInfo.avatar})` }" v-if="item && item.userInfo && item.userInfo.avatar"></div>
                                         <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
                                     </div>
                                     <div class="ml-3">
-                                        <div class="name">{{ item.userInfo.fullName ? item.userInfo.fullName : '' }}</div>
+                                        <div class="name">{{ item && item.userInfo && item.userInfo.fullName ? item.userInfo.fullName : '' }}</div>
                                         <div class="lastest-chat" :class="{isRead: !item.isRead}">{{ item.latestMessage ? item.latestMessage : '' }}</div>
                                     </div>
                                 </div>
@@ -39,11 +39,11 @@
                                 <div v-if="item.id !== userId">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.avatar})` }" v-if="item.avatar"></div>
+                                            <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${item.avatar})` }" v-if="item && item.avatar"></div>
                                             <div class="avatar-circle chatList" :style="{ backgroundImage: `url(${NoAvatar})` }" v-else></div>
                                         </div>
                                         <div class="ml-3">
-                                            <div class="name">{{ item.fullName ? item.fullName : '' }}</div>
+                                            <div class="name">{{ item && item.fullName ? item.fullName : '' }}</div>
                                         </div>
                                     </div>
                                 </div>
