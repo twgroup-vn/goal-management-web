@@ -141,9 +141,9 @@
                                 <div class="content">{{ card.dueDate ? card.dueDate.slice(0, 10) : 'Không có thông tin' }}</div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                <el-tooltip class="item" effect="dark" content="Xem công việc liên kết" placement="top-start">
+                                <el-tooltip class="item" effect="dark" content="Chuyển tới quản lý công việc" placement="top-start">
                                   <a class="d-block text-primary mr-3" href="javascript:;" @click="redirectToCardDetail(card)">
-                                    <font-awesome-icon :icon="['fas', 'eye']" />
+                                    <font-awesome-icon :icon="['fas', 'directions']" />
                                   </a>
                                 </el-tooltip>
                               </div>

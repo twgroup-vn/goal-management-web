@@ -130,64 +130,95 @@
                     </div>
                   </div>
                 </div>
+                <div class="row" v-if="item.card.length">
+                  <div class="col-12">
+                    <el-collapse class="sub-goal">
+                      <el-collapse-item>
+                        <div slot="title">
+                          <span class="text-primary mr-2">Các liên kết</span>
+                          <span>({{ item.card.length + ' ' + 'liên kết' }})</span>
+                        </div>
+                        <div class="col-lg-12" v-for="(card, index) in item.card" :key="index">
+                          <div class="card mb-4">
+                            <div class="card-body">
+                              <div class="row">
+                                <div :class="switchLayout == false ? 'col-md-4 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Tên liên kết</div>
+                                  <div class="content">{{ card.title ? card.title : 'Không có tên liên kết' }}</div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Người phụ trách</div>
+                                  <div class="content d-flex align-items-center">
+                                    <div class="group-avatar">
+                                      <div class="avatar-circle original">
+                                        <div class="avatar-with-img" :style="{ backgroundImage: `url(${card && card.assign ? card.avatarAssign : ''})` }"></div>
+                                      </div>
+                                    </div>
+                                    <div class="ml-2">{{ card.assign ? card.assignee : '' }}</div>
+                                  </div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Ngày hết hạn</div>
+                                  <div class="content">{{ card.dueDate ? card.dueDate.slice(0, 10) : 'Không có thông tin' }}</div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <el-tooltip class="item" effect="dark" content="Chuyển tới quản lý công việc" placement="top-start">
+                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="redirectToCardDetail(card)">
+                                      <font-awesome-icon :icon="['fas', 'directions']" />
+                                    </a>
+                                  </el-tooltip>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </el-collapse-item>
+                    </el-collapse>
+                  </div>
+                </div>
+                <div class="row" v-if="item.subGoal.length">
+                  <div class="col-12">
+                    <el-collapse class="sub-goal">
+                      <el-collapse-item>
+                        <div slot="title">
+                          <span class="text-primary mr-2">Các mục tiêu con</span>
+                          <span>({{ item.subGoal.length + ' ' + 'mục tiêu con' }})</span>
+                        </div>
+                        <div class="col-lg-12" v-for="(sub, index) in item.subGoal" :key="index">
+                          <div class="card mb-4">
+                            <div class="card-body">
+                              <div class="row">
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Tên các mục tiêu con</div>
+                                  <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Mức độ tự tin</div>
+                                  <div class="content">{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Trạng thái</div>
+                                  <div class="content"> 
+                                    <div :class="`tag ${commonData.goalStatusDisplay[sub.status].color}`">{{ sub.status ? commonData.goalStatusDisplay[sub.status].name : '' }}</div>
+                                  </div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Ngày tạo</div>
+                                  <div class="content">{{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </el-collapse-item>
+                    </el-collapse>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
     </div>
-
-    <el-dialog title="Form check-in hàng tuần" :visible.sync="modalCheckIn" class="transition-box-center" width="80%" top="0vh" :close-on-click-modal="false" :close-on-press-escape="false">
-      <div class="modal-body">
-        <el-tabs v-model="activeTab">
-          <el-tab-pane label="Check-in" name="check-in">
-            <div class="row my-2">
-              <div class="col-md-4 title">Kết quả</div>
-              <div class="col-md-8">Hoàn thành được 60% dự án</div>
-            </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">Mục tiêu</div>
-              <div class="col-md-8">
-                <input class="input-primary medium" placeholder="Nhập mục tiêu" />
-              </div>
-            </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">Tiến độ</div>
-              <div class="col-md-8">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio" id="veryGood" />
-                  <label class="form-check-label" for="veryGood">
-                    Rất ổn
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio" id="good" />
-                  <label class="form-check-label" for="good">Ổn</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio" id="bad" />
-                  <label class="form-check-label" for="bad">Không ổn</label>
-                </div>
-              </div>
-            </div>
-            <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
-              <div class="col-md-4 title">{{ item.question }}</div>
-              <div class="col-md-8">
-                <textarea rows="4" class="w-100"></textarea>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="Lịch sử" name="history">Lịch sử</el-tab-pane>
-        </el-tabs>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false">
-          Hủy
-        </button>
-        <button class="btn btn-primary btn-medium" @click="modalCheckIn = false">
-          Xác nhận
-        </button>
-      </span>
-    </el-dialog>
 
     <el-dialog title="Form phản hồi, ghi nhận" :visible.sync="modalFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="modal-body">
@@ -577,7 +608,6 @@ export default {
       commonData,
       cycle: '',
       description: '',
-      modalCheckIn: false,
       modalFeedback: false,
       modalViewFeedback: false,
       modalViewCheckIn: false,
@@ -678,10 +708,6 @@ export default {
     },
     format(percentage) {
       return percentage === 100 ? "Full" : `${percentage}%`;
-    },
-    handleOpenModalCheckIn() {
-      var _this = this;
-      _this.modalCheckIn = true;
     },
     handleModalViewFeedback(val){
       var _this = this;

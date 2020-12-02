@@ -27,6 +27,12 @@ const getGoalList = (state) => {
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
         v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
+        v.card = _.map(v.card, (x) => {
+          x.assignObject = x.assign ? JSON.parse(x.assign.replace(/'/g, '"')) : '';
+          x.assignee = state.userList.find(o => o.id == x.assignObject).fullName;
+          x.avatarAssign = state.userList.find(o => o.id == x.assignObject).avatar;
+          return x;
+        });
         var userDetails = _.find(state.userList, (o)=>{ return o.id === v.userId });
         v.convertName = userDetails.fullName.split(" ").map(x => x[0]).join("").slice(-2);
         v.avatar = userDetails.avatar ? userDetails.avatar : '';
