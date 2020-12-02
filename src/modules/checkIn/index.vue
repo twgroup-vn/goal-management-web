@@ -1007,6 +1007,7 @@ export default {
     submitCheckInMainResult: _.debounce(async function () {
       var _this = this;
       try {
+        var goalIdTemp = _this.formCheckInMainResult.goalId;
         _this.formCheckInMainResult.currentProgress = parseFloat(_this.formCheckInMainResult.currentProgress);
         await _this.$store.dispatch("$_checkInUser/editCheckInMainResult", _this.formCheckInMainResult);
         _this.$notify({
@@ -1028,6 +1029,8 @@ export default {
           isDelete: false
         };
         await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+        _this.modalViewMainResult = false;
+        _this.handleModalMainResult(goalIdTemp);
       } catch (error) {
         _this.$notify.error({
           title: "Thất bại",
