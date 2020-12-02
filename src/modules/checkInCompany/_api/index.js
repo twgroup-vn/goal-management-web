@@ -20,9 +20,14 @@ const createReply = async (request) => {
 const getAllGoalOfCompany = async () => {
     return Vue.prototype.$http.get(`/api/goal/getAllGoalOfCompany`);
 }
+
+const getBoardId = async (request) => {
+    return Vue.prototype.$http.get(`/api/cardGroup/getBoardId/${request}`);
+}
   
 export default {
     getUserList,
+    getBoardId,
     getGoalListOfCompany,
     getAllGoalOfUser,
     createReply,

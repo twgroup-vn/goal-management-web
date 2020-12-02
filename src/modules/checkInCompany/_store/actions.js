@@ -29,8 +29,14 @@ const getAllGoalOfCompany = async (context, request) => {
   context.commit('SET_COMPANY_GOAL_LIST', response.data);
 }
 
+const getBoardId = async (context, request) => {
+  let response = await api.getBoardId(request);
+  return response.data;
+};
+
 export default {
   getUserList,
+  getBoardId,
   getGoalListOfCompany,
   getAllGoalOfUser,
   handleChangeCycleIdOfGoalUser,

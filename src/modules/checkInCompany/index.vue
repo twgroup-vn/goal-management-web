@@ -677,6 +677,12 @@ export default {
     },
   },
   methods: {
+    async redirectToCardDetail(card){
+      var _this = this;
+      var boardIdOfCardGroup =  await _this.$store.dispatch("$_checkInCompany/getBoardId", card.cardGroupId);
+      var path = `/boardDetail/${boardIdOfCardGroup}?cardId=${card.id}`;
+      window.open(path, "_blank");
+    },
     handleSwitchLayout(){
       var _this = this;
       _this.switchLayout = ! _this.switchLayout;
