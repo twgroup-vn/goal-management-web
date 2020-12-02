@@ -65,4 +65,7 @@ export const routes = [
     {
         path: '/thirdParty', name: 'thirdParty', component: () => import('../views/thirdParty.vue'), display: 'Hệ thống thứ ba'
     },
+    {
+        path: '*', name: 'errorPage', component: () => import('../views/page404.vue'), display: 'Không tìm thấy trang'
+    },
 ]
