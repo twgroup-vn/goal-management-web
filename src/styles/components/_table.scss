@@ -6,4 +6,9 @@
     th{
         font-family: $Primary-Semibold;
     }
+    &.center{
+        td{
+            vertical-align: middle;
+        }
+    }
 }
