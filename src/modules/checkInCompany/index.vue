@@ -104,7 +104,7 @@
                   <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid grid d-flex flex-column justify-content-center'">
                     <div class="title">Kết quả chính</div>
                     <div class="content">
-                      <a href="javascript:;" class="result" @click="handleModalViewCheckIn(item.id)">{{item.checkIn && item.checkIn.length ? item.checkIn.length : 0}} kết quả</a>
+                      <a href="javascript:;" class="result" @click="handleModalViewMainResult(item.id)">{{item.mainResult && item.mainResult.length ? item.mainResult.length : 0}} kết quả</a>
                     </div>
                   </div>
                   <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -303,32 +303,120 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="Form xem kết quả chính" :visible.sync="modalViewCheckIn" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Kết quả chính" :visible.sync="modalViewMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table">
           <thead class="thead-light">
             <tr>
-              <th>{{ questionsCompany.find(x => x.orderNo === 1).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 2).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 3).question }}</th>
-              <th>{{ questionsCompany.find(x => x.orderNo === 4).question }}</th>
-              <th>Mức độ tự tin</th>
-              <th>Phần trăm tiến độ</th>
-              <th>Ngày check-in gần nhất</th>
+              <th>Kết quả chính</th>
+              <th>Kết quả mong muốn</th>
+              <th>Link kế hoạch</th>
+              <th>Link kết quả</th>
+              <th></th>
             </tr>
           </thead>
-         <tbody v-for="(item, index) in checkInData" :key="index">
-            <tr v-for="(check, key) in item.checkIn" :key="key"> 
-              <td>{{ check.answerFirst ? check.answerFirst : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerSecond ? check.answerSecond : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerThird ? check.answerThird : 'Không có câu trả lời' }}</td>
-              <td>{{ check.answerFourth ? check.answerFourth : 'Không có câu trả lời' }}</td>
-              <td>{{ check.confidenceLevel ?  commonData.confidenceLevelDisplay[check.confidenceLevel] : ''}}</td>
-              <td>{{ check.currentProgress ? check.currentProgress + '%' : 'Không có kết quả' }}</td>
-              <td>{{ item.lastCheckInDate ? item.lastCheckInDate.slice(0, 10) : '' }}</td>
+         <tbody v-for="(item, index) in mainResultData" :key="index">
+            <tr v-for="(result, key) in item.mainResult" :key="key"> 
+              <td>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <div v-if="result && result.title" class="d-flex align-items-center">
+                      <div class="mr-2">{{ result.title }}</div>
+                      <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                        <a href="javascript:;" @click="openModalReadMainResult(result)"><font-awesome-icon :icon="['fas', 'eye']" class="text-primary"/></a>
+                      </el-tooltip>
+                    </div>
+                    <div v-else class="text-disabled">Không có nội dung</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+              </td>
+              <td>
+                <div v-if="result && result.planLink">{{ result.planLink }}</div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </td>
+              <td>
+                <div v-if="result && result.resultLink">{{ result.resultLink }}</div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="Xem check-in kết quả chính" :visible.sync="modalReadMainResult" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="card mb-3" v-for="item in checkInMainResultData" :key="item.id">
+          <div class="card-body">
+            <div class="row">
+              <label class="col-6 font-weight-bold">Kết quả</label>
+              <div class="col-6">
+                <div v-if="item && item.result">
+                  {{ item.result }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Mức độ tự tin</label>
+              <div class="col-6">{{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Tiến độ</label>
+              <div class="col-6">
+                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Ngày tạo</label>
+              <div class="col-6">
+                <div v-if="item && item.createdAt">
+                  {{ item.createdAt.slice(0, 10) }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 1).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFirst">
+                  {{ item.answerFirst }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 2).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerSecond">
+                  {{ item.answerSecond }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 3).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerThird">
+                  {{ item.answerThird }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 4).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFourth">
+                  {{ item.answerFourth }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </el-dialog>
 
@@ -494,6 +582,8 @@ export default {
       modalViewFeedback: false,
       modalViewCheckIn: false,
       modalRelation: false,
+      modalViewMainResult: false,
+      modalReadMainResult: false,
       activeTab: "check-in",
       cycleId: '',
       formData:{
@@ -509,7 +599,8 @@ export default {
       rawEvaluateCompany:null,
       evaluateUser: null,
       replyData: null,
-      checkInData: null,
+      mainResultData: null,
+      checkInMainResultData: null,
       relationData: null,
       switchLayout: false,
     };
@@ -597,10 +688,15 @@ export default {
       _this.replyData = _.filter(_this.goalList, (o)=>{ return o.id === val });
       _this.modalViewFeedback = true;
     },
-    handleModalViewCheckIn(val){
+    handleModalViewMainResult(val){
       var _this = this;
-      _this.checkInData = _.filter(_this.goalList, (o)=>{ return o.id === val });
-      _this.modalViewCheckIn = true;
+      _this.mainResultData = _.filter(_this.goalList, (o)=>{ return o.id === val });
+      _this.modalViewMainResult = true;
+    },
+    openModalReadMainResult(result){
+      var _this = this;
+      _this.checkInMainResultData = result.checkIn;
+      _this.modalReadMainResult = true;
     },
     handleModalRelation(val){
       var _this = this;

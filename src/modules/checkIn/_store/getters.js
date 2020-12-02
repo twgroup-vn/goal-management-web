@@ -27,10 +27,12 @@ const getGoalList = (state) => {
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
         v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
-        for(var x = 0; x < v.card.length; x++){
-          v.assignObject = v.card[x].assign ? JSON.parse(v.card[x].assign.replace(/'/g, '"')) : '';
-          console.log(v.assignObject);
-        }
+        v.card = _.map(v.card, (x) => {
+          x.assignObject = x.assign ? JSON.parse(x.assign.replace(/'/g, '"')) : '';
+          x.assignee = state.userList.find(o => o.id == x.assignObject).fullName;
+          x.avatarAssign = state.userList.find(o => o.id == x.assignObject).avatar;
+          return x;
+        });
         var higherUser = _.find(state.userList, (o)=>{ return o.id === v.higherUserId });
         v.higherUserName = higherUser && higherUser.fullName ? higherUser.fullName : '';
         if(v.checkIn && v.checkIn.length){
