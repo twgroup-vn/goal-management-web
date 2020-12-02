@@ -66,9 +66,14 @@ const createCheckInMainResult = async (request) => {
 const updateCheckInMainResult = async (request) => {
     return Vue.prototype.$http.post(`/api/checkIn/update`, request);
 }
-  
+
+const getBoardId = async (request) => {
+    return Vue.prototype.$http.get(`/api/cardGroup/getBoardId/${request}`);
+}
+
 export default {
     getUserList,
+    getBoardId,
     uploadImage,
     createGoal,
     updateGoal,

@@ -60,8 +60,14 @@ const editCheckInMainResult = async (context, request) => {
   return response.data;
 };
 
+const getBoardId = async (context, request) => {
+  let response = await api.getBoardId(request);
+  return response.data;
+};
+
 export default {
   getUserList,
+  getBoardId,
   uploadImage,
   getGoalListOfUser,
   getAllGoalOfCompany,

@@ -125,7 +125,7 @@
                                 <div class="title">Tên liên kết</div>
                                 <div class="content">{{ card.title ? card.title : 'Không có tên liên kết' }}</div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-4 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Người phụ trách</div>
                                 <div class="content d-flex align-items-center">
                                   <div class="group-avatar">
@@ -136,9 +136,16 @@
                                   <div class="ml-2">{{ card.assign ? card.assignee : '' }}</div>
                                 </div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-4 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Ngày hết hạn</div>
                                 <div class="content">{{ card.dueDate ? card.dueDate.slice(0, 10) : 'Không có thông tin' }}</div>
+                              </div>
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <el-tooltip class="item" effect="dark" content="Xem công việc liên kết" placement="top-start">
+                                  <a class="d-block text-primary mr-3" href="javascript:;" @click="redirectToCardDetail(card)">
+                                    <font-awesome-icon :icon="['fas', 'eye']" />
+                                  </a>
+                                </el-tooltip>
                               </div>
                             </div>
                           </div>
@@ -889,6 +896,12 @@ export default {
     await _this.$store.dispatch("$_checkInUser/getAllGoalOfCompany");
   },
   methods: {
+    async redirectToCardDetail(card){
+      var _this = this;
+      var boardIdOfCardGroup =  await _this.$store.dispatch("$_checkInUser/getBoardId", card.cardGroupId);
+      var path = `/boardDetail/${boardIdOfCardGroup}?cardId=${card.id}`;
+      window.open(path, "_blank");
+    },
     clearRelation(){
       var _this = this;
       _this.relationArray = [
