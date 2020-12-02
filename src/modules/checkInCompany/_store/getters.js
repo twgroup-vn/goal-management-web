@@ -26,6 +26,7 @@ const getGoalList = (state) => {
     var currentDate = moment(new Date()).format('DD/MM/YYYY');
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
+        v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
         var userDetails = _.find(state.userList, (o)=>{ return o.id === v.userId });
         v.convertName = userDetails.fullName.split(" ").map(x => x[0]).join("").slice(-2);
         v.avatar = userDetails.avatar ? userDetails.avatar : '';
