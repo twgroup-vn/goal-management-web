@@ -417,7 +417,7 @@
         </span>
       </el-dialog>
       <div class="table-responsive">
-        <table class="table">
+        <table class="table center">
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
@@ -866,9 +866,7 @@ export default {
       ],
       loading: false,
       options: [],
-      idCreateMainResult: null,
-      idDeleteMainResult: null,
-      idEditMainResult: null,
+      idTempMainResult: null,
     };
   },
   computed: {
@@ -949,7 +947,7 @@ export default {
     },
     openModalCreateMainResult(item){
       var _this = this;
-      _this.idCreateMainResult = item.id
+      _this.idTempMainResult = item.id
       _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
     },
@@ -960,11 +958,11 @@ export default {
       _this.formCreateMainResult.goalId = null;
       _this.modalCreateMainResults = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idCreateMainResult });
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
     },
     openModalEditMainResult(item, result){
       var _this = this;
-      _this.idEditMainResult = item.id
+      _this.idTempMainResult = item.id
       _this.formEditMainResult = _.cloneDeep(result);
       _this.modalEditMainResult = true;
     },
@@ -974,11 +972,11 @@ export default {
       await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
       _this.modalEditMainResult = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idEditMainResult });
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
     },
     openModalDeleteMainResult(item, result){
       var _this = this;
-      _this.idDeleteMainItem = item.id;
+      _this.idTempMainResult = item.id;
       _this.idDeleteMainResult = result.id;
       _this.modalDeleteMainResult = true;
     },
@@ -987,7 +985,7 @@ export default {
       await _this.$store.dispatch("$_checkInUser/deleteMainResult", _this.idDeleteMainResult);
       _this.modalDeleteMainResult = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idDeleteMainItem });
+      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
     },
     openModalCheckInMainResult(resultDetail){
       var _this = this;
