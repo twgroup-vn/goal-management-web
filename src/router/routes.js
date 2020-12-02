@@ -63,6 +63,6 @@ export const routes = [
     },
     // Third party System
     {
-        path: '/thirdParty', name: 'thirdParty', component: () => import('../views/thirdParty.vue'), display: 'Hệ thống thứ ba', beforeEnter: noAuth
+        path: '/thirdParty', name: 'thirdParty', component: () => import('../views/thirdParty.vue'), display: 'Hệ thống thứ ba'
     },
 ]
