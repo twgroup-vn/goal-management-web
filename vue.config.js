@@ -1,4 +1,4 @@
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/goal-management-web/' : '',
+  publicPath: process.env.NODE_ENV === 'production' ? '' : '',
 };
