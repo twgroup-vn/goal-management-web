@@ -160,7 +160,8 @@ const landscapeImages = [
   // '31.jpg'
 ];
 
-const HR_DOMAIN = "http://dev-twedu.southeastasia.cloudapp.azure.com:5007";
+// const HR_DOMAIN = "http://dev-twedu.southeastasia.cloudapp.azure.com:5007";
+const HR_DOMAIN = "https://my.twgroup.vn";
 const HR_TOKEN_AUTHORIZE =  `${HR_DOMAIN}/NhanVien/DangNhap/ChungThuc`;
 const HR_GET_USER_LOGIN = `${HR_DOMAIN}/NhanVien/DangNhap/ThongTinDangNhap`;
 const HR_LOGOUT = `${HR_DOMAIN}/NhanVien/DangXuat`;
