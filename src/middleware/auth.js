@@ -10,7 +10,7 @@ export default async function auth(to, from, next) {
     let authorize = await store.dispatch('$_loginPage/authorizeHRLogin', refreshToken);
     Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${authorize}`;
     let getUserInfoFromHRPort = await store.dispatch('$_loginPage/getUserInfoFromHRPort', refreshToken);
-    getUserInfoFromHRPort = JSON.parse(getUserInfoFromHRPort.value);
+    getUserInfoFromHRPort = getUserInfoFromHRPort && getUserInfoFromHRPort.value ? JSON.parse(getUserInfoFromHRPort.value) : null;
     await store.dispatch('$_loginPage/getToken', getUserInfoFromHRPort.MaNhanVien);
     Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     if(localStorage.getItem('companyId')){
