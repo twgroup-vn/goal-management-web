@@ -160,11 +160,15 @@ const landscapeImages = [
   // '31.jpg'
 ];
 
-// const HR_DOMAIN = "http://dev-twedu.southeastasia.cloudapp.azure.com:5007";
-const HR_DOMAIN = "https://twg-hr.twgroup.vn";
+const HR_DOMAIN = "http://dev-twedu.southeastasia.cloudapp.azure.com:5007";
+// const HR_DOMAIN = "https://twg-hr.twgroup.vn";
 const HR_TOKEN_AUTHORIZE =  `${HR_DOMAIN}/NhanVien/DangNhap/ChungThuc`;
 const HR_GET_USER_LOGIN = `${HR_DOMAIN}/NhanVien/DangNhap/ThongTinDangNhap`;
 const HR_LOGOUT = `${HR_DOMAIN}/NhanVien/DangXuat`;
+const HR_SET_PERMISSION = `${HR_DOMAIN}/API/UpdateAccessModuleControl`;
+const COMPANY_HR_PORT = "TWGROUP";
+const KPI_CLIENT_URL = "http://localhost:8080/checkIn";
+const COMPANY_KPI = "CO_0001";
 
 export default{
   optionLangEN,
@@ -190,5 +194,9 @@ export default{
   HR_DOMAIN,
   HR_TOKEN_AUTHORIZE,
   HR_GET_USER_LOGIN,
-  HR_LOGOUT
+  HR_LOGOUT,
+  HR_SET_PERMISSION,
+  COMPANY_HR_PORT,
+  KPI_CLIENT_URL,
+  COMPANY_KPI
 }

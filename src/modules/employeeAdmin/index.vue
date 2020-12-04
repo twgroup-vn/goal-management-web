@@ -153,11 +153,13 @@
 import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import _ from 'lodash';
+import commonData from '../../utils/common-data';
 export default {
   components: {},
   data() {
     return {
       ids: [],
+      commonData,
       isCheckAll: false,
       dialogVisible: false,
       dialogEditVisible: false,
@@ -247,6 +249,7 @@ export default {
       var _this = this;
       try {
         await _this.$store.dispatch("$_employeeAdmin/addEmployee", _this.formData);
+        await _this.updateAccessModulesFromHR();
         _this.$notify({
           title: "Chúc mừng",
           message: "Cập nhật thành công",
@@ -265,6 +268,7 @@ export default {
       var _this = this;
       try {
         await _this.$store.dispatch("$_employeeAdmin/addEmployee", _this.formEdit);
+        await _this.updateAccessModulesFromHR();
         _this.$notify({
           title: "Chúc mừng",
           message: "Cập nhật thành công",
@@ -278,7 +282,20 @@ export default {
           message: "Cập nhật thất bại",
         });
       }
-    }, 500),        
+    }, 500),
+    async updateAccessModulesFromHR(){
+      var _this = this;
+      let userNeedUpdate = _this.userList.find(o=> o.id === _this.formEdit.userId);      
+      let userListAccessModules = [];
+      let template = {
+        MaNhanVien: userNeedUpdate.mappingCode,
+        MaCongTy: commonData.COMPANY_HR_PORT,
+        DuongDanTruyCap: commonData.KPI_CLIENT_URL,
+        DuocTruyCap: true,
+      };
+      userListAccessModules.push(template);
+      await _this.$store.dispatch("$_employeeAdmin/updateAccessModulesFromHR", JSON.stringify(userListAccessModules) );
+    }        
   },
 };
 </script>

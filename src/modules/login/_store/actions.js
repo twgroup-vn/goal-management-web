@@ -74,7 +74,7 @@ const getUserInfoFromHRPort = async (context, request) => {
 
 const getToken = async (context, request) => {
   let response = await api.getToken(request);
-  localStorage.setItem("companyId", "CO_0001")
+  localStorage.setItem("companyId", commonData.COMPANY_KPI);
   context.commit('SET_TOKEN', response.data);
 };
 

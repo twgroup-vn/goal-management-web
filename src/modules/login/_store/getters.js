@@ -9,7 +9,12 @@ const getCompanyDetail = (state) =>{
 }
 
 const getCurrentUser = (state) =>{
-  return state.currentUser;
+  var data = {};
+  if(state.currentUser){
+    data = _.cloneDeep(state.currentUser);
+    data.positionObject = data && data.position ? JSON.parse(data.position) : null;
+  }
+  return data;
 }
 
 const getQuestionsCompany = (state) =>{
