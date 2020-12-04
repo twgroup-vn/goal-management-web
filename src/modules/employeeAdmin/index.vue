@@ -249,7 +249,7 @@ export default {
       var _this = this;
       try {
         await _this.$store.dispatch("$_employeeAdmin/addEmployee", _this.formData);
-        await _this.updateAccessModulesFromHR();
+        await _this.createAccessModulesFromHR();
         _this.$notify({
           title: "Chúc mừng",
           message: "Cập nhật thành công",
@@ -283,6 +283,19 @@ export default {
         });
       }
     }, 500),
+    async createAccessModulesFromHR(){
+      var _this = this;
+      let userNeedUpdate = _this.userList.find(o=> o.id === _this.formData.userId);      
+      let userListAccessModules = [];
+      let template = {
+        MaNhanVien: userNeedUpdate.mappingCode,
+        MaCongTy: commonData.COMPANY_HR_PORT,
+        DuongDanTruyCap: commonData.KPI_CLIENT_URL,
+        DuocTruyCap: true,
+      };
+      userListAccessModules.push(template);
+      await _this.$store.dispatch("$_employeeAdmin/updateAccessModulesFromHR", JSON.stringify(userListAccessModules) );
+    }, 
     async updateAccessModulesFromHR(){
       var _this = this;
       let userNeedUpdate = _this.userList.find(o=> o.id === _this.formEdit.userId);      
