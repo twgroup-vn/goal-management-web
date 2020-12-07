@@ -168,6 +168,7 @@ const HR_LOGOUT = `${HR_DOMAIN}/NhanVien/DangXuat`;
 const HR_SET_PERMISSION = `${HR_DOMAIN}/API/UpdateAccessModuleControl`;
 const COMPANY_HR_PORT = "TWGROUP";
 const KPI_CLIENT_URL = "http://localhost:8080/checkIn";
+// const KPI_CLIENT_URL = "https://twg-kpi.twgroup.vn/checkIn";
 const COMPANY_KPI = "CO_0001";
 
 export default{
