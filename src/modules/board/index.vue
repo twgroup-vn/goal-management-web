@@ -20,7 +20,7 @@
         </div>
         <div v-for="(item, key) in boardList.myBoard" :key="key" class="col-md-3 mb-3">
           <router-link :to="`/boardDetail/${item.id}`">
-            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}">
+            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? require(`@/assets/landscapes/${item.backgroundColor}`) : ''})`}">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between">
                   <div class="text-inside">{{ item.title }}</div>
