@@ -71,6 +71,10 @@ const getBoardId = async (request) => {
     return Vue.prototype.$http.get(`/api/cardGroup/getBoardId/${request}`);
 }
 
+const updateSubGoal = async (request) => {
+    return Vue.prototype.$http.post(`/api/subGoal/update`, request);
+}
+
 export default {
     getUserList,
     getBoardId,
@@ -87,5 +91,6 @@ export default {
     updateMainResult,
     deleteMainResult,
     createCheckInMainResult,
-    updateCheckInMainResult
+    updateCheckInMainResult,
+    updateSubGoal
 }

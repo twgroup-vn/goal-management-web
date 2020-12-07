@@ -167,23 +167,41 @@
                         <div class="card mb-4">
                           <div class="card-body">
                             <div class="row">
-                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                <div class="title">Tên các mục tiêu con</div>
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Tên mục tiêu con</div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Mức độ tự tin</div>
                                 <div class="content">{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Tiến độ</div>
+                                <div class="content">
+                                  <el-progress :percentage="sub.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                                </div>
+                              </div>
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Trạng thái</div>
                                 <div class="content"> 
                                   <div :class="`tag ${commonData.goalStatusDisplay[sub.status].color}`">{{ sub.status ? commonData.goalStatusDisplay[sub.status].name : '' }}</div>
                                 </div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Ngày tạo</div>
-                                <div class="content">{{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}</div>
+                                <div class="content">
+                                  {{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}
+                                </div>
+                              </div>
+                              <div :class="switchLayout == false ? 'col-md-1 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title"></div>
+                                <div class="content">
+                                  <el-tooltip class="item" effect="dark" content="Cập nhật mục tiêu con" placement="top-start">
+                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalUpdateSubGoal(sub)">
+                                      <font-awesome-icon :icon="['fas', 'edit']" />
+                                    </a>
+                                  </el-tooltip>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -776,6 +794,49 @@
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog title="Cập nhật mục tiêu con" :visible.sync="modalUpdateSubGoal" class="transition-box-center" width="50%" top="4vh" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label>Tên mục tiêu con</label>
+              <input type="text" class="input-primary medium" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name"/>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label>Mức độ tự tin</label>
+              <el-radio-group v-model="formUpdateSubGoal.confidenceLevel" v-for="(item, index) in commonData.confidenceLevel" :key="index" class="d-block">
+                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label>Tiến độ</label>
+              <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formUpdateSubGoal.progressPercent" />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label>Trạng thái</label>
+              <el-select v-model="formUpdateSubGoal.status" placeholder="Chọn trạng thái">
+                <el-option v-for="(item, index) in commonData.goalStatus" :key="index" :label="item.name" :value="item.code"></el-option>
+              </el-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" @click="submitUpdateSubGoal">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -806,6 +867,7 @@ export default {
       modalDeleteMainResult: false,
       modalCheckInMainResult: false,
       modalReadMainResult: false,
+      modalUpdateSubGoal: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -853,6 +915,18 @@ export default {
         isDelete: false
       },
       formEditMainResult:'',
+      formUpdateSubGoal: {
+        userId: '',
+        goalId: '',
+        cycleId: '',
+        companyId: '',
+        higherUserId: '',
+        name: '',
+        confidenceLevel: '',
+        progressPercent: 0,
+        status: '',
+        isDelete: false,
+      },
       file: null,
       path: null,
       goalDetails: null,
@@ -936,7 +1010,7 @@ export default {
     },
     async confirmCreateSubGoal(){
       var _this = this;
-      await _this.$store.dispatch("$_checkInUser/createSubGoal", _this.formCreateSubGoal);
+      await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formCreateSubGoal);
       _this.modalCreateSubGoal = false;
       _this.formCreateSubGoal.userId = null;
       _this.formCreateSubGoal.goalId = null;
@@ -953,7 +1027,7 @@ export default {
     },
     async confirmCreateMainResult(){
       var _this = this;
-      _this.formCreateMainResult.targetPercent = parseInt(_this.formCreateMainResult.targetPercent);
+      _this.formCreateMainResult.targetPercent = parseFloat(_this.formCreateMainResult.targetPercent);
       await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
       _this.formCreateMainResult.goalId = null;
       _this.modalCreateMainResults = false;
@@ -968,7 +1042,7 @@ export default {
     },
     async confirmEditMainResult(){
       var _this = this;
-      _this.formEditMainResult.targetPercent = parseInt(_this.formEditMainResult.targetPercent);
+      _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
       await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
       _this.modalEditMainResult = false;
       await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
@@ -1040,6 +1114,28 @@ export default {
       var _this = this;
       _this.checkInMainResultData = result.checkIn;
       _this.modalReadMainResult = true;
+    },
+    openModalUpdateSubGoal(subGoal){
+      var _this = this;
+      _this.formUpdateSubGoal = _.cloneDeep(subGoal);
+      _this.formUpdateSubGoal.userId = subGoal.userId;
+      _this.formUpdateSubGoal.goalId = subGoal.goalId;
+      _this.formUpdateSubGoal.cycleId = subGoal.cycleId;
+      _this.formUpdateSubGoal.companyId = subGoal.companyId;
+      _this.formUpdateSubGoal.higherUserId = subGoal.higherUserId;
+      _this.modalUpdateSubGoal = true;
+    },
+    async submitUpdateSubGoal(){
+      var _this = this;
+      _this.formUpdateSubGoal.progressPercent = parseFloat(_this.formUpdateSubGoal.progressPercent);
+      await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formUpdateSubGoal);
+      _this.formUpdateSubGoal.userId = null;
+      _this.formUpdateSubGoal.goalId = null;
+      _this.formUpdateSubGoal.cycleId = null;
+      _this.formUpdateSubGoal.companyId = null;
+      _this.formUpdateSubGoal.higherUserId = null;
+      _this.modalUpdateSubGoal = false;
+      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     },
     handleSwitchLayout(){
       var _this = this;

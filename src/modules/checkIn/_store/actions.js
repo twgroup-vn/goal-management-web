@@ -35,8 +35,8 @@ const editCheckIn = async (context, request) => {
   return response.data;
 };
 
-const createSubGoal = async (context, request) => {
-  let response = await api.createSubGoal(request);
+const editSubGoal = async (context, request) => {
+  let response =  request.id && request.id != "" ? await api.updateSubGoal(request) : await api.createSubGoal(request);
   return response;
 };
 
@@ -74,9 +74,9 @@ export default {
   editGoal,
   editCheckIn,
   createRelation,
-  createSubGoal,
+  editSubGoal,
   createMainResult,
   updateMainResult,
   deleteMainResult,
-  editCheckInMainResult
+  editCheckInMainResult,
 }
