@@ -179,7 +179,7 @@
           <el-collapse-item title="Hình nền" name="2">
             <div class="row">
               <div class="col-md-6 mb-3" v-for="(item, index) in commonData.landscapeImages" :key="index">
-                <img class="img-fluid img-thumbnail" :src="require(`@/assets/landscapes/${item}`)" />
+                <a href="javascript:;" @click="updateLandscape(item)"><img class="img-fluid img-thumbnail landscape-images" :src="require(`@/assets/landscapes/${item}`)" /></a>
               </div>
             </div>
           </el-collapse-item>
@@ -923,6 +923,13 @@ export default {
         _this.loading = false;
       }
     },
+    updateLandscape(images){
+      // var _this = this;
+      var file = new File([images], `${images}`, {
+        type: "image/png",
+      });
+      console.log(file);
+    }
   },  
 };
 </script>
