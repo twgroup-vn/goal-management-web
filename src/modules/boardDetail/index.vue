@@ -36,7 +36,7 @@
       </div>
     </div>
     <!-- Content -->
-    <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? boardDetail.backgroundColor : ''})` }">
+    <div class="main board-detail-background container-fluid" :style="{ backgroundImage: `url(${boardDetail && boardDetail.backgroundColor ? require(`@/assets/landscapes/${boardDetail.backgroundColor}`) : ''})` }">
       <div class="row board-detail-content">
         <div class="col-3" v-for="(item, index) in listCard" :key="item.id">
           <div class="wrapper-list" :class="boardDetail && boardDetail.backgroundColor ? 'background' : ''" >
@@ -179,7 +179,7 @@
           <el-collapse-item title="Hình nền" name="2">
             <div class="row">
               <div class="col-md-6 mb-3" v-for="(item, index) in commonData.landscapeImages" :key="index">
-                <a href="javascript:;" @click="updateLandscape(item)"><img class="img-fluid img-thumbnail landscape-images" :src="require(`@/assets/landscapes/${item}`)" /></a>
+                <a href="javascript:;" @click="updateLandscape(item)"><img :class="`img-fluid img-thumbnail landscape-images ${boardDetail && boardDetail.backgroundColor===item ? 'bg-selected-border' : '' }`" :src="require(`@/assets/landscapes/${item}`)" /></a>
               </div>
             </div>
           </el-collapse-item>
@@ -924,12 +924,15 @@ export default {
       }
     },
     updateLandscape(images){
-      // var _this = this;
-      var file = new File([images], `${images}`, {
-        type: "image/png",
-      });
-      console.log(file);
+      var _this = this;
+      _this.boardDetail.backgroundColor = images;
+      _this.updateBoard();
     }
   },  
 };
 </script>
+<style scoped>
+.bg-selected-border{
+  border: 3px solid red;
+}
+</style>
