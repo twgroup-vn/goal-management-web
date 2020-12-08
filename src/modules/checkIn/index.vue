@@ -78,7 +78,11 @@
               <div class="row">
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.goal") }}</div>
-                  <div class="content">{{ item.name ? item.name : ''}}</div>
+                  <el-tooltip class="item" effect="dark" :content="item.name" placement="top-start">
+                    <div class="content">
+                      {{ item.name ? item.name : ''}}
+                    </div>
+                  </el-tooltip>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.mainResult") }}</div>
@@ -161,7 +165,7 @@
                     <el-collapse-item>
                       <div slot="title">
                         <span class="text-primary mr-2">Các mục tiêu con</span>
-                        <span>({{ item.subGoal.length + ' ' + 'mục tiêu con' }})</span>
+                        <span>({{ item.subGoal.length + ' ' + 'mục tiêu' }})</span>
                       </div>
                       <div class="col-lg-12" v-for="(sub, index) in item.subGoal" :key="index">
                         <div class="card mb-4">
