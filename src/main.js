@@ -18,7 +18,9 @@ import store from './store/index'
 import i18n from './lang/i18n'
 import VueCountdownTimer from 'vuejs-countdown-timer';
 import CircleMenu from 'vue-circle-menu';
-import VueClipboard from 'vue-clipboard2'
+import VueClipboard from 'vue-clipboard2';
+import VeeValidate from 'vee-validate';
+
 Vue.config.productionTip = false
 
 library.add(fas)
@@ -33,6 +35,7 @@ Vue.use(configPlugin)
 Vue.use(VueCountdownTimer);
 Vue.component('CircleMenu', CircleMenu)
 Vue.use(VueClipboard);
+Vue.use(VeeValidate);
 
 axios.defaults.baseURL = process.env.VUE_APP_API_ROOT;
 Vue.prototype.$http = axios

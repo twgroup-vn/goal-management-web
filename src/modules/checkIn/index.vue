@@ -239,22 +239,24 @@
               </el-radio-group>
               </div>
             </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}</div>
+            <div :class="`row my-2 ${errors.has('result') ? 'has-error' : ''}`">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
               <div class="col-md-8">
-                <input class="input-primary medium" placeholder="Nhập kết quả" v-model="formCheckIn.result" />
+                <input class="input-primary medium" name="result" placeholder="Nhập kết quả" v-model="formCheckIn.result" v-validate="'required'"/>
+                <div v-if="errors.has('result')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
               </div>
             </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}</div>
+            <div :class="`row my-2 ${errors.has('result') ? 'has-error' : ''}`">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
               <div class="col-md-8">
-                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" />
+                <input type="number" class="input-primary medium" name="currentProgress" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" v-validate="'required'"/>
+                <div v-if="errors.has('currentProgress')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
               </div> 
             </div>
             <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
               <div class="col-md-4 title">{{ item.question }}</div>
               <div class="col-md-8">
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckIn.answerFirst"></textarea>
+                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" name="answerFirst" v-if="item.orderNo == 1" v-model="formCheckIn.answerFirst"></textarea>
                 <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckIn.answerSecond"></textarea>
                 <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckIn.answerThird"></textarea>
                 <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckIn.answerFourth"></textarea>
@@ -278,10 +280,10 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="submitCheckIn">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckIn">
           Xác nhận
         </button>
       </span>
@@ -289,35 +291,44 @@
 
     <el-dialog title="Tạo mục tiêu" :visible.sync="modalCreateGoal" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="modal-body">
-        <div class="row my-2">
-            <div class="col-md-4 title">Chu kỳ</div>
+        <div :class="`form-group ${errors.has('cycle') ? 'has-error' : ''}`">
+          <div class="row my-2">
+            <div class="col-md-4 title">Chu kỳ<span class="text-danger ml-2">*</span></div>
             <div class="col-md-8">
-              <el-select v-model="formCreate.cycleId" clearable placeholder="Chọn chu kỳ" class="w-100">
+              <el-select v-model="formCreate.cycleId" name="cycle" clearable placeholder="Chọn chu kỳ" class="w-100" v-validate="'required'">
                 <el-option v-for="item in cycleCompany"
                             :key="item.id"
                             :label="item.name"
                             :value="item.id">
                 </el-option>
               </el-select>
+              <div v-if="errors.has('cycle')" class="mt-3 text-danger">Yêu cầu nhập chu kỳ</div>
             </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Cấp trên</div>
-          <div class="col-md-8">
-            <el-select v-model="formCreate.higherUserId" clearable placeholder="Chọn cấp trên quản lý mục tiêu" class="w-100">
-              <el-option v-for="item in userCompany"
-                          :key="item.id"
-                          :label="`${item.fullName} ( ${item.email} )`"
-                          :value="item.id">
-              </el-option>
-            </el-select>
           </div>
         </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Mục tiêu của bạn</div>
-          <div class="col-md-8">
-            <input class="input-primary medium" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" />
-          </div>      
+        <div :class="`form-group ${errors.has('higherUser') ? 'has-error' : ''}`">
+          <div class="row my-2">
+            <div class="col-md-4 title">Cấp trên<span class="text-danger ml-2">*</span></div>
+            <div class="col-md-8">
+              <el-select v-model="formCreate.higherUserId" name="higherUser" clearable placeholder="Chọn cấp trên quản lý mục tiêu" class="w-100" v-validate="'required'">
+                <el-option v-for="item in userCompany"
+                            :key="item.id"
+                            :label="`${item.fullName} ( ${item.email} )`"
+                            :value="item.id">
+                </el-option>
+              </el-select>
+              <div v-if="errors.has('higherUser')" class="mt-3 text-danger">Yêu cầu nhập cấp trên</div>
+            </div>
+          </div>
+        </div>
+        <div :class="`form-group ${errors.has('nameGoal') ? 'has-error' : ''}`">
+          <div class="row my-2">
+            <div class="col-md-4 title">Mục tiêu của bạn<span class="text-danger ml-2">*</span></div>
+            <div class="col-md-8">
+              <input class="input-primary medium" name="nameGoal" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" v-validate="'required'" />
+              <div v-if="errors.has('nameGoal')" class="mt-3 text-danger">Yêu cầu nhập mục tiêu</div>
+            </div>      
+          </div>
         </div>
         <div class="row my-2">
           <div class="col-md-4 title">Link kế hoạch</div>
@@ -388,30 +399,31 @@
         </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="submit">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submit">
           Xác nhận
         </button>
       </span>
     </el-dialog>
-
     <el-dialog title="Kết quả chính" :visible.sync="modalViewMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-dialog width="50%" title="Thêm kết quả chính" :visible.sync="modalCreateMainResults" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
         <div>
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
-                <label>Kết quả chính</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title"/>
+              <div :class="`form-group ${errors.has('title') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="title" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title" v-validate="'required'" />
               </div>
+              <div v-if="errors.has('title')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label>Kết quả mong muốn</label>
-                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" />
+              <div :class="`form-group ${errors.has('targetPercent') ? 'has-error' : ''}`">
+                <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
+                <input type="number" class="input-primary medium" name="targetPercent" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" v-validate="'required'" />
               </div>
+              <div v-if="errors.has('targetPercent')" class="my-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
             </div>
           </div>
           <div class="row">
@@ -430,10 +442,10 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false">
+          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false; errors.items.length = 0">
             Hủy
           </button>
-          <button class="btn btn-primary btn-medium" @click="confirmCreateMainResult">
+          <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateMainResult">
             Cập nhật
           </button>
         </span>
@@ -592,16 +604,17 @@
 
      <el-dialog title="Tạo mục tiêu con" :visible.sync="modalCreateSubGoal" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div class="form-group">
-          <label>Tên mục tiêu con</label>
-          <input type="text" class="input-primary medium" placeholder="Tên mục tiêu con" v-model="formCreateSubGoal.name"/>
+        <div :class="`form-group ${errors.has('name') ? 'has-error' : ''}`">
+          <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+          <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formCreateSubGoal.name" v-validate="'required'"/>
+          <div v-if="errors.has('name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="confirmCreateSubGoal">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateSubGoal">
           Xác nhận
         </button>
       </span>
@@ -611,15 +624,17 @@
       <div>
         <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
-                <label>Kết quả chính</label>
-                <input type="text" class="input-primary medium" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title"/>
+              <div :class="`form-group ${errors.has('titleEdit') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="titleEdit" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title" v-validate="'required'"/>
+                <div v-if="errors.has('titleEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả chính</div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label>Kết quả mong muốn</label>
-                <input type="number" class="input-primary medium" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" />
+              <div :class="`form-group ${errors.has('targetPercentEdit') ? 'has-error' : ''}`">
+                <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
+                <input type="number" class="input-primary medium" name="targetPercentEdit" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" v-validate="'required'" />
+                <div v-if="errors.has('targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
               </div>
             </div>
           </div>
@@ -639,10 +654,10 @@
           </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="confirmEditMainResult">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmEditMainResult">
           Xác nhận
         </button>
       </span>
@@ -678,10 +693,11 @@
               </el-radio-group>
               </div>
             </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}</div>
+            <div :class="`row my-2 ${errors.has('resultMainGoal') ? 'has-error' : ''}`">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
               <div class="col-md-8">
-                <input class="input-primary medium" placeholder="Nhập kết quả" v-model="formCheckInMainResult.result" />
+                <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInMainResult.result" v-validate="'required'"/>
+                <div v-if="errors.has('resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
               </div>
             </div>
             <div class="row my-2">
@@ -717,10 +733,10 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="submitCheckInMainResult">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInMainResult">
           Xác nhận
         </button>
       </span>
@@ -803,9 +819,10 @@
       <div>
         <div class="row">
           <div class="col-12">
-            <div class="form-group">
-              <label>Tên mục tiêu con</label>
-              <input type="text" class="input-primary medium" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name"/>
+            <div :class="`form-group ${errors.has('name') ? 'has-error' : ''}`">
+              <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+              <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name" v-validate.immediate="'required'"/>
+              <div v-if="errors.has('name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
             </div>
           </div>
           <div class="col-12">
@@ -833,10 +850,10 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false; errors.items.length = 0">
           Hủy
         </button>
-        <button class="btn btn-primary btn-medium" @click="submitUpdateSubGoal">
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitUpdateSubGoal">
           Xác nhận
         </button>
       </span>
@@ -1012,46 +1029,94 @@ export default {
       _this.formCreateSubGoal.higherUserId = item.higherUserId;
       _this.modalCreateSubGoal = true;
     },
-    async confirmCreateSubGoal(){
-      var _this = this;
-      await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formCreateSubGoal);
-      _this.modalCreateSubGoal = false;
-      _this.formCreateSubGoal.userId = null;
-      _this.formCreateSubGoal.goalId = null;
-      _this.formCreateSubGoal.cycleId = null;
-      _this.formCreateSubGoal.companyId = null;
-      _this.formCreateSubGoal.higherUserId = null;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-    },
+    confirmCreateSubGoal: _.debounce(async function () {
+        var _this = this;
+        await _this.$validator.validateAll().then(async result => {
+          if (result) {
+            try {
+              await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formCreateSubGoal);
+              _this.modalCreateSubGoal = false;
+              _this.formCreateSubGoal.userId = null;
+              _this.formCreateSubGoal.goalId = null;
+              _this.formCreateSubGoal.cycleId = null;
+              _this.formCreateSubGoal.companyId = null;
+              _this.formCreateSubGoal.higherUserId = null;
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+            } catch (error) {
+              _this.$notify.error({
+                title: 'Thất bại',
+                message: 'Lưu thất bại'
+              });
+            }
+          }
+        });
+    }, 500),
     openModalCreateMainResult(item){
       var _this = this;
       _this.idTempMainResult = item.id
       _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
     },
-    async confirmCreateMainResult(){
-      var _this = this;
-      _this.formCreateMainResult.targetPercent = parseFloat(_this.formCreateMainResult.targetPercent);
-      await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
-      _this.formCreateMainResult.goalId = null;
-      _this.modalCreateMainResults = false;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
-    },
+    confirmCreateMainResult: _.debounce(async function () {
+        var _this = this;
+        await _this.$validator.validateAll().then(async result => {
+          if (result) {
+            try {
+              _this.formCreateMainResult.targetPercent = parseFloat(_this.formCreateMainResult.targetPercent);
+              await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
+              _this.formCreateMainResult.goalId = null;
+              _this.modalCreateMainResults = false;
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+              _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+            } catch (error) {
+              _this.$notify.error({
+                title: 'Thất bại',
+                message: 'Lưu thất bại'
+              });
+            }
+          }
+        });
+    }, 500),
     openModalEditMainResult(item, result){
       var _this = this;
       _this.idTempMainResult = item.id
       _this.formEditMainResult = _.cloneDeep(result);
       _this.modalEditMainResult = true;
     },
-    async confirmEditMainResult(){
-      var _this = this;
-      _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
-      await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
-      _this.modalEditMainResult = false;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
-    },
+    confirmEditMainResult: _.debounce(async function () {
+        var _this = this;
+        await _this.$validator.validateAll().then(async result => {
+          if (result) {
+            try {
+              _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
+              await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
+              _this.modalEditMainResult = false;
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+              _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+            } catch (error) {
+              _this.$notify.error({
+                title: 'Thất bại',
+                message: 'Lưu thất bại'
+              });
+            }
+          }
+        });
+    }, 500),
     openModalDeleteMainResult(item, result){
       var _this = this;
       _this.idTempMainResult = item.id;
@@ -1082,37 +1147,41 @@ export default {
     },
     submitCheckInMainResult: _.debounce(async function () {
       var _this = this;
-      try {
-        var goalIdTemp = _this.formCheckInMainResult.goalId;
-        _this.formCheckInMainResult.currentProgress = parseFloat(_this.formCheckInMainResult.currentProgress);
-        await _this.$store.dispatch("$_checkInUser/editCheckInMainResult", _this.formCheckInMainResult);
-        _this.$notify({
-          title: "Chúc mừng",
-          message: "Cập nhật thành công",
-          type: "success",
-        });
-        _this.modalCheckInMainResult = false;
-        _this.formCheckInMainResult = {
-          goalId: '',
-          resultId: null,
-          confidenceLevel: '',
-          currentProgress: 0,
-          result: '',
-          answerFirst: '',
-          answerSecond: '',
-          answerThird: '',
-          answerFourth: '',
-          isDelete: false
-        };
-        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-        _this.modalViewMainResult = false;
-        _this.handleModalMainResult(goalIdTemp);
-      } catch (error) {
-        _this.$notify.error({
-          title: "Thất bại",
-          message: "Cập nhật thất bại",
-        });
-      }
+      await _this.$validator.validateAll().then(async result => {
+        if (result) {
+          try {
+            var goalIdTemp = _this.formCheckInMainResult.goalId;
+            _this.formCheckInMainResult.currentProgress = parseFloat(_this.formCheckInMainResult.currentProgress);
+            await _this.$store.dispatch("$_checkInUser/editCheckInMainResult", _this.formCheckInMainResult);
+            _this.$notify({
+              title: "Chúc mừng",
+              message: "Cập nhật thành công",
+              type: "success",
+            });
+            _this.modalCheckInMainResult = false;
+            _this.formCheckInMainResult = {
+              goalId: '',
+              resultId: null,
+              confidenceLevel: '',
+              currentProgress: 0,
+              result: '',
+              answerFirst: '',
+              answerSecond: '',
+              answerThird: '',
+              answerFourth: '',
+              isDelete: false
+            };
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            _this.modalViewMainResult = false;
+            _this.handleModalMainResult(goalIdTemp);
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
     }, 500),
     openModalReadMainResult(result){
       var _this = this;
@@ -1245,74 +1314,82 @@ export default {
     },
     submit: _.debounce(async function () {
       var _this = this;
-      try {
-        var response = await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
-        if(response && response.id){
-          if(_this.relationArray && _this.relationArray.length && _this.relationArray[0].RelatedGoalId && _this.relationArray[0].Type){
-            var relationArraySubmit = _.map(_this.relationArray, (o) => {
-              o.GoalId = response.id;
-              return o;
-            });
-            var arrayToString = JSON.stringify(relationArraySubmit);
-            await _this.$store.dispatch("$_checkInUser/createRelation", arrayToString);
+      await _this.$validator.validateAll().then(async result => {
+          if (result) {
+            try {
+              var response = await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
+              if(response && response.id){
+                if(_this.relationArray && _this.relationArray.length && _this.relationArray[0].RelatedGoalId && _this.relationArray[0].Type){
+                  var relationArraySubmit = _.map(_this.relationArray, (o) => {
+                    o.GoalId = response.id;
+                    return o;
+                  });
+                  var arrayToString = JSON.stringify(relationArraySubmit);
+                  await _this.$store.dispatch("$_checkInUser/createRelation", arrayToString);
+                }
+              }
+              _this.$notify({
+                title: "Chúc mừng",
+                message: "Cập nhật thành công",
+                type: "success",
+              });
+              _this.modalCreateGoal = false;
+              _this.formCreate = {
+                cycleId : '',
+                userId : localStorage.getItem('userId'),
+                higherUserId: '',
+                name: '',
+                linkPlan: null,
+                confidenceLevel: 'fine',
+                progressPercent: 0,
+                image: null,
+                isDelete: false,
+                status: 'new'
+              };
+              _this.clearRelation();
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            } catch (error) {
+              _this.$notify.error({
+                title: "Thất bại",
+                message: "Cập nhật thất bại",
+              });
+            }
           }
-        }
-        _this.$notify({
-          title: "Chúc mừng",
-          message: "Cập nhật thành công",
-          type: "success",
-        });
-        _this.modalCreateGoal = false;
-        _this.formCreate = {
-          cycleId : '',
-          userId : localStorage.getItem('userId'),
-          higherUserId: '',
-          name: '',
-          linkPlan: null,
-          confidenceLevel: 'fine',
-          progressPercent: 0,
-          image: null,
-          isDelete: false,
-          status: 'new'
-        };
-        _this.clearRelation();
-        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      } catch (error) {
-        _this.$notify.error({
-          title: "Thất bại",
-          message: "Cập nhật thất bại",
-        });
-      }
+      });
     }, 500),
     submitCheckIn: _.debounce(async function () {
       var _this = this;
-      try {
-        _this.formCheckIn.currentProgress = parseFloat(_this.formCheckIn.currentProgress);
-        await _this.$store.dispatch("$_checkInUser/editCheckIn", _this.formCheckIn);
-        _this.$notify({
-          title: "Chúc mừng",
-          message: "Cập nhật thành công",
-          type: "success",
-        });
-        _this.modalCheckIn = false;
-        _this.formCheckIn = {
-          goalId: '',
-          confidenceLevel: '',
-          currentProgress: 0,
-          result: '',
-          answerFirst: '',
-          answerSecond: '',
-          answerThird: '',
-          answerFourth: '',
-          isDelete: false
-        };
-        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      } catch (error) {
-        _this.$notify.error({
-          title: "Thất bại",
-          message: "Cập nhật thất bại",
-        });
-      }
+      await _this.$validator.validateAll().then(async result => {
+        if (result) {
+          try {
+            _this.formCheckIn.currentProgress = parseFloat(_this.formCheckIn.currentProgress);
+            await _this.$store.dispatch("$_checkInUser/editCheckIn", _this.formCheckIn);
+            _this.$notify({
+              title: "Chúc mừng",
+              message: "Cập nhật thành công",
+              type: "success",
+            });
+            _this.modalCheckIn = false;
+            _this.formCheckIn = {
+              goalId: '',
+              confidenceLevel: '',
+              currentProgress: 0,
+              result: '',
+              answerFirst: '',
+              answerSecond: '',
+              answerThird: '',
+              answerFourth: '',
+              isDelete: false
+            };
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
     }, 500),
     remoteMethod(query) {
         var _this = this;
