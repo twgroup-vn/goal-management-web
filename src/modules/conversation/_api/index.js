@@ -36,6 +36,10 @@ const getStickerList = async () => {
   return Vue.prototype.$http.get(`/api/stickerGroup/getAll`);
 }
 
+const readNewMessage = async (request) => {
+  return Vue.prototype.$http.get(`/api/conversation/readNewMessage/${request}`);
+};
+
 
 export default {
   getListConversation,
@@ -44,5 +48,6 @@ export default {
   getUserList,
   sendMessage,
   uploadImage,
-  getStickerList
+  getStickerList,
+  readNewMessage
 }

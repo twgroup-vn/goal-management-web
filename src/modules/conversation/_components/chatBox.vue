@@ -10,7 +10,7 @@
                     </a>
                 </div>
             </div>
-            <div class="content" ref="containerChat">
+            <div class="content" ref="containerChat" @click="readMessage">
                 <div class="wrapper" v-for="(item,index) in userChat" :key="index">
                     <div class="group-chat friend-chat" v-if="!item.ownMessage">
                         <div class="mr-3">
@@ -121,9 +121,18 @@ export default {
         }),
         ...mapGetters({
             stickerList: "$_conversation/getStickerList",
+            dataConversation: "$_conversation/getListConversation",
         }),
     },
     methods:{
+        async readMessage(){
+            var _this = this;
+            var conversation = _this.dataConversation.find( o => o.id === _this.conversationId);
+            if( conversation.latestMessenger !== localStorage.getItem("userId") && conversation.isRead === false ){
+                await _this.$store.dispatch("$_conversation/readNewMessage", conversation.id);
+                await _this.$store.dispatch("$_conversation/getListConversation");
+            }
+        },
         collapse(){
             var _this = this;
             _this.rightInfo = ! _this.rightInfo;

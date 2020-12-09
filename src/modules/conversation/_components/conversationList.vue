@@ -99,6 +99,7 @@ export default {
             var exist = _.find(_this.listConversation, o => { return o.participantOject.indexOf(userId) > -1 });
             if(exist){
                 localStorage.setItem("userInfoOfConversation", JSON.stringify(exist.userInfo));
+                localStorage.setItem("conversationId", exist.id);
                 await _this.$store.dispatch("$_conversation/setUserInfoConversation", exist.userInfo);
                 await _this.$store.dispatch("$_conversation/getConversationDetail", exist.id);
             }
@@ -111,6 +112,8 @@ export default {
                 if(response){
                    var userInfo =  _.filter(_this.listUser, o => { return o.id === userId });
                    localStorage.setItem("userInfoOfConversation", JSON.stringify(userInfo));
+                   localStorage.setItem("conversationId", response.id);
+                   window.location.reload();
                    await _this.$store.dispatch("$_conversation/setUserInfoConversation", userInfo);
                    await _this.$store.dispatch("$_conversation/getConversationDetail", response.id);
                 }

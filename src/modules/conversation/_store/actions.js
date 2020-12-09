@@ -42,6 +42,11 @@ const getStickerList = async (context, request) => {
   context.commit('SET_STICKER_LIST', response.data);
 };
 
+const readNewMessage = async (context, request) => {
+  let response = await api.readNewMessage(request);
+  return response.data;
+};
+
 export default {
   getListConversation,
   getConversationDetail,
@@ -50,5 +55,6 @@ export default {
   sendMessage,
   setUserInfoConversation,
   uploadImage,
-  getStickerList
+  getStickerList,
+  readNewMessage
 }
