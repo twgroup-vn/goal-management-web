@@ -131,13 +131,16 @@
                               </div>
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Người phụ trách</div>
-                                <div class="content d-flex align-items-center">
-                                  <div class="group-avatar">
-                                    <div class="avatar-circle original">
-                                      <div class="avatar-with-img" :style="{ backgroundImage: `url(${card && card.assign ? card.avatarAssign : ''})` }"></div>
-                                    </div>
+                                <div class="d-flex align-items-center flex-wrap">
+                                  <div class="content mr-2" v-for="(assignee, index) in card.assignees" :key="index">
+                                    <el-tooltip class="item" effect="dark" :content="assignee.fullName" placement="top-start">
+                                      <div class="group-avatar">
+                                        <div class="avatar-circle original">
+                                          <div class="avatar-with-img" :style="{ backgroundImage: `url(${card && card.assignees ? assignee.avatar : ''})` }"></div>
+                                        </div>
+                                      </div>
+                                    </el-tooltip>
                                   </div>
-                                  <div class="ml-2">{{ card.assign ? card.assignee : '' }}</div>
                                 </div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -246,7 +249,7 @@
                 <div v-if="errors.has('result')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
               </div>
             </div>
-            <div :class="`row my-2 ${errors.has('result') ? 'has-error' : ''}`">
+            <div :class="`row my-2 ${errors.has('currentProgress') ? 'has-error' : ''}`">
               <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
               <div class="col-md-8">
                 <input type="number" class="input-primary medium" name="currentProgress" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" v-validate="'required'"/>
@@ -280,7 +283,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckIn">
@@ -399,7 +402,7 @@
         </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submit">
@@ -442,7 +445,7 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false; errors.items.length = 0">
+          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false; errors.clear()">
             Hủy
           </button>
           <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateMainResult">
@@ -611,7 +614,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateSubGoal">
@@ -620,7 +623,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="Chỉnh sửa kết quả chính" :visible.sync="modalEditMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog title="Chỉnh sửa kết quả chính" :visible.sync="modalEditMainResult" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
         <div class="row">
             <div class="col-md-6">
@@ -654,7 +657,7 @@
           </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmEditMainResult">
@@ -733,7 +736,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInMainResult">
@@ -850,7 +853,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false; errors.items.length = 0">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false; errors.clear()">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitUpdateSubGoal">
@@ -1095,27 +1098,23 @@ export default {
     },
     confirmEditMainResult: _.debounce(async function () {
         var _this = this;
-        await _this.$validator.validateAll().then(async result => {
-          if (result) {
-            try {
-              _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
-              await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
-              _this.modalEditMainResult = false;
-              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-              _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
-              _this.$notify({
-                title: 'Chúc mừng',
-                message: 'Lưu thành công',
-                type: 'success'
-              });
-            } catch (error) {
-              _this.$notify.error({
-                title: 'Thất bại',
-                message: 'Lưu thất bại'
-              });
-            }
-          }
-        });
+        try {
+          _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
+          await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
+          _this.modalEditMainResult = false;
+          await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+          _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+          _this.$notify({
+            title: 'Chúc mừng',
+            message: 'Lưu thành công',
+            type: 'success'
+          });
+          } catch (error) {
+            _this.$notify.error({
+              title: 'Thất bại',
+              message: 'Lưu thất bại'
+            });
+        }
     }, 500),
     openModalDeleteMainResult(item, result){
       var _this = this;

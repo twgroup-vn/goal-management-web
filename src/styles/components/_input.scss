@@ -78,3 +78,11 @@ textarea{
 		color: $gray-200;
 	}
 }
+
+.form-group, .row{
+	&.has-error{
+		input{
+			border-color: $red;
+		}
+	}
+}
