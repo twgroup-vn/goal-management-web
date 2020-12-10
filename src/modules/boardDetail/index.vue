@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="board-detail-header">
       <div class="row justify-content-between align-items-center">
-        <div class="col-md-6 d-flex" :class="{ 'text-white' : boardDetail.backgroundColor }">
+        <div class="col-md-6 d-flex  align-items-center" :class="{ 'text-white' : boardDetail.backgroundColor }">
           <div class="title">{{ boardDetail && boardDetail.title ? boardDetail.title : ''}}</div>
           <div class="ml-2" v-for="user in boardDetail.userList" :key="user.id">
             <div v-if="boardDetail.userList">

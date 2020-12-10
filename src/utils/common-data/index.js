@@ -133,7 +133,14 @@ const landscapeImages = [
   '4.jpg',
   '5.jpg',
   '6.jpg',
-  '7.jpg'
+  '7.jpg',
+  '8.jpg',
+  '9.jpg',
+  '10.jpg',
+  '11.jpg',
+  '12.jpg',
+  '13.jpg',
+  '14.jpg'
 ];
 
 const HR_DOMAIN = "http://dev-twedu.southeastasia.cloudapp.azure.com:5007";

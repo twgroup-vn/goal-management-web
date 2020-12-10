@@ -10,5 +10,13 @@
         &__wrap{
             border-bottom: 0;
         }
+        &:last-child{
+            .el-collapse-item{
+                &__wrap{
+                    overflow: auto;
+                    height: calc(100vh - 300px);
+                }
+            }
+        }
     }
 }
