@@ -134,8 +134,8 @@
                   <div class="col-12">
                     <el-collapse class="sub-goal">
                       <el-collapse-item>
-                        <div slot="title">
-                          <span class="text-primary mr-2">Các liên kết</span>
+                        <div class="text-primary" slot="title">
+                          <span class="mr-2">Các liên kết</span>
                           <span>({{ item.card.length + ' ' + 'liên kết' }})</span>
                         </div>
                         <div class="col-lg-12" v-for="(card, index) in item.card" :key="index">
@@ -148,13 +148,16 @@
                                 </div>
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                   <div class="title">Người phụ trách</div>
-                                  <div class="content d-flex align-items-center">
-                                    <div class="group-avatar">
-                                      <div class="avatar-circle original">
-                                        <div class="avatar-with-img" :style="{ backgroundImage: `url(${card && card.assign ? card.avatarAssign : ''})` }"></div>
-                                      </div>
+                                  <div class="d-flex align-items-center flex-wrap">
+                                    <div class="content mr-2" v-for="(assignee, index) in card.assignees" :key="index">
+                                      <el-tooltip class="item" effect="dark" :content="assignee.fullName" placement="top-start">
+                                        <div class="group-avatar">
+                                          <div class="avatar-circle original">
+                                            <div class="avatar-with-img" :style="{ backgroundImage: `url(${card && card.assignees ? assignee.avatar : ''})` }"></div>
+                                          </div>
+                                        </div>
+                                      </el-tooltip>
                                     </div>
-                                    <div class="ml-2">{{ card.assign ? card.assignee : '' }}</div>
                                   </div>
                                 </div>
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -180,8 +183,8 @@
                   <div class="col-12">
                     <el-collapse class="sub-goal">
                       <el-collapse-item>
-                        <div slot="title">
-                          <span class="text-primary mr-2">Các mục tiêu con</span>
+                        <div class="text-primary" slot="title">
+                          <span class="mr-2">Các mục tiêu con</span>
                           <span>({{ item.subGoal.length + ' ' + 'mục tiêu con' }})</span>
                         </div>
                         <div class="col-lg-12" v-for="(sub, index) in item.subGoal" :key="index">

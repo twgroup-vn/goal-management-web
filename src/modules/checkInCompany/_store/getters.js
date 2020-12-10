@@ -29,8 +29,7 @@ const getGoalList = (state) => {
         v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
         v.card = _.map(v.card, (x) => {
           x.assignObject = x.assign ? JSON.parse(x.assign.replace(/'/g, '"')) : '';
-          x.assignee = state.userList.find(o => o.id == x.assignObject).fullName;
-          x.avatarAssign = state.userList.find(o => o.id == x.assignObject).avatar;
+          x.assignees = state.userList.filter(o => x.assignObject.includes(o.id));
           return x;
         });
         var userDetails = _.find(state.userList, (o)=>{ return o.id === v.userId });
