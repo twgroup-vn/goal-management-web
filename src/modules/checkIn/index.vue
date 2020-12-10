@@ -117,8 +117,8 @@
                 <div class="col-12">
                   <el-collapse class="sub-goal">
                     <el-collapse-item>
-                      <div slot="title">
-                        <span class="text-primary mr-2">Các liên kết</span>
+                      <div  class="text-primary" slot="title">
+                        <span class="mr-2">Các liên kết</span>
                         <span>({{ item.card.length + ' ' + 'liên kết' }})</span>
                       </div>
                       <div class="col-lg-12" v-for="(card, index) in item.card" :key="index">
@@ -166,8 +166,8 @@
                 <div class="col-12">
                   <el-collapse class="sub-goal">
                     <el-collapse-item>
-                      <div slot="title">
-                        <span class="text-primary mr-2">Các mục tiêu con</span>
+                      <div  class="text-primary" slot="title">
+                        <span class="mr-2">Các mục tiêu con</span>
                         <span>({{ item.subGoal.length + ' ' + 'mục tiêu' }})</span>
                       </div>
                       <div class="col-lg-12" v-for="(sub, index) in item.subGoal" :key="index">
