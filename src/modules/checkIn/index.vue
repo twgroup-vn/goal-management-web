@@ -28,7 +28,7 @@
             <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
             <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
           </a>
-          <button class="btn btn-primary btn-medium" @click="openCreateGoal">{{ $t("checkinPage.createGoalBtn") }}</button>
+          <button class="btn btn-primary btn-medium" @click="openCreateGoal; errors.clear()">{{ $t("checkinPage.createGoalBtn") }}</button>
         </div>
       </div>
     </div>
@@ -50,10 +50,10 @@
               <div class="row align-items-center">
                 <div :class="switchLayout == false ? 'col-md-6 d-flex flex-wrap align-items-center' : 'col-12 d-flex flex-wrap align-items-center justify-content-center'">
                   <div :class="switchLayout == false ? 'created-date mr-3' : 'created-date mr-0 mb-3'">{{  $t("checkinPage.createDate") }}: {{ item.createdAt.slice(0,10) }}</div>
-                  <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
+                  <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item); errors.clear()" style="cursor:pointer">
                       {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
                   </div>
-                  <button :class="switchLayout == false ? 'btn btn-primary ml-3' : 'btn btn-primary ml-0 mt-3' " @click="handleCreateSubGoal(item)">
+                  <button :class="switchLayout == false ? 'btn btn-primary ml-3' : 'btn btn-primary ml-0 mt-3' " @click="handleCreateSubGoal(item); errors.clear()">
                     <span class="ml-2">Tạo mục tiêu con</span>
                   </button>
                 </div>
@@ -204,7 +204,7 @@
                                 <div class="title"></div>
                                 <div class="content">
                                   <el-tooltip class="item" effect="dark" content="Cập nhật mục tiêu con" placement="top-start">
-                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalUpdateSubGoal(sub)">
+                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalUpdateSubGoal(sub); errors.clear()">
                                       <font-awesome-icon :icon="['fas', 'edit']" />
                                     </a>
                                   </el-tooltip>
@@ -283,7 +283,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckIn = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckIn">
@@ -402,7 +402,7 @@
         </div> -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submit">
@@ -445,7 +445,7 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false; errors.clear()">
+          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false">
             Hủy
           </button>
           <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateMainResult">
@@ -472,7 +472,7 @@
                     <div v-if="result && result.title">{{ result.title }}</div>
                     <div v-else class="text-disabled">Không có nội dung</div>
                   </div>
-                  <button href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result)">Check-in</button>
+                  <button href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result); errors.clear()">Check-in</button>
                 </div>
               </td>
               <td>
@@ -494,7 +494,7 @@
                     </a>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark" content="Sửa kết quả chính" placement="top-start">
-                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalEditMainResult(item, result)">
+                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalEditMainResult(item, result); errors.clear()">
                       <font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                   </el-tooltip>
@@ -512,7 +512,7 @@
               <td></td>
               <td></td>
               <td>
-                <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult(item)">
+                <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult(item); errors.clear()">
                   <font-awesome-icon :icon="['fas', 'plus-circle']" />
                   <span class="ml-2">Thêm kết quả chính</span>
                 </a>  
@@ -614,7 +614,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateSubGoal">
@@ -657,7 +657,7 @@
           </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmEditMainResult">
@@ -736,7 +736,7 @@
         </el-tabs>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResult = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInMainResult">
@@ -853,7 +853,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false; errors.clear()">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false">
           Hủy
         </button>
         <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitUpdateSubGoal">
