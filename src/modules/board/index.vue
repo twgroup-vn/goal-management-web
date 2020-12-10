@@ -43,7 +43,7 @@
           <div class="text">Bảng toàn công ty</div>
         </div>
         <div v-for="(item, key) in boardList.data" :key="key" class="col-md-3 mb-3">  
-            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? item.backgroundColor : ''})`}" @click="showMessage('noPermission')">
+            <div class="card boardCard" :style="{backgroundImage: `url(${item && item.backgroundColor ? require(`@/assets/landscapes/${item.backgroundColor}`) : ''})`}" @click="showMessage('noPermission')">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div class="d-flex justify-content-between">
                   <div class="text-inside">{{ item.title }}</div>
