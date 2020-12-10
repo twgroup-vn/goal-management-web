@@ -29,7 +29,10 @@ const getUserList = (state) => {
 const getListCard = (state) => {
   var data = [];
   if (state.card) {
-    data = _.map(state.card, o => {
+    data = _.map(state.card, (o, index) => {
+      if(o && !o.length){
+        o.push({id: '', cardGroupId: index });
+      }
       return o;
     });
   }

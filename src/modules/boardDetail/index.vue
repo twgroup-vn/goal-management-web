@@ -56,7 +56,7 @@
               <draggable class="list-group" :list="listCard[index]" group="working" ghost-class="ghost" :move="checkMove">
                 <transition-group>
                   <div
-                    class="list-group-item"
+                    :class="`list-group-item ${ !card.title ? 'invisible-card' : ''}`"
                     v-for="card in item" :key="card.id" @click="openCardDetail(card)" @contextmenu.prevent="$refs.card.open($event, card)">
                     <div>
                         <el-tooltip class="item" effect="dark" :content="commonData.cardStatus.find(o=>{ return o.code === card.status }).name" placement="top-start" v-if="card.status">
@@ -634,7 +634,7 @@ export default {
       formCardGroup: {
         title: "",
         isDelete: false,
-        status: "unblock"
+        status: "unlock"
       },
       boardEdit: {
         title: false,
@@ -743,7 +743,7 @@ export default {
       _this.formCardGroup = {
         title: "",
         isDelete: false,
-        status: "unblock"
+        status: "unlock"
       }
     },
     async deleteCard(){
@@ -824,7 +824,7 @@ export default {
     async checkMove(e){
       var _this = this;
       if(e && e.draggedContext && e.relatedContext){
-          e.draggedContext.element.ordinalNumber = e.relatedContext.element.ordinalNumber;
+          e.draggedContext.element.ordinalNumber = e.relatedContext.element.ordinalNumber || 1;
           e.draggedContext.element.cardGroupId = e.relatedContext.element.cardGroupId;
           let cardNeedToMove = {
             cardId: e.draggedContext.element.id,
@@ -934,5 +934,9 @@ export default {
 <style scoped>
 .bg-selected-border{
   border: 3px solid red;
+}
+.invisible-card{
+  visibility: hidden;
+  height: 0px;
 }
 </style>
