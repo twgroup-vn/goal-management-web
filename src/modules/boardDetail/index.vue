@@ -176,7 +176,7 @@
               </div>
             </div>
           </el-collapse-item>
-          <el-collapse-item title="Hình nền" name="2">
+          <el-collapse-item title="Hình nền" name="2" class="board-wallpapers">
             <div class="row">
               <div class="col-md-6 mb-3" v-for="(item, index) in commonData.landscapeImages" :key="index">
                 <a href="javascript:;" @click="updateLandscape(item)"><img :class="`img-fluid img-thumbnail landscape-images ${boardDetail && boardDetail.backgroundColor===item ? 'bg-selected-border' : '' }`" :src="require(`@/assets/landscapes/${item}`)" /></a>
