@@ -48,7 +48,7 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row align-items-center">
-                <div :class="switchLayout == false ? 'col-md-6 d-flex flex-wrap align-items-center' : 'col-12 d-flex flex-wrap align-items-center justify-content-center'">
+                <div :class="switchLayout == false ? 'col-md-6 d-flex flex-wrap align-items-center' : 'col-12 d-flex flex-column align-items-center justify-content-center'">
                   <div :class="switchLayout == false ? 'created-date mr-3' : 'created-date mr-0 mb-3'">{{  $t("checkinPage.createDate") }}: {{ item.createdAt.slice(0,10) }}</div>
                   <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
                       {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
@@ -631,36 +631,38 @@
 
     <el-dialog title="Chỉnh sửa kết quả chính" :visible.sync="modalEditMainResult" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div class="row">
-          <div class="col-md-6">
-            <div :class="`form-group ${errors.has('titleEdit') ? 'has-error' : ''}`">
-              <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
-              <input type="text" class="input-primary medium" name="titleEdit" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title" v-validate="'required'"/>
-              <div v-if="errors.has('titleEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả chính</div>
+        <form data-vv-scope="validateEditMainResult">
+          <div class="row">
+            <div class="col-md-6">
+              <div :class="`form-group ${errors.has('validateEditMainResult.titleEdit') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="titleEdit" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title" v-validate="'required'"/>
+                <div v-if="errors.has('validateEditMainResult.titleEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả chính</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div :class="`form-group ${errors.has('validateEditMainResult.targetPercentEdit') ? 'has-error' : ''}`">
+                <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
+                <input type="number" class="input-primary medium" name="targetPercentEdit" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" v-validate="'required'" />
+                <div v-if="errors.has('validateEditMainResult.targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div :class="`form-group ${errors.has('targetPercentEdit') ? 'has-error' : ''}`">
-              <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
-              <input type="number" class="input-primary medium" name="targetPercentEdit" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" v-validate="'required'" />
-              <div v-if="errors.has('targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kế hoạch</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formEditMainResult.planLink" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kết quả</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formEditMainResult.resultLink" />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Link kế hoạch</label>
-              <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formEditMainResult.planLink" />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Link kết quả</label>
-              <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formEditMainResult.resultLink" />
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false">
@@ -829,37 +831,39 @@
 
     <el-dialog title="Cập nhật mục tiêu con" :visible.sync="modalUpdateSubGoal" class="transition-box-center" width="50%" top="4vh" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div class="row">
-          <div class="col-12">
-            <div :class="`form-group ${errors.has('name') ? 'has-error' : ''}`">
-              <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
-              <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name" v-validate.immediate="'required'"/>
-              <div v-if="errors.has('name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+        <form data-vv-scope="validateUpdateSubGoal">
+          <div class="row">
+            <div class="col-12">
+              <div :class="`form-group ${errors.has('validateUpdateSubGoal.name') ? 'has-error' : ''}`">
+                <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name" v-validate.immediate="'required'"/>
+                <div v-if="errors.has('validateUpdateSubGoal.name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Mức độ tự tin</label>
+                <el-radio-group v-model="formUpdateSubGoal.confidenceLevel" v-for="(item, index) in commonData.confidenceLevel" :key="index" class="d-block">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Tiến độ</label>
+                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formUpdateSubGoal.progressPercent" />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Trạng thái</label>
+                <el-select v-model="formUpdateSubGoal.status" placeholder="Chọn trạng thái">
+                  <el-option v-for="(item, index) in commonData.goalStatus" :key="index" :label="item.name" :value="item.code"></el-option>
+                </el-select>
+              </div>
             </div>
           </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Mức độ tự tin</label>
-              <el-radio-group v-model="formUpdateSubGoal.confidenceLevel" v-for="(item, index) in commonData.confidenceLevel" :key="index" class="d-block">
-                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Tiến độ</label>
-              <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formUpdateSubGoal.progressPercent" />
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Trạng thái</label>
-              <el-select v-model="formUpdateSubGoal.status" placeholder="Chọn trạng thái">
-                <el-option v-for="(item, index) in commonData.goalStatus" :key="index" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false">
@@ -1130,27 +1134,31 @@ export default {
     },
     confirmEditMainResult: _.debounce(async function () {
         var _this = this;
-        try {
-          _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
-          await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
-          _this.modalEditMainResult = false;
-          await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-          _this.formEditMainResult.title = "";
-          _this.formEditMainResult.targetPercent = null;
-          _this.formEditMainResult.planLink = "";
-          _this.formEditMainResult.resultLink = "";
-          _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
-          _this.$notify({
-            title: 'Chúc mừng',
-            message: 'Lưu thành công',
-            type: 'success'
-          });
-          } catch (error) {
-            _this.$notify.error({
-              title: 'Thất bại',
-              message: 'Lưu thất bại'
-            });
-        }
+        await _this.$validator.validateAll("validateEditMainResult").then(async result => {
+          if (result) {
+            try {
+              _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
+              await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
+              _this.modalEditMainResult = false;
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+              _this.formEditMainResult.title = "";
+              _this.formEditMainResult.targetPercent = null;
+              _this.formEditMainResult.planLink = "";
+              _this.formEditMainResult.resultLink = "";
+              _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+              } catch (error) {
+                _this.$notify.error({
+                  title: 'Thất bại',
+                  message: 'Lưu thất bại'
+                });
+            }
+          }
+        })
     }, 500),
     openModalDeleteMainResult(item, result){
       var _this = this;
@@ -1244,19 +1252,36 @@ export default {
       _this.formUpdateSubGoal.companyId = subGoal.companyId;
       _this.formUpdateSubGoal.higherUserId = subGoal.higherUserId;
       _this.modalUpdateSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
-    async submitUpdateSubGoal(){
+    submitUpdateSubGoal: _.debounce(async function () {
       var _this = this;
-      _this.formUpdateSubGoal.progressPercent = parseFloat(_this.formUpdateSubGoal.progressPercent);
-      await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formUpdateSubGoal);
-      _this.formUpdateSubGoal.userId = null;
-      _this.formUpdateSubGoal.goalId = null;
-      _this.formUpdateSubGoal.cycleId = null;
-      _this.formUpdateSubGoal.companyId = null;
-      _this.formUpdateSubGoal.higherUserId = null;
-      _this.modalUpdateSubGoal = false;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-    },
+      await _this.$validator.validateAll("validateUpdateSubGoal").then(async result => {
+        if (result) {
+          try {
+            _this.formUpdateSubGoal.progressPercent = parseFloat(_this.formUpdateSubGoal.progressPercent);
+            await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formUpdateSubGoal);
+            _this.formUpdateSubGoal.userId = null;
+            _this.formUpdateSubGoal.goalId = null;
+            _this.formUpdateSubGoal.cycleId = null;
+            _this.formUpdateSubGoal.companyId = null;
+            _this.formUpdateSubGoal.higherUserId = null;
+            _this.modalUpdateSubGoal = false;
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
+    }, 500),
     handleSwitchLayout(){
       var _this = this;
       _this.switchLayout = ! _this.switchLayout;
