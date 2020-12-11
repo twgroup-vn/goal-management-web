@@ -186,6 +186,7 @@ export default {
       var body = document.body;
       body.classList.remove("theme-dark");
       _this.$router.push("/admin/company");
+      document.title = "Quản trị - Hệ thống quản lý mục tiêu"
     },
     async logout() {
       var _this = this;

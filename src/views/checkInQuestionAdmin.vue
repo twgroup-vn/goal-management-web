@@ -10,9 +10,9 @@
           <a class="close-menu" @click="closeMenu" v-bind:class="{active: target}">
             <font-awesome-icon :icon="['fas', 'bars']" />
           </a>
-          <router-link class="logo-brand" to="/checkIn">
+          <a href="javascript:;" class="logo-brand" @click="linkToUser()">
             <img class="img-fluid" :src="MainLogo"/>
-          </router-link>
+          </a>
         </div>
         <div class="d-flex align-items-center">
           <div class="noti-group d-none">
@@ -115,6 +115,11 @@ export default {
       _this.user = null;
       _this.$router.push("/login");
     },
+    linkToUser(){
+      var _this = this;
+      document.title = "Hệ thống quản lý mục tiêu"
+      _this.$router.push("/checkIn");
+    }
   },
 };
 </script>
