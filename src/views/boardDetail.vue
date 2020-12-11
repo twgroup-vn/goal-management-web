@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-menu params="route: route" v-on:handle-theme="updateParentTheme" class="board-detail-nav"></nav-menu>
-    <div :class="currentTheme">
+    <div :class="currentTheme" class="page-content">
       <BoardDetail />
     </div>
   </div>

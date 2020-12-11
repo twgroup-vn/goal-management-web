@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light" :class="currentTheme">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" :class="currentTheme">
       <router-link class="navbar-brand" to="/">
         <img class="img-fluid" :src="MainLogo"/>
       </router-link>
