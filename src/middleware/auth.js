@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import state from '../modules/login/_store/index'
+import state from '../modules/login/_store/index';
 import store from '../store'
 
 export default async function auth(to, from, next) {
@@ -37,7 +37,22 @@ export default async function auth(to, from, next) {
       if(localStorage.getItem('companyId')){
         await store.dispatch('$_loginPage/getCompanyDetails', localStorage.getItem('companyId'));
         Vue.prototype.$http.defaults.headers.common['CompanyId'] = `${localStorage.getItem('companyId')}`;
-        return next();
+        if (to.meta.ignoreCheckAccess) {
+          return next();
+        }
+        else if (state.state.currentUser && to.meta.accessRight) {
+          let positionObject = state.state.currentUser && state.state.currentUser.position ? JSON.parse(state.state.currentUser.position) : null;
+          let positionOfCompany = positionObject.find( o => o.CompanyId === localStorage.getItem("companyId"));
+          let isAdmin = positionOfCompany && positionOfCompany.IsAdmin ? positionOfCompany.IsAdmin : false;
+          if (!isAdmin) {
+            return next('/404')
+          } else {
+            return next();
+          }
+        }
+        else {
+          return next('/404');
+        }
       }
       else
       {

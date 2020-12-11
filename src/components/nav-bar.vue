@@ -63,7 +63,7 @@
                 <div class="dropdown-item">
                   <a href="javascript:;" @click="redirectTo(`/userInfo`)" class="d-block">{{ $t("common.accountInfo") }}</a>
                 </div>
-                <div class="dropdown-item">
+                <div class="dropdown-item" v-if="currentUser.isAdmin">
                   <a href="javascript:;" @click="linkToAdmin" class="d-block">{{ $t("common.infoManagement") }}</a>
                 </div>
                 <div class="dropdown-item">

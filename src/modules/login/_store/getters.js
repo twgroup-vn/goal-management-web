@@ -13,6 +13,11 @@ const getCurrentUser = (state) =>{
   if(state.currentUser){
     data = _.cloneDeep(state.currentUser);
     data.positionObject = data && data.position ? JSON.parse(data.position) : null;
+    if(localStorage.getItem("companyId")){
+      let positionOfCompany = data.positionObject.find( o => o.CompanyId === localStorage.getItem("companyId"));
+      data.isAdmin = positionOfCompany.IsAdmin;
+    }
+    data.one = localStorage.getItem("companyId");
   }
   return data;
 }
