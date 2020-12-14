@@ -125,11 +125,11 @@
                         <div class="card mb-4">
                           <div class="card-body">
                             <div class="row">
-                              <div :class="switchLayout == false ? 'col-md-4 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Tên liên kết</div>
                                 <div class="content">{{ card.title ? card.title : 'Không có tên liên kết' }}</div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-4 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Người phụ trách</div>
                                 <div class="d-flex align-items-center flex-wrap">
                                   <div class="content mr-2" v-for="(assignee, index) in card.assignees" :key="index">
@@ -145,7 +145,7 @@
                               </div>
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Ngày hết hạn</div>
-                                <div class="content">{{ card.dueDate ? card.dueDate.slice(0, 10) : 'Không có thông tin' }}</div>
+                                <div class="content">{{ card.dueDate ? card.dueDate : 'Không có thông tin' }}</div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <el-tooltip class="item" effect="dark" content="Chuyển tới quản lý công việc" placement="top-start">
@@ -177,7 +177,10 @@
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title d-flex align-items-center">
                                   <div class="mr-2">Tên mục tiêu con</div>
-                                  <a href="javascript:;" class="txt-primary" @click="openModalCheckInSubGoal(sub)">Check-in</a>
+                                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInSubGoal(sub)">
+                                    <span class="mr-2">Check-in</span>
+                                    <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                                  </a>
                                 </div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
@@ -479,7 +482,10 @@
                     <div v-if="result && result.title">{{ result.title }}</div>
                     <div v-else class="text-disabled">Không có nội dung</div>
                   </div>
-                  <button href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result)">Check-in</button>
+                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result)">
+                    <span class="mr-2">Check-in</span>
+                    <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                  </a>
                 </div>
               </td>
               <td>
@@ -1230,7 +1236,7 @@ export default {
               _this.modalEditMainResult = false;
               await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
               _this.formEditMainResult.title = "";
-              _this.formEditMainResult.targetPercent = null;
+              _this.formEditMainResult.targetPercent = 0;
               _this.formEditMainResult.planLink = "";
               _this.formEditMainResult.resultLink = "";
               _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
