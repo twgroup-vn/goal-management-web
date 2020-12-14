@@ -28,6 +28,19 @@ hr{
     border-bottom: 1px solid $gray-100;
 }
 
+.txt-primary{
+    color: $primary;
+    &:hover{
+        color: $primary;
+    }
+    &:focus{
+        color: $primary;
+    }
+    &:active{
+        color: $primary;
+    }
+}
+
 .border-radius-0{
     border-radius: 0 !important;
 }

@@ -177,7 +177,7 @@
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title d-flex align-items-center">
                                   <div class="mr-2">Tên mục tiêu con</div>
-                                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInSubGoal(sub)">Check-in</a>
+                                  <a href="javascript:;" class="txt-primary" @click="openModalCheckInSubGoal(sub)">Check-in</a>
                                 </div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
@@ -1373,7 +1373,6 @@ export default {
     openModalCheckInSubGoal(subGoalDetails){
       var _this = this;
       _this.subGoalDetails = _.cloneDeep(subGoalDetails);
-      console.log(subGoalDetails);
       _this.formCheckInSubGoal.subGoalId = subGoalDetails.id;
       _this.formCheckInSubGoal.goalId = subGoalDetails.goalId;
       _this.modalCheckInSubGoal = true;
@@ -1395,11 +1394,11 @@ export default {
             _this.formCheckInSubGoal.subGoalId = null;
             _this.formCheckInSubGoal.currentProgress = 0;
             _this.formCheckInSubGoal.confidenceLevel = '';
-            _this.formCheckInSubGoal.result = '',
-            _this.formCheckInSubGoal.answerFirst = '',
-            _this.formCheckInSubGoal.answerSecond = '',
-            _this.formCheckInSubGoal.answerThird = '',
-            _this.formCheckInSubGoal.answerFourth = '',
+            _this.formCheckInSubGoal.result = '';
+            _this.formCheckInSubGoal.answerFirst = '';
+            _this.formCheckInSubGoal.answerSecond = '';
+            _this.formCheckInSubGoal.answerThird = '';
+            _this.formCheckInSubGoal.answerFourth = '';
             _this.formCheckInSubGoal.isDelete = false,
             _this.modalCheckInSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
