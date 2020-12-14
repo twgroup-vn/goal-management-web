@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light" :class="currentTheme">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" :class="currentTheme">
       <router-link class="navbar-brand" to="/">
         <img class="img-fluid" :src="MainLogo"/>
       </router-link>
@@ -186,6 +186,7 @@ export default {
       var body = document.body;
       body.classList.remove("theme-dark");
       _this.$router.push("/admin/company");
+      document.title = "Quản trị - Hệ thống quản lý mục tiêu"
     },
     async logout() {
       var _this = this;

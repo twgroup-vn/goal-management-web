@@ -28,7 +28,7 @@
             <font-awesome-icon :icon="['fas', 'th-large']" class="switch-icon" :class="{ show : switchLayout == true}" />
             <font-awesome-icon :icon="['fas', 'th-list']" class="switch-icon" :class="{ show : switchLayout == false}"/>
           </a>
-          <button class="btn btn-primary btn-medium" @click="openCreateGoal; errors.clear()">{{ $t("checkinPage.createGoalBtn") }}</button>
+          <button class="btn btn-primary btn-medium" @click="openCreateGoal">{{ $t("checkinPage.createGoalBtn") }}</button>
         </div>
       </div>
     </div>
@@ -48,12 +48,12 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row align-items-center">
-                <div :class="switchLayout == false ? 'col-md-6 d-flex flex-wrap align-items-center' : 'col-12 d-flex flex-wrap align-items-center justify-content-center'">
+                <div :class="switchLayout == false ? 'col-md-6 d-flex flex-wrap align-items-center' : 'col-12 d-flex flex-column align-items-center justify-content-center'">
                   <div :class="switchLayout == false ? 'created-date mr-3' : 'created-date mr-0 mb-3'">{{  $t("checkinPage.createDate") }}: {{ item.createdAt.slice(0,10) }}</div>
-                  <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item); errors.clear()" style="cursor:pointer">
+                  <div :class="`status ${commonData.checkInStatusDisplay[item.checkInStatus].color}`" @click="handleOpenModalCheckIn(item)" style="cursor:pointer">
                       {{ commonData.checkInStatusDisplay[item.checkInStatus].name }}
                   </div>
-                  <button :class="switchLayout == false ? 'btn btn-primary ml-3' : 'btn btn-primary ml-0 mt-3' " @click="handleCreateSubGoal(item); errors.clear()">
+                  <button :class="switchLayout == false ? 'btn btn-primary ml-3' : 'btn btn-primary ml-0 mt-3' " @click="handleCreateSubGoal(item)">
                     <span class="ml-2">Tạo mục tiêu con</span>
                   </button>
                 </div>
@@ -204,7 +204,7 @@
                                 <div class="title"></div>
                                 <div class="content">
                                   <el-tooltip class="item" effect="dark" content="Cập nhật mục tiêu con" placement="top-start">
-                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalUpdateSubGoal(sub); errors.clear()">
+                                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalUpdateSubGoal(sub)">
                                       <font-awesome-icon :icon="['fas', 'edit']" />
                                     </a>
                                   </el-tooltip>
@@ -234,37 +234,39 @@
                 {{ goalDetails.name ?  goalDetails.name : "" }}
               </div>
             </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
-              <div class="col-md-8">
-               <el-radio-group v-model="formCheckIn.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
-                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
-              </el-radio-group>
+            <form data-vv-scope="validateCheckIn">
+              <div class="row my-2">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+                <div class="col-md-8">
+                <el-radio-group v-model="formCheckIn.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+                </div>
               </div>
-            </div>
-            <div :class="`row my-2 ${errors.has('result') ? 'has-error' : ''}`">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
-              <div class="col-md-8">
-                <input class="input-primary medium" name="result" placeholder="Nhập kết quả" v-model="formCheckIn.result" v-validate="'required'"/>
-                <div v-if="errors.has('result')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+              <div :class="`row my-2 ${errors.has('validateCheckIn.resultCheckIn') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input class="input-primary medium" name="resultCheckIn" placeholder="Nhập kết quả" v-model="formCheckIn.result" v-validate="'required'"/>
+                  <div v-if="errors.has('validateCheckIn.resultCheckIn')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+                </div>
               </div>
-            </div>
-            <div :class="`row my-2 ${errors.has('currentProgress') ? 'has-error' : ''}`">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
-              <div class="col-md-8">
-                <input type="number" class="input-primary medium" name="currentProgress" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" v-validate="'required'"/>
-                <div v-if="errors.has('currentProgress')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
-              </div> 
-            </div>
-            <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
-              <div class="col-md-4 title">{{ item.question }}</div>
-              <div class="col-md-8">
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" name="answerFirst" v-if="item.orderNo == 1" v-model="formCheckIn.answerFirst"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckIn.answerSecond"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckIn.answerThird"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckIn.answerFourth"></textarea>
+              <div :class="`row my-2 ${errors.has('validateCheckIn.currentProgressCheckIn') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input type="number" class="input-primary medium" name="currentProgressCheckIn" placeholder="Nhập tiến độ" v-model="formCheckIn.currentProgress" v-validate="'required'"/>
+                  <div v-if="errors.has('validateCheckIn.currentProgressCheckIn')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
+                </div> 
               </div>
-            </div>
+              <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+                <div class="col-md-4 title">{{ item.question }}</div>
+                <div class="col-md-8">
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" name="answerFirst" v-if="item.orderNo == 1" v-model="formCheckIn.answerFirst"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckIn.answerSecond"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckIn.answerThird"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckIn.answerFourth"></textarea>
+                </div>
+              </div>
+            </form>
           </el-tab-pane>
           <el-tab-pane label="Lịch sử" name="history">
             <div class="block mt-4" v-if="goalDetails && goalDetails.checkIn && goalDetails.checkIn.length">
@@ -294,112 +296,114 @@
 
     <el-dialog title="Tạo mục tiêu" :visible.sync="modalCreateGoal" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="modal-body">
-        <div :class="`form-group ${errors.has('cycle') ? 'has-error' : ''}`">
-          <div class="row my-2">
-            <div class="col-md-4 title">Chu kỳ<span class="text-danger ml-2">*</span></div>
-            <div class="col-md-8">
-              <el-select v-model="formCreate.cycleId" name="cycle" clearable placeholder="Chọn chu kỳ" class="w-100" v-validate="'required'">
-                <el-option v-for="item in cycleCompany"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                </el-option>
-              </el-select>
-              <div v-if="errors.has('cycle')" class="mt-3 text-danger">Yêu cầu nhập chu kỳ</div>
-            </div>
-          </div>
-        </div>
-        <div :class="`form-group ${errors.has('higherUser') ? 'has-error' : ''}`">
-          <div class="row my-2">
-            <div class="col-md-4 title">Cấp trên<span class="text-danger ml-2">*</span></div>
-            <div class="col-md-8">
-              <el-select v-model="formCreate.higherUserId" name="higherUser" clearable placeholder="Chọn cấp trên quản lý mục tiêu" class="w-100" v-validate="'required'">
-                <el-option v-for="item in userCompany"
-                            :key="item.id"
-                            :label="`${item.fullName} ( ${item.email} )`"
-                            :value="item.id">
-                </el-option>
-              </el-select>
-              <div v-if="errors.has('higherUser')" class="mt-3 text-danger">Yêu cầu nhập cấp trên</div>
-            </div>
-          </div>
-        </div>
-        <div :class="`form-group ${errors.has('nameGoal') ? 'has-error' : ''}`">
-          <div class="row my-2">
-            <div class="col-md-4 title">Mục tiêu của bạn<span class="text-danger ml-2">*</span></div>
-            <div class="col-md-8">
-              <input class="input-primary medium" name="nameGoal" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" v-validate="'required'" />
-              <div v-if="errors.has('nameGoal')" class="mt-3 text-danger">Yêu cầu nhập mục tiêu</div>
-            </div>      
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Link kế hoạch</div>
-          <div class="col-md-8">
-            <input class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
-          </div>      
-        </div><hr/>
-        <div class="row my-2">
-          <div class="col-md-4 title">
-            Các mục tiêu liên kết
-          </div>
-          <div class="col-md-8 text-right">
-              <button class="btn btn-secondary mr-2" @click="clearRelation">
-                <font-awesome-icon :icon="['fas', 'trash']" />
-              </button>
-              <button class="btn btn-primary" @click="addRelation">
-                <font-awesome-icon :icon="['fas', 'plus']" />
-              </button>
-          </div>
-        </div>
-        <div class="row my-2" v-for="(item, index) in relationArray" :key="index">
-           <div class="col-md-8">
-             <el-select
-                v-model="item.RelatedGoalId"
-                filterable
-                remote
-                reserve-keyword
-                placeholder="Nhập mục tiêu liên kết"
-                :remote-method="remoteMethod"
-                :loading="loading">
-                <el-option
-                  v-for="goal in options"
-                  :key="goal.id"
-                  :label="goal.name"
-                  :value="goal.id">
-                </el-option>
-              </el-select>
-           </div>
-           <div class="col-md-4">
-              <el-select v-model="item.Type" placeholder="Chọn loại liên kết">
-                <el-option
-                  v-for="type in commonData.relationshipType"
-                  :key="type.code"
-                  :label="type.name"
-                  :value="type.code">
-                </el-option>
-              </el-select>
-           </div>
-        </div>
-        <!-- <div class="row my-2">
-          <div class="col-md-4 title">Hình đính kèm</div>
-          <div class="col-md-8">
-            <div class="avatar-circle square">
-              <img class="img-fluid" :src="NoAvatar" v-if="!formCreate.image" />
-              <img class="img-fluid" :src="formCreate.image" v-else />
-               <div class="group-edit-avatar">
-                <font-awesome-icon :icon="['fas', 'pen-square']" />
-                <input
-                  type="file"
-                  class="avatar-input"
-                  name="file"
-                  id="file"
-                  @change="handleFileUpload"
-                />
+        <form data-vv-scope="validateCreateGoal">
+          <div :class="`form-group ${errors.has('validateCreateGoal.cycleGoal') ? 'has-error' : ''}`">
+            <div class="row my-2">
+              <div class="col-md-4 title">Chu kỳ<span class="text-danger ml-2">*</span></div>
+              <div class="col-md-8">
+                <el-select v-model="formCreate.cycleId" name="cycleGoal" clearable placeholder="Chọn chu kỳ" class="w-100" v-validate="'required'">
+                  <el-option v-for="item in cycleCompany"
+                              :key="item.id"
+                              :label="item.name"
+                              :value="item.id">
+                  </el-option>
+                </el-select>
+                <div v-if="errors.has('validateCreateGoal.cycleGoal')" class="mt-3 text-danger">Yêu cầu nhập chu kỳ</div>
               </div>
             </div>
-          </div>      
-        </div> -->
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateGoal.higherUserGoal') ? 'has-error' : ''}`">
+            <div class="row my-2">
+              <div class="col-md-4 title">Cấp trên<span class="text-danger ml-2">*</span></div>
+              <div class="col-md-8">
+                <el-select v-model="formCreate.higherUserId" name="higherUserGoal" clearable placeholder="Chọn cấp trên quản lý mục tiêu" class="w-100" v-validate="'required'">
+                  <el-option v-for="item in userCompany"
+                              :key="item.id"
+                              :label="`${item.fullName} ( ${item.email} )`"
+                              :value="item.id">
+                  </el-option>
+                </el-select>
+                <div v-if="errors.has('validateCreateGoal.higherUserGoal')" class="mt-3 text-danger">Yêu cầu nhập cấp trên</div>
+              </div>
+            </div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateGoal.nameGoal') ? 'has-error' : ''}`">
+            <div class="row my-2">
+              <div class="col-md-4 title">Mục tiêu của bạn<span class="text-danger ml-2">*</span></div>
+              <div class="col-md-8">
+                <input class="input-primary medium" name="nameGoal" placeholder="Nhập mục tiêu của bạn" v-model="formCreate.name" v-validate="'required'" />
+                <div v-if="errors.has('validateCreateGoal.nameGoal')" class="mt-3 text-danger">Yêu cầu nhập mục tiêu</div>
+              </div>      
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-md-4 title">Link kế hoạch</div>
+            <div class="col-md-8">
+              <input class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreate.linkPlan" />
+            </div>      
+          </div><hr/>
+          <div class="row my-2">
+            <div class="col-md-4 title">
+              Các mục tiêu liên kết
+            </div>
+            <div class="col-md-8 text-right">
+                <button class="btn btn-secondary mr-2" @click="clearRelation">
+                  <font-awesome-icon :icon="['fas', 'trash']" />
+                </button>
+                <button class="btn btn-primary" @click="addRelation">
+                  <font-awesome-icon :icon="['fas', 'plus']" />
+                </button>
+            </div>
+          </div>
+          <div class="row my-2" v-for="(item, index) in relationArray" :key="index">
+            <div class="col-md-8">
+              <el-select
+                  v-model="item.RelatedGoalId"
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="Nhập mục tiêu liên kết"
+                  :remote-method="remoteMethod"
+                  :loading="loading">
+                  <el-option
+                    v-for="goal in options"
+                    :key="goal.id"
+                    :label="goal.name"
+                    :value="goal.id">
+                  </el-option>
+                </el-select>
+            </div>
+            <div class="col-md-4">
+                <el-select v-model="item.Type" placeholder="Chọn loại liên kết">
+                  <el-option
+                    v-for="type in commonData.relationshipType"
+                    :key="type.code"
+                    :label="type.name"
+                    :value="type.code">
+                  </el-option>
+                </el-select>
+            </div>
+          </div>
+          <!-- <div class="row my-2">
+            <div class="col-md-4 title">Hình đính kèm</div>
+            <div class="col-md-8">
+              <div class="avatar-circle square">
+                <img class="img-fluid" :src="NoAvatar" v-if="!formCreate.image" />
+                <img class="img-fluid" :src="formCreate.image" v-else />
+                <div class="group-edit-avatar">
+                  <font-awesome-icon :icon="['fas', 'pen-square']" />
+                  <input
+                    type="file"
+                    class="avatar-input"
+                    name="file"
+                    id="file"
+                    @change="handleFileUpload"
+                  />
+                </div>
+              </div>
+            </div>      
+          </div> -->
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalCreateGoal = false">
@@ -412,21 +416,21 @@
     </el-dialog>
     <el-dialog title="Kết quả chính" :visible.sync="modalViewMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-dialog width="50%" title="Thêm kết quả chính" :visible.sync="modalCreateMainResults" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
-        <div>
+        <form data-vv-scope="validateCreateMainResults">
           <div class="row">
             <div class="col-md-6">
-              <div :class="`form-group ${errors.has('title') ? 'has-error' : ''}`">
+              <div :class="`form-group ${errors.has('validateCreateMainResults.titleCreateMainResult') ? 'has-error' : ''}`">
                 <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
-                <input type="text" class="input-primary medium" name="title" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title" v-validate="'required'" />
+                <input type="text" class="input-primary medium" name="titleCreateMainResult" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title" v-validate="'required'" />
               </div>
-              <div v-if="errors.has('title')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
+              <div v-if="errors.has('validateCreateMainResults.titleCreateMainResult')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
             </div>
             <div class="col-md-6">
-              <div :class="`form-group ${errors.has('targetPercent') ? 'has-error' : ''}`">
+              <div :class="`form-group ${errors.has('validateCreateMainResults.targetPercentCreateMainResult') ? 'has-error' : ''}`">
                 <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
-                <input type="number" class="input-primary medium" name="targetPercent" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" v-validate="'required'" />
+                <input type="number" class="input-primary medium" name="targetPercentCreateMainResult" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.targetPercent" v-validate="'required'" />
               </div>
-              <div v-if="errors.has('targetPercent')" class="my-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
+              <div v-if="errors.has('validateCreateMainResults.targetPercentCreateMainResult')" class="my-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
             </div>
           </div>
           <div class="row">
@@ -443,7 +447,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <span slot="footer" class="dialog-footer">
           <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResults = false">
             Hủy
@@ -472,7 +476,7 @@
                     <div v-if="result && result.title">{{ result.title }}</div>
                     <div v-else class="text-disabled">Không có nội dung</div>
                   </div>
-                  <button href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result); errors.clear()">Check-in</button>
+                  <button href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResult(result)">Check-in</button>
                 </div>
               </td>
               <td>
@@ -494,7 +498,7 @@
                     </a>
                   </el-tooltip>
                   <el-tooltip class="item" effect="dark" content="Sửa kết quả chính" placement="top-start">
-                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalEditMainResult(item, result); errors.clear()">
+                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalEditMainResult(item, result)">
                       <font-awesome-icon :icon="['fas', 'edit']" />
                     </a>
                   </el-tooltip>
@@ -512,7 +516,7 @@
               <td></td>
               <td></td>
               <td>
-                <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult(item); errors.clear()">
+                <a href="javascript:;" class="d-block text-primary text-right" @click="openModalCreateMainResult(item)">
                   <font-awesome-icon :icon="['fas', 'plus-circle']" />
                   <span class="ml-2">Thêm kết quả chính</span>
                 </a>  
@@ -607,11 +611,13 @@
 
      <el-dialog title="Tạo mục tiêu con" :visible.sync="modalCreateSubGoal" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div :class="`form-group ${errors.has('name') ? 'has-error' : ''}`">
-          <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
-          <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formCreateSubGoal.name" v-validate="'required'"/>
-          <div v-if="errors.has('name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
-        </div>
+        <form data-vv-scope="validateCreateSubGoal">
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.nameSubGoal') ? 'has-error' : ''}`">
+            <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+            <input type="text" class="input-primary medium" name="nameSubGoal" placeholder="Nhập tên mục tiêu con" v-model="formCreateSubGoal.name" v-validate="'required'"/>
+            <div v-if="errors.has('validateCreateSubGoal.nameSubGoal')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+          </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false">
@@ -625,19 +631,20 @@
 
     <el-dialog title="Chỉnh sửa kết quả chính" :visible.sync="modalEditMainResult" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div class="row">
+        <form data-vv-scope="validateEditMainResult">
+          <div class="row">
             <div class="col-md-6">
-              <div :class="`form-group ${errors.has('titleEdit') ? 'has-error' : ''}`">
+              <div :class="`form-group ${errors.has('validateEditMainResult.titleEdit') ? 'has-error' : ''}`">
                 <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
                 <input type="text" class="input-primary medium" name="titleEdit" placeholder="Nhập kết quả chính" v-model="formEditMainResult.title" v-validate="'required'"/>
-                <div v-if="errors.has('titleEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả chính</div>
+                <div v-if="errors.has('validateEditMainResult.titleEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả chính</div>
               </div>
             </div>
             <div class="col-md-6">
-              <div :class="`form-group ${errors.has('targetPercentEdit') ? 'has-error' : ''}`">
+              <div :class="`form-group ${errors.has('validateEditMainResult.targetPercentEdit') ? 'has-error' : ''}`">
                 <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
                 <input type="number" class="input-primary medium" name="targetPercentEdit" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" v-validate="'required'" />
-                <div v-if="errors.has('targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
+                <div v-if="errors.has('validateEditMainResult.targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
               </div>
             </div>
           </div>
@@ -655,6 +662,7 @@
               </div>
             </div>
           </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalEditMainResult = false">
@@ -688,36 +696,39 @@
                 {{ resultDetail.title ?  resultDetail.title : "" }}
               </div>
             </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
-              <div class="col-md-8">
-               <el-radio-group v-model="formCheckInMainResult.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
-                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
-              </el-radio-group>
+            <form data-vv-scope="validateCheckInMainResult">
+              <div class="row my-2">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+                <div class="col-md-8">
+                <el-radio-group v-model="formCheckInMainResult.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+                </div>
               </div>
-            </div>
-            <div :class="`row my-2 ${errors.has('resultMainGoal') ? 'has-error' : ''}`">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
-              <div class="col-md-8">
-                <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInMainResult.result" v-validate="'required'"/>
-                <div v-if="errors.has('resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+              <div :class="`row my-2 ${errors.has('validateCheckInMainResult.resultMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInMainResult.result" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInMainResult.resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+                </div>
               </div>
-            </div>
-            <div class="row my-2">
-              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}</div>
-              <div class="col-md-8">
-                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formCheckInMainResult.currentProgress" />
-              </div> 
-            </div>
-            <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
-              <div class="col-md-4 title">{{ item.question }}</div>
-              <div class="col-md-8">
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInMainResult.answerFirst"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInMainResult.answerSecond"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInMainResult.answerThird"></textarea>
-                <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInMainResult.answerFourth"></textarea>
+              <div :class="`row my-2 ${errors.has('validateCheckInMainResult.currentProgressMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input type="number" class="input-primary medium" name="currentProgressMainGoal" placeholder="Nhập tiến độ" v-model="formCheckInMainResult.currentProgress" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInMainResult.currentProgressMainGoal')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
+                </div> 
               </div>
-            </div>
+              <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+                <div class="col-md-4 title">{{ item.question }}</div>
+                <div class="col-md-8">
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInMainResult.answerFirst"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInMainResult.answerSecond"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInMainResult.answerThird"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInMainResult.answerFourth"></textarea>
+                </div>
+              </div>
+            </form>
           </el-tab-pane>
           <el-tab-pane label="Lịch sử" name="history">
             <div class="block mt-4" v-if="resultDetail && resultDetail.checkIn && resultDetail.checkIn.length">
@@ -820,37 +831,39 @@
 
     <el-dialog title="Cập nhật mục tiêu con" :visible.sync="modalUpdateSubGoal" class="transition-box-center" width="50%" top="4vh" :close-on-click-modal="false" :close-on-press-escape="false">
       <div>
-        <div class="row">
-          <div class="col-12">
-            <div :class="`form-group ${errors.has('name') ? 'has-error' : ''}`">
-              <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
-              <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name" v-validate.immediate="'required'"/>
-              <div v-if="errors.has('name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+        <form data-vv-scope="validateUpdateSubGoal">
+          <div class="row">
+            <div class="col-12">
+              <div :class="`form-group ${errors.has('validateUpdateSubGoal.name') ? 'has-error' : ''}`">
+                <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="name" placeholder="Nhập tên mục tiêu con" v-model="formUpdateSubGoal.name" v-validate.immediate="'required'"/>
+                <div v-if="errors.has('validateUpdateSubGoal.name')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Mức độ tự tin</label>
+                <el-radio-group v-model="formUpdateSubGoal.confidenceLevel" v-for="(item, index) in commonData.confidenceLevel" :key="index" class="d-block">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Tiến độ</label>
+                <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formUpdateSubGoal.progressPercent" />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group">
+                <label>Trạng thái</label>
+                <el-select v-model="formUpdateSubGoal.status" placeholder="Chọn trạng thái">
+                  <el-option v-for="(item, index) in commonData.goalStatus" :key="index" :label="item.name" :value="item.code"></el-option>
+                </el-select>
+              </div>
             </div>
           </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Mức độ tự tin</label>
-              <el-radio-group v-model="formUpdateSubGoal.confidenceLevel" v-for="(item, index) in commonData.confidenceLevel" :key="index" class="d-block">
-                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Tiến độ</label>
-              <input type="number" class="input-primary medium" placeholder="Nhập tiến độ" v-model="formUpdateSubGoal.progressPercent" />
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label>Trạng thái</label>
-              <el-select v-model="formUpdateSubGoal.status" placeholder="Chọn trạng thái">
-                <el-option v-for="(item, index) in commonData.goalStatus" :key="index" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalUpdateSubGoal = false">
@@ -1031,10 +1044,16 @@ export default {
       _this.formCreateSubGoal.companyId = item.companyId;
       _this.formCreateSubGoal.higherUserId = item.higherUserId;
       _this.modalCreateSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     confirmCreateSubGoal: _.debounce(async function () {
         var _this = this;
-        await _this.$validator.validateAll().then(async result => {
+        await _this.$validator.validateAll("validateCreateSubGoal").then(async result => {
           if (result) {
             try {
               await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formCreateSubGoal);
@@ -1044,6 +1063,7 @@ export default {
               _this.formCreateSubGoal.cycleId = null;
               _this.formCreateSubGoal.companyId = null;
               _this.formCreateSubGoal.higherUserId = null;
+              _this.formCreateSubGoal.name = "";
               await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
               _this.$notify({
                 title: 'Chúc mừng',
@@ -1064,15 +1084,25 @@ export default {
       _this.idTempMainResult = item.id
       _this.formCreateMainResult.goalId = item.id;
       _this.modalCreateMainResults = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     confirmCreateMainResult: _.debounce(async function () {
         var _this = this;
-        await _this.$validator.validateAll().then(async result => {
+        await _this.$validator.validateAll("validateCreateMainResults").then(async result => {
           if (result) {
             try {
               _this.formCreateMainResult.targetPercent = parseFloat(_this.formCreateMainResult.targetPercent);
               await _this.$store.dispatch("$_checkInUser/createMainResult", _this.formCreateMainResult);
               _this.formCreateMainResult.goalId = null;
+              _this.formCreateMainResult.title = '';
+              _this.formCreateMainResult.targetPercent = null;
+              _this.formCreateMainResult.planLink = '';
+              _this.formCreateMainResult.resultLink = '';
               _this.modalCreateMainResults = false;
               await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
               _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
@@ -1095,26 +1125,40 @@ export default {
       _this.idTempMainResult = item.id
       _this.formEditMainResult = _.cloneDeep(result);
       _this.modalEditMainResult = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     confirmEditMainResult: _.debounce(async function () {
         var _this = this;
-        try {
-          _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
-          await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
-          _this.modalEditMainResult = false;
-          await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-          _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
-          _this.$notify({
-            title: 'Chúc mừng',
-            message: 'Lưu thành công',
-            type: 'success'
-          });
-          } catch (error) {
-            _this.$notify.error({
-              title: 'Thất bại',
-              message: 'Lưu thất bại'
-            });
-        }
+        await _this.$validator.validateAll("validateEditMainResult").then(async result => {
+          if (result) {
+            try {
+              _this.formEditMainResult.targetPercent = parseFloat(_this.formEditMainResult.targetPercent);
+              await _this.$store.dispatch("$_checkInUser/updateMainResult", _this.formEditMainResult);
+              _this.modalEditMainResult = false;
+              await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+              _this.formEditMainResult.title = "";
+              _this.formEditMainResult.targetPercent = null;
+              _this.formEditMainResult.planLink = "";
+              _this.formEditMainResult.resultLink = "";
+              _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+              } catch (error) {
+                _this.$notify.error({
+                  title: 'Thất bại',
+                  message: 'Lưu thất bại'
+                });
+            }
+          }
+        })
     }, 500),
     openModalDeleteMainResult(item, result){
       var _this = this;
@@ -1143,10 +1187,16 @@ export default {
       _this.formCheckInMainResult.answerThird = '',
       _this.formCheckInMainResult.answerFourth = '',
       _this.modalCheckInMainResult = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     submitCheckInMainResult: _.debounce(async function () {
       var _this = this;
-      await _this.$validator.validateAll().then(async result => {
+      await _this.$validator.validateAll("validateCheckInMainResult").then(async result => {
         if (result) {
           try {
             var goalIdTemp = _this.formCheckInMainResult.goalId;
@@ -1186,6 +1236,12 @@ export default {
       var _this = this;
       _this.checkInMainResultData = result.checkIn;
       _this.modalReadMainResult = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     openModalUpdateSubGoal(subGoal){
       var _this = this;
@@ -1196,19 +1252,36 @@ export default {
       _this.formUpdateSubGoal.companyId = subGoal.companyId;
       _this.formUpdateSubGoal.higherUserId = subGoal.higherUserId;
       _this.modalUpdateSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
-    async submitUpdateSubGoal(){
+    submitUpdateSubGoal: _.debounce(async function () {
       var _this = this;
-      _this.formUpdateSubGoal.progressPercent = parseFloat(_this.formUpdateSubGoal.progressPercent);
-      await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formUpdateSubGoal);
-      _this.formUpdateSubGoal.userId = null;
-      _this.formUpdateSubGoal.goalId = null;
-      _this.formUpdateSubGoal.cycleId = null;
-      _this.formUpdateSubGoal.companyId = null;
-      _this.formUpdateSubGoal.higherUserId = null;
-      _this.modalUpdateSubGoal = false;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-    },
+      await _this.$validator.validateAll("validateUpdateSubGoal").then(async result => {
+        if (result) {
+          try {
+            _this.formUpdateSubGoal.progressPercent = parseFloat(_this.formUpdateSubGoal.progressPercent);
+            await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formUpdateSubGoal);
+            _this.formUpdateSubGoal.userId = null;
+            _this.formUpdateSubGoal.goalId = null;
+            _this.formUpdateSubGoal.cycleId = null;
+            _this.formUpdateSubGoal.companyId = null;
+            _this.formUpdateSubGoal.higherUserId = null;
+            _this.modalUpdateSubGoal = false;
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
+    }, 500),
     handleSwitchLayout(){
       var _this = this;
       _this.switchLayout = ! _this.switchLayout;
@@ -1305,15 +1378,27 @@ export default {
       _this.formCheckIn.answerThird = '',
       _this.formCheckIn.answerFourth = '',
       _this.modalCheckIn = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     openCreateGoal(){
       var _this = this;
       _this.clearRelation();
       _this.modalCreateGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
     },
     submit: _.debounce(async function () {
       var _this = this;
-      await _this.$validator.validateAll().then(async result => {
+      await _this.$validator.validateAll("validateCreateGoal").then(async result => {
           if (result) {
             try {
               var response = await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
@@ -1358,7 +1443,7 @@ export default {
     }, 500),
     submitCheckIn: _.debounce(async function () {
       var _this = this;
-      await _this.$validator.validateAll().then(async result => {
+      await _this.$validator.validateAll("validateCheckIn").then(async result => {
         if (result) {
           try {
             _this.formCheckIn.currentProgress = parseFloat(_this.formCheckIn.currentProgress);

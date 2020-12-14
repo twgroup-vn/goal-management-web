@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-3 pr-0">
+      <div class="col-3 pr-0 page-content">
         <conversation-list :list-conversation="dataConversation" :list-user="userList"></conversation-list>
       </div>
-      <div class="col-9 pl-0">
+      <div class="col-9 pl-0 page-content">
         <chat-box :user-chat="conversationDetail"></chat-box>
       </div>
     </div>

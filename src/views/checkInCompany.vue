@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-menu params="route: route" v-on:handle-theme="updateParentTheme"></nav-menu>
-    <div :class="currentTheme">
+    <div :class="currentTheme" class="page-content">
       <CheckInCompany />
     </div>
   </div>
