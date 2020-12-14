@@ -65,6 +65,11 @@ const getBoardId = async (context, request) => {
   return response.data;
 };
 
+const checkInSubGoal = async (context, request) => {
+  let response = await api.checkInSubGoal(request);
+  return response;
+};
+
 export default {
   getUserList,
   getBoardId,
@@ -79,4 +84,5 @@ export default {
   updateMainResult,
   deleteMainResult,
   editCheckInMainResult,
+  checkInSubGoal
 }

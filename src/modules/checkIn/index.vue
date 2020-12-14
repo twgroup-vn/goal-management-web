@@ -174,15 +174,18 @@
                         <div class="card mb-4">
                           <div class="card-body">
                             <div class="row">
-                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                <div class="title">Tên mục tiêu con</div>
+                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title d-flex align-items-center">
+                                  <div class="mr-2">Tên mục tiêu con</div>
+                                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInSubGoal(sub)">Check-in</a>
+                                </div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Mức độ tự tin</div>
                                 <div class="content">{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</div>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Tiến độ</div>
                                 <div class="content">
                                   <el-progress :percentage="sub.progressPercent" :format="format" :color="customColorMethod"></el-progress>
@@ -874,6 +877,76 @@
         </button>
       </span>
     </el-dialog>
+
+    <el-dialog title="Form check-in mục tiêu con" :visible.sync="modalCheckInSubGoal" class="transition-box-center" width="80%" top="3vh" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="modal-body">
+        <el-tabs v-model="activeTabSubGoal">
+          <el-tab-pane label="Check-in" name="check-in" v-if="subGoalDetails">
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.goal") }}</div>
+              <div class="col-md-8">
+                {{ subGoalDetails.name ?  subGoalDetails.name : "" }}
+              </div>
+            </div>
+            <form data-vv-scope="validateCheckInSubGoal">
+              <div class="row my-2">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+                <div class="col-md-8">
+                <el-radio-group v-model="formCheckInSubGoal.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+                </div>
+              </div>
+              <div :class="`row my-2 ${errors.has('validateCheckInSubGoal.resultMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInSubGoal.result" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInSubGoal.resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+                </div>
+              </div>
+              <div :class="`row my-2 ${errors.has('validateCheckInSubGoal.currentProgressMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input type="number" class="input-primary medium" name="currentProgressMainGoal" placeholder="Nhập tiến độ" v-model="formCheckInSubGoal.currentProgress" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInSubGoal.currentProgressMainGoal')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
+                </div> 
+              </div>
+              <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+                <div class="col-md-4 title">{{ item.question }}</div>
+                <div class="col-md-8">
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInSubGoal.answerFirst"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInSubGoal.answerSecond"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInSubGoal.answerThird"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInSubGoal.answerFourth"></textarea>
+                </div>
+              </div>
+            </form>
+          </el-tab-pane>
+          <el-tab-pane label="Lịch sử" name="history">
+            <div class="block mt-4" v-if="subGoalDetails && subGoalDetails.checkIn && subGoalDetails.checkIn.length">
+              <el-timeline v-for="(item,index) in subGoalDetails.checkIn" :key="index">
+                <el-timeline-item :timestamp="item.createdAt.slice(0,10)" placement="top">
+                  <el-card>
+                    <div>{{item.result ? item.result : 'Không có kết quả' }}</div>
+                    <div><strong>Mức độ tự tin:</strong> {{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+                    <div><strong>Tiến độ:</strong> {{ item.currentProgress }}%</div>
+                    <div>Xem chi tiết</div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInSubGoal = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInSubGoal">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -894,6 +967,7 @@ export default {
       modalCheckIn: false,
       activeTab: "check-in",
       activeTabMainResult: "check-in",
+      activeTabSubGoal: "check-in",
       modalCreateGoal: false,
       modalViewMainResult: false,
       modalViewFeedback: false,
@@ -905,6 +979,7 @@ export default {
       modalCheckInMainResult: false,
       modalReadMainResult: false,
       modalUpdateSubGoal: false,
+      modalCheckInSubGoal: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -964,6 +1039,18 @@ export default {
         status: '',
         isDelete: false,
       },
+      formCheckInSubGoal: {
+        goalId: '',
+        subGoalId: null,
+        result: '',
+        confidenceLevel: '',
+        currentProgress: 0,
+        answerFirst: '',
+        answerSecond: '',
+        answerThird: '',
+        answerFourth: '',
+        isDelete: false
+      },
       file: null,
       path: null,
       goalDetails: null,
@@ -971,6 +1058,7 @@ export default {
       mainResult: null,
       checkInMainResultData: null,
       resultDetail: null,
+      subGoalDetails: null,
       switchLayout: false,
       relationArray: [
         { GoalId: null, RelatedGoalId: null, Type: null  }
@@ -1272,6 +1360,48 @@ export default {
             _this.formUpdateSubGoal.companyId = null;
             _this.formUpdateSubGoal.higherUserId = null;
             _this.modalUpdateSubGoal = false;
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
+    }, 500),
+    openModalCheckInSubGoal(subGoalDetails){
+      var _this = this;
+      _this.subGoalDetails = _.cloneDeep(subGoalDetails);
+      console.log(subGoalDetails);
+      _this.formCheckInSubGoal.subGoalId = subGoalDetails.id;
+      _this.formCheckInSubGoal.goalId = subGoalDetails.goalId;
+      _this.modalCheckInSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
+    },
+    submitCheckInSubGoal: _.debounce(async function () {
+      var _this = this;
+      await _this.$validator.validateAll("validateCheckInSubGoal").then(async result => {
+        if (result) {
+          try {
+            _this.formCheckInSubGoal.currentProgress = parseFloat(_this.formCheckInSubGoal.currentProgress);
+            await _this.$store.dispatch("$_checkInUser/checkInSubGoal", _this.formCheckInSubGoal);
+            _this.formCheckInSubGoal.goalId = '';
+            _this.formCheckInSubGoal.subGoalId = null;
+            _this.formCheckInSubGoal.currentProgress = 0;
+            _this.formCheckInSubGoal.confidenceLevel = '';
+            _this.formCheckInSubGoal.result = '',
+            _this.formCheckInSubGoal.answerFirst = '',
+            _this.formCheckInSubGoal.answerSecond = '',
+            _this.formCheckInSubGoal.answerThird = '',
+            _this.formCheckInSubGoal.answerFourth = '',
+            _this.formCheckInSubGoal.isDelete = false,
+            _this.modalCheckInSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
           } catch (error) {
             _this.$notify.error({
