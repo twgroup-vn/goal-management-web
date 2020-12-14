@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="footer">
-                <textarea placeholder="Nhập tin nhắn văn bản" rows="2" v-model="formData.content"></textarea>
+                <textarea placeholder="Nhập tin nhắn văn bản" rows="2" v-model="formData.content" @keyup.enter.prevent="sendMail" name="contentChat" v-validate.immediate="'required'"></textarea>
                 <div class="position-relative">
                     <div class="dropdown-menu uploadChat" :class="{ show : modalImageChat}">
                         <font-awesome-icon :icon="['fas', 'times']"  @click="removeImage"/>
@@ -76,9 +76,9 @@
                     <font-awesome-icon :icon="['fas', 'image']" />
                     <input type="file" id="uploadImageChat" style="display:none" @change="handleFileUpload">
                 </label>
-                <a class="btn btn-chat mail" @click="sendMail">
+                <button class="btn btn-chat mail" @click="sendMail" :disabled="errors.items.length > 0">
                     <font-awesome-icon :icon="['fas', 'paper-plane']" />
-                </a>
+                </button>
             </div>
         </div>
         <div :class="rightInfo == false ? 'group-infoBox' : 'group-infoBox active'">
@@ -154,22 +154,26 @@ export default {
         },
         async sendMail(){
             var _this = this;
-            try{
-                _this.formData.conversationId = _this.conversationId;
-                await _this.$store.dispatch("$_conversation/sendMessage", _this.formData);
-                await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: _this.userInfoOfConversation.id, messageInput: _this.formData.content, functionInput: "$_conversation/getConversationDetail", paramsInput: _this.conversationId, typeInput: "sendTextMessage" }));
-                await _this.$store.dispatch("$_conversation/getConversationDetail", _this.conversationId);
-                await _this.$store.dispatch("$_conversation/getListConversation");
-                _this.formData.content = "";
-                if(_this.formData.type === 'image'){
-                    _this.formData.type = 'text';
-                    _this.modalImageChat = false;
+            await _this.$validator.validateAll().then(async result => {
+                if (result) {
+                    try{
+                        _this.formData.conversationId = _this.conversationId;
+                        await _this.$store.dispatch("$_conversation/sendMessage", _this.formData);
+                        await _this.$store.dispatch("$_loginPage/sendSocket", ({ userInput: _this.userInfoOfConversation.id, messageInput: _this.formData.content, functionInput: "$_conversation/getConversationDetail", paramsInput: _this.conversationId, typeInput: "sendTextMessage" }));
+                        await _this.$store.dispatch("$_conversation/getConversationDetail", _this.conversationId);
+                        await _this.$store.dispatch("$_conversation/getListConversation");
+                        _this.formData.content = "";
+                        if(_this.formData.type === 'image'){
+                            _this.formData.type = 'text';
+                            _this.modalImageChat = false;
+                        }
+                        _this.formData.image = null;
+                    }
+                    catch(error){
+                        console.log(error);
+                    }
                 }
-                _this.formData.image = null;
-            }
-            catch(error){
-                console.log(error);
-            }
+            });
     
         },
         async sendSticker(val){

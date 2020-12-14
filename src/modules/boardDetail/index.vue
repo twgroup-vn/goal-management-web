@@ -69,11 +69,16 @@
               </draggable>
             </div>
             <div class="list-add-item" v-if="showInput && boardDetail.cardGroup[index].id === selectedId">
-              <input class="input-primary medium mb-3" placeholder="Enter title for this group" v-model="formCard.title" />
-              <div class="d-flex">
-                <button class="btn btn-secondary btn-small mr-3" @click="createCard">Thêm</button>
-                <font-awesome-icon :icon="['fas', 'times']" @click="closeAddInput()"/>
-              </div>
+              <form data-vv-scope="validateCreateCard">
+                <div :class="`form-group ${errors.has('validateCreateCard.titleCreateCard') ? 'has-error' : ''}`">
+                  <input class="input-primary medium" name="titleCreateCard" placeholder="Enter title for this group" v-model="formCard.title" v-validate="'required'"/>
+                  <div v-if="errors.has('validateCreateCard.titleCreateCard')" class="mt-3 text-danger">Yêu cầu nhập công việc</div>
+                </div>
+                <div class="d-flex">
+                  <button class="btn btn-secondary btn-small mr-3" :disabled="errors.items.length > 0" @click="createCard">Thêm</button>
+                  <font-awesome-icon :icon="['fas', 'times']" @click="closeAddInput()"/>
+                </div>
+              </form>
             </div>
             <div class="spinner-loading" v-if="loading && loadingId == index">
               <span class="mr-2">Loading</span>
@@ -379,24 +384,22 @@
       :close-on-press-escape="false"
     >
       <div>
-        <div class="form-group">
-          <label class="control-label font-weight-bold">Tên cột</label>
-            <div class="mb-20">
-              <input
-                type="text"
-                class="input-primary medium"
-                placeholder="Nhập tên cột"
-                v-model="formCardGroup.title"
-              />
-            </div>       
-        </div>
-        <div class="text-right mt-2">
-          <span slot="footer" class="dialog-footer">
-              <button class="btn btn-primary btn-medium" @click="createCardGroup">
-                Tạo cột
-            </button>
-          </span>
-        </div>
+        <form data-vv-scope="validateCardGroup">
+          <div :class="`form-group ${errors.has('validateCardGroup.createColumn') ? 'has-error' : ''}`">
+            <label class="control-label font-weight-bold">Tên cột</label>
+              <div class="mb-20">
+                <input type="text" class="input-primary medium" placeholder="Nhập tên cột" v-model="formCardGroup.title" name="createColumn" v-validate="'required'" />
+                <div v-if="errors.has('validateCardGroup.createColumn')" class="mt-3 text-danger">Yêu cầu nhập tên cột</div>
+              </div>       
+          </div>
+          <div class="text-right mt-2">
+            <span slot="footer" class="dialog-footer">
+                <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="createCardGroup">
+                  Tạo cột
+              </button>
+            </span>
+          </div>
+        </form>
       </div>
     </el-dialog>
     <!-- move card manual -->
@@ -863,12 +866,16 @@ export default {
     },
     async createCard(){
       var _this = this;
-      _this.formCard.cardGroupId = _this.selectedId;
-      await _this.$store.dispatch("$_boardDetail/createCard", _this.formCard);
-      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
-      await _this.sendSocket();
-      _this.formCard.title = "";
-      _this.closeAddInput();
+      await _this.$validator.validateAll("validateCreateCard").then(async result => {
+        if (result) {
+          _this.formCard.cardGroupId = _this.selectedId;
+          await _this.$store.dispatch("$_boardDetail/createCard", _this.formCard);
+          await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+          await _this.sendSocket();
+          _this.formCard.title = "";
+          _this.closeAddInput();
+        }
+      });
     },
     async updateCard(){
       var _this = this;
@@ -888,13 +895,17 @@ export default {
     },
     async createCardGroup(){
       var _this = this;
-      _this.formCardGroup.boardId = _this.boardDetail.id;
-      _this.formCardGroup.ordinalNumber = _this.boardDetail.cardGroup && _this.boardDetail.cardGroup.length ? _this.boardDetail.cardGroup.length+1 : 1;
-      await _this.$store.dispatch("$_boardDetail/createCardGroup", _this.formCardGroup);
-      await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
-      await _this.sendSocket();
-      _this.formCardGroup.title = "";
-      _this.modalCreateColumn = false;
+      await _this.$validator.validateAll("validateCardGroup").then(async result => {
+        if (result) {
+          _this.formCardGroup.boardId = _this.boardDetail.id;
+          _this.formCardGroup.ordinalNumber = _this.boardDetail.cardGroup && _this.boardDetail.cardGroup.length ? _this.boardDetail.cardGroup.length+1 : 1;
+          await _this.$store.dispatch("$_boardDetail/createCardGroup", _this.formCardGroup);
+          await _this.$store.dispatch("$_boardDetail/getBoardDetail", _this.$route.params.id);
+          await _this.sendSocket();
+          _this.formCardGroup.title = "";
+          _this.modalCreateColumn = false;
+        }
+      });
     },
     async updateBoard(){
       var _this = this;
