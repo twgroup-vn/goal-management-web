@@ -126,6 +126,11 @@ const labelList = [
   { code: "BA", color: "#0079bf"}
 ];
 
+const permissionList = [
+  { code: "admin", name: "Administrator"},
+  { code: "user", name: "Nhân viên"}
+];
+
 const landscapeImages = [
   '1.jpg',
   '2.jpg',
@@ -173,6 +178,7 @@ export default{
   cardStatusDisplay,
   labelList,
   landscapeImages,
+  permissionList,
   HR_DOMAIN,
   HR_TOKEN_AUTHORIZE,
   HR_GET_USER_LOGIN,

@@ -25,7 +25,6 @@ const getCompanyDetails = async (context, request) => {
 const logout = async (context) => {
   localStorage.clear();
   context.commit('LOG_OUT');
-  // await api.logOutHR();
   window.open(commonData.HR_LOGOUT, "_self");
 };
 

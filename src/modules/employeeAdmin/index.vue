@@ -98,7 +98,19 @@
               </el-option>
             </el-select>
           </div>
-        </div>  
+        </div>
+        <div class="form-group mt-3">
+          <label class="control-label font-weight-bold">Quyền truy cập</label>
+          <div class="mb-20">
+            <el-select v-model="formData.isAdmin" clearable placeholder="Chọn quyền truy cập" class="w-100">
+              <el-option v-for="item in commonData.permissionList"
+                          :key="item.code"
+                          :label="item.name"
+                          :value="item.code">
+              </el-option>
+            </el-select>
+          </div>
+        </div>    
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-primary btn-medium mr-3" @click="dialogVisible = false">Hủy</button>
@@ -138,7 +150,19 @@
               </el-option>
             </el-select>
           </div>
-        </div>  
+        </div>
+        <div class="form-group mt-3">
+          <label class="control-label font-weight-bold">Quyền truy cập</label>
+          <div class="mb-20">
+            <el-select v-model="formEdit.isAdmin" placeholder="Chọn quyền truy cập" class="w-100">
+             <el-option v-for="item in commonData.permissionList"
+                          :key="item.code"
+                          :label="item.name"
+                          :value="item.code">
+              </el-option>
+            </el-select>
+          </div>
+        </div>    
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="dialogEditVisible = false">Hủy</button>
@@ -170,6 +194,7 @@ export default {
         positionId: null,
         permissionId: null,
         companyId: null,
+        isAdmin: false,
         isDelete: false
       },
       formEdit: {
@@ -177,6 +202,7 @@ export default {
         departmentId: null,
         positionId: null,
         companyId: null,
+        isAdmin: false,
         isDelete: false
       },
       userListAfterReduce: null,
@@ -222,6 +248,7 @@ export default {
       _this.formEdit.userId = item.id;
       _this.formEdit.departmentId = item.positionInCompany.DepartmentId;
       _this.formEdit.positionId = item.positionInCompany.PositionId;
+      _this.formEdit.isAdmin = item.positionInCompany.IsAdmin ? 'admin' : 'user' ;
       _this.dialogEditVisible = true;
     },
     addNew(){
@@ -267,6 +294,7 @@ export default {
     editUser: _.debounce(async function () {
       var _this = this;
       try {
+        _this.formEdit.isAdmin =  _this.formEdit.isAdmin === 'admin' ? true : false;
         await _this.$store.dispatch("$_employeeAdmin/addEmployee", _this.formEdit);
         await _this.updateAccessModulesFromHR();
         _this.$notify({
