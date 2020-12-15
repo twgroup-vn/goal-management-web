@@ -70,6 +70,16 @@ const checkInSubGoal = async (context, request) => {
   return response;
 };
 
+const createMainResultSubGoal = async (context, request) => {
+  let response = await api.createMainResultSubGoal(request);
+  return response;
+};
+
+const checkInMainResultSubGoal = async (context, request) => {
+  let response = await api.checkInMainResultSubGoal(request);
+  return response;
+};
+
 export default {
   getUserList,
   getBoardId,
@@ -84,5 +94,7 @@ export default {
   updateMainResult,
   deleteMainResult,
   editCheckInMainResult,
-  checkInSubGoal
+  checkInSubGoal,
+  createMainResultSubGoal,
+  checkInMainResultSubGoal
 }

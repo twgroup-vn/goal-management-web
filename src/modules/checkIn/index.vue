@@ -177,10 +177,21 @@
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title d-flex align-items-center">
                                   <div class="mr-2">Tên mục tiêu con</div>
-                                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInSubGoal(sub)">
-                                    <span class="mr-2">Check-in</span>
-                                    <font-awesome-icon :icon="['fas', 'calendar-check']" />
-                                  </a>
+                                  <el-tooltip class="item" effect="dark" content="Check-in" placement="top-start">
+                                    <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCheckInSubGoal(sub)">
+                                      <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                                    </a>
+                                  </el-tooltip>
+                                  <el-tooltip class="item" effect="dark" content="Tạo kết quả chính" placement="top-start">
+                                    <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCreateMainResultSubGoal(sub)">
+                                      <font-awesome-icon :icon="['fas', 'plus-square']" />
+                                    </a>
+                                  </el-tooltip>
+                                  <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                                    <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(item, sub)">
+                                      <font-awesome-icon :icon="['fas', 'eye']" />
+                                    </a>
+                                  </el-tooltip>
                                 </div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
@@ -478,7 +489,7 @@
             <tr v-for="(result, key) in item.mainResult" :key="key"> 
               <td>
                 <div class="d-flex align-items-center justify-content-between">
-                  <div>
+                  <div class="mr-2">
                     <div v-if="result && result.title">{{ result.title }}</div>
                     <div v-else class="text-disabled">Không có nội dung</div>
                   </div>
@@ -501,8 +512,8 @@
               </td>
               <td>
                 <div class="d-flex justify-content-end">
-                  <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
-                    <a class="d-block text-primary mr-3" href="javascript:;" @click="openModalReadMainResult(result)">
+                  <el-tooltip class="item" effect="dark" content="Xem check-in kết quả chính" placement="top-start">
+                    <a class="d-block text-primary mr-3" href="javascript:;" :disabled="result.checkIn.length === 0" @click="openModalReadMainResult(result)">
                       <font-awesome-icon :icon="['fas', 'eye']" />
                     </a>
                   </el-tooltip>
@@ -953,6 +964,150 @@
         </button>
       </span>
     </el-dialog>
+
+    <el-dialog width="50%" title="Thêm kết quả chính mục tiêu con" :visible.sync="modalCreateMainResultSubGoal" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
+        <form data-vv-scope="validateCreateMainResultsSubGoal">
+          <div class="row">
+            <div class="col-md-6">
+              <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="titleCreateMainResultSubGoal" placeholder="Nhập kết quả chính" v-model="formCreateMainResultSubGoal.title" v-validate="'required'" />
+              </div>
+              <div v-if="errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
+            </div>
+            <div class="col-md-6">
+              <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.targetPercentCreateMainResultSubGoal') ? 'has-error' : ''}`">
+                <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
+                <input type="number" class="input-primary medium" name="targetPercentCreateMainResultSubGoal" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResultSubGoal.targetPercent" v-validate="'required'" />
+              </div>
+              <div v-if="errors.has('validateCreateMainResultsSubGoal.targetPercentCreateMainResultSubGoal')" class="my-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kế hoạch</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kế hoạch" v-model="formCreateMainResultSubGoal.planLink" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Link kết quả</label>
+                <input type="text" class="input-primary medium" placeholder="Nhập link kết quả" v-model="formCreateMainResultSubGoal.resultLink" />
+              </div>
+            </div>
+          </div>
+        </form>
+        <span slot="footer" class="dialog-footer">
+          <button class="btn btn-standard btn-medium mr-3" @click="modalCreateMainResultSubGoal = false">
+            Hủy
+          </button>
+          <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateMainResultSubGoal">
+            Cập nhật
+          </button>
+        </span>
+      </el-dialog>
+
+      <el-dialog title="Xem kết quả chính của mục tiêu con" :visible.sync="modalViewMainResultSubGoal" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+        <div class="table-responsive">
+          <table class="table center">
+            <thead class="thead-light">
+              <tr>
+                <th>Tên kết quả chính</th>
+                <th>Kết quả mong muốn</th>
+                <th>Link kế hoạch</th>
+                <th>Link kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(result, index) in mainResultSubGoalArray" :key="index"> 
+                <td>
+                  <span class="mr-2">{{ result.title ? result.title : 'Không có nội dung' }}</span>
+                  <a href="javascript:;" class="btn btn-secondary small" @click="openModalCheckInMainResultSubGoal(result)">
+                    <span class="mr-2">Check-in</span>
+                    <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                  </a>
+                </td>
+                <td>
+                  <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                </td>
+                <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
+                <td>{{ result.resultLink ? text.resultLink : 'Không có nội dung' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </el-dialog>
+
+      <el-dialog title="Form check-in kết quả chính của mục tiêu con" :visible.sync="modalCheckInMainResultSubGoal" class="transition-box-center" width="80%" top="3vh" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="modal-body">
+        <el-tabs v-model="activeTabMainResultSubGoal">
+          <el-tab-pane label="Check-in" name="check-in" v-if="resultDetailSubGoal">
+            <div class="row my-2">
+              <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.goal") }}</div>
+              <div class="col-md-8">
+                {{ resultDetailSubGoal.title ?  resultDetailSubGoal.title : "" }}
+              </div>
+            </div>
+            <form data-vv-scope="validateCheckInMainResultSubGoal">
+              <div class="row my-2">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+                <div class="col-md-8">
+                <el-radio-group v-model="formCheckInMainResultSubGoal.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                  <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+                </el-radio-group>
+                </div>
+              </div>
+              <div :class="`row my-2 ${errors.has('validateCheckInMainResultSubGoal.resultMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInMainResultSubGoal.result" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInMainResultSubGoal.resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+                </div>
+              </div>
+              <div :class="`row my-2 ${errors.has('validateCheckInMainResultSubGoal.currentProgressMainGoal') ? 'has-error' : ''}`">
+                <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
+                <div class="col-md-8">
+                  <input type="number" class="input-primary medium" name="currentProgressMainGoal" placeholder="Nhập tiến độ" v-model="formCheckInMainResultSubGoal.currentProgress" v-validate="'required'" />
+                  <div v-if="errors.has('validateCheckInMainResultSubGoal.currentProgressMainGoal')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
+                </div> 
+              </div>
+              <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+                <div class="col-md-4 title">{{ item.question }}</div>
+                <div class="col-md-8">
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInMainResultSubGoal.answerFirst"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInMainResultSubGoal.answerSecond"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInMainResultSubGoal.answerThird"></textarea>
+                  <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInMainResultSubGoal.answerFourth"></textarea>
+                </div>
+              </div>
+            </form>
+          </el-tab-pane>
+          <el-tab-pane label="Lịch sử" name="history">
+            <div class="block mt-4" v-if="resultDetailSubGoal && resultDetailSubGoal.checkIn && resultDetailSubGoal.checkIn.length">
+              <el-timeline v-for="(item,index) in resultDetailSubGoal.checkIn" :key="index">
+                <el-timeline-item :timestamp="item.createdAt.slice(0,10)" placement="top">
+                  <el-card>
+                    <div>{{item.result ? item.result : 'Không có kết quả' }}</div>
+                    <div><strong>Mức độ tự tin:</strong> {{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+                    <div><strong>Tiến độ:</strong> {{ item.currentProgress }}%</div>
+                    <div>Xem chi tiết</div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInMainResultSubGoal = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInMainResultSubGoal">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -974,6 +1129,7 @@ export default {
       activeTab: "check-in",
       activeTabMainResult: "check-in",
       activeTabSubGoal: "check-in",
+      activeTabMainResultSubGoal: "check-in",
       modalCreateGoal: false,
       modalViewMainResult: false,
       modalViewFeedback: false,
@@ -986,6 +1142,9 @@ export default {
       modalReadMainResult: false,
       modalUpdateSubGoal: false,
       modalCheckInSubGoal: false,
+      modalCreateMainResultSubGoal: false,
+      modalViewMainResultSubGoal: false,
+      modalCheckInMainResultSubGoal: false,
       formCreate: {
         cycleId : '',
         userId : localStorage.getItem('userId'),
@@ -1057,6 +1216,27 @@ export default {
         answerFourth: '',
         isDelete: false
       },
+      formCreateMainResultSubGoal:{
+        goalId: '',
+        subGoalId: null,
+        title: '',
+        targetPercent: 0,
+        planLink: '',
+        resultLink: '',
+        isDelete: false
+      },
+      formCheckInMainResultSubGoal: {
+        goalId: '',
+        resultId: null,
+        result: '',
+        confidenceLevel: '',
+        currentProgress: 0,
+        answerFirst: '',
+        answerSecond: '',
+        answerThird: '',
+        answerFourth: '',
+        isDelete: false
+      },
       file: null,
       path: null,
       goalDetails: null,
@@ -1064,7 +1244,9 @@ export default {
       mainResult: null,
       checkInMainResultData: null,
       resultDetail: null,
+      resultDetailSubGoal: null,
       subGoalDetails: null,
+      mainResultSubGoalArray: null,
       switchLayout: false,
       relationArray: [
         { GoalId: null, RelatedGoalId: null, Type: null  }
@@ -1262,10 +1444,22 @@ export default {
     },
     async confirmDeleteMainResult(){
       var _this = this;
-      await _this.$store.dispatch("$_checkInUser/deleteMainResult", _this.idDeleteMainResult);
-      _this.modalDeleteMainResult = false;
-      await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-      _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+      try{
+        await _this.$store.dispatch("$_checkInUser/deleteMainResult", _this.idDeleteMainResult);
+        _this.modalDeleteMainResult = false;
+        await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+        _this.mainResult = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+        _this.$notify({
+          title: 'Chúc mừng',
+          message: 'Xóa thành công',
+          type: 'success'
+        });
+      }catch{
+        _this.$notify.error({
+          title: 'Thất bại',
+          message: 'Xóa thất bại'
+        });
+      }
     },
     openModalCheckInMainResult(resultDetail){
       var _this = this;
@@ -1367,6 +1561,11 @@ export default {
             _this.formUpdateSubGoal.higherUserId = null;
             _this.modalUpdateSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            _this.$notify({
+              title: 'Chúc mừng',
+              message: 'Cập nhật thành công',
+              type: 'success'
+            });
           } catch (error) {
             _this.$notify.error({
               title: "Thất bại",
@@ -1408,6 +1607,107 @@ export default {
             _this.formCheckInSubGoal.isDelete = false,
             _this.modalCheckInSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            _this.$notify({
+              title: 'Chúc mừng',
+              message: 'Cập nhật thành công',
+              type: 'success'
+            });
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
+    }, 500),
+    openModalCreateMainResultSubGoal(subGoal){
+      var _this = this;
+      _this.formCreateMainResultSubGoal.goalId = subGoal.goalId;
+      _this.formCreateMainResultSubGoal.subGoalId = subGoal.id;
+      _this.modalCreateMainResultSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
+    },
+    confirmCreateMainResultSubGoal: _.debounce(async function(){
+      var _this = this;
+      await _this.$validator.validateAll("validateCreateMainResultsSubGoal").then(async result => {
+        if (result) {
+          try {
+            _this.formCreateMainResultSubGoal.targetPercent = parseFloat(_this.formCreateMainResultSubGoal.targetPercent);
+            await _this.$store.dispatch("$_checkInUser/createMainResultSubGoal", _this.formCreateMainResultSubGoal);
+            _this.formCreateMainResultSubGoal.goalId = '';
+            _this.formCreateMainResultSubGoal.subGoalId = null;
+            _this.formCreateMainResultSubGoal.title = "";
+            _this.formCreateMainResultSubGoal.targetPercent = 0;
+            _this.formCreateMainResultSubGoal.planLink = "";
+            _this.formCreateMainResultSubGoal.resultLink = "";
+            _this.formCreateMainResultSubGoal.isDelete = false,
+            _this.modalCreateMainResultSubGoal = false;
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            _this.$notify({
+              title: 'Chúc mừng',
+              message: 'Cập nhật thành công',
+              type: 'success'
+            });
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Cập nhật thất bại",
+            });
+          }
+        }
+      })
+    }, 500),
+    openModalViewMainResultSubGoal(item, subGoal){
+      var _this = this;
+      _this.idTempMainResult = item.id;
+      _this.modalViewMainResultSubGoal = true;
+      _this.mainResultSubGoalArray = _.cloneDeep(subGoal.mainResult);
+    },
+    openModalCheckInMainResultSubGoal(resultDetailSubGoal){
+      var _this = this;
+      _this.resultDetailSubGoal = _.cloneDeep(resultDetailSubGoal);
+      _this.formCheckInMainResultSubGoal.goalId = resultDetailSubGoal.goalId;
+      _this.formCheckInMainResultSubGoal.resultId = resultDetailSubGoal.id;
+      _this.modalCheckInMainResultSubGoal = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
+    },
+    submitCheckInMainResultSubGoal: _.debounce(async function () {
+      var _this = this;
+      await _this.$validator.validateAll("validateCheckInMainResultSubGoal").then(async result => {
+        if (result) {
+          try {
+            _this.formCheckInMainResultSubGoal.currentProgress = parseFloat(_this.formCheckInMainResultSubGoal.currentProgress);
+            await _this.$store.dispatch("$_checkInUser/checkInMainResultSubGoal", _this.formCheckInMainResultSubGoal);
+            _this.formCheckInMainResultSubGoal.goalId = '';
+            _this.formCheckInMainResultSubGoal.resultId = null;
+            _this.formCheckInMainResultSubGoal.currentProgress = 0;
+            _this.formCheckInMainResultSubGoal.confidenceLevel = '';
+            _this.formCheckInMainResultSubGoal.result = '';
+            _this.formCheckInMainResultSubGoal.answerFirst = '';
+            _this.formCheckInMainResultSubGoal.answerSecond = '';
+            _this.formCheckInMainResultSubGoal.answerThird = '';
+            _this.formCheckInMainResultSubGoal.answerFourth = '';
+            _this.formCheckInMainResultSubGoal.isDelete = false;
+            _this.modalCheckInMainResultSubGoal = false;
+            await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
+            _this.mainResultSubGoalArray = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+            console.log(_this.mainResultSubGoalArray);
+            _this.$notify({
+              title: 'Chúc mừng',
+              message: 'Cập nhật thành công',
+              type: 'success'
+            });
           } catch (error) {
             _this.$notify.error({
               title: "Thất bại",

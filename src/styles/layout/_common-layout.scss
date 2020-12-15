@@ -22,6 +22,12 @@ hr{
     color: $gray-300;
 }
 
+a[disabled="disabled"] {
+    color: $gray-300 !important;
+    pointer-events: none;
+    cursor: default;
+  }
+
 .white-background{
     background-color: $white;
     padding: 24px;
@@ -38,6 +44,12 @@ hr{
     }
     &:active{
         color: $primary;
+    }
+    &.small{
+        font-size: 12px;
+    }
+    &.medium{
+        font-size: 16px;
     }
 }
 
