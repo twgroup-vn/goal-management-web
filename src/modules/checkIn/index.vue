@@ -188,7 +188,7 @@
                                     </a>
                                   </el-tooltip>
                                   <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
-                                    <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(item, sub)">
+                                    <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
                                       <font-awesome-icon :icon="['fas', 'eye']" />
                                     </a>
                                   </el-tooltip>
@@ -1663,14 +1663,14 @@ export default {
         }
       })
     }, 500),
-    openModalViewMainResultSubGoal(item, subGoal){
+    openModalViewMainResultSubGoal(subGoal){
       var _this = this;
-      _this.idTempMainResult = item.id;
       _this.modalViewMainResultSubGoal = true;
       _this.mainResultSubGoalArray = _.cloneDeep(subGoal.mainResult);
     },
     openModalCheckInMainResultSubGoal(resultDetailSubGoal){
       var _this = this;
+      _this.idTempMainResult = resultDetailSubGoal.goalId;
       _this.resultDetailSubGoal = _.cloneDeep(resultDetailSubGoal);
       _this.formCheckInMainResultSubGoal.goalId = resultDetailSubGoal.goalId;
       _this.formCheckInMainResultSubGoal.resultId = resultDetailSubGoal.id;
@@ -1701,7 +1701,7 @@ export default {
             _this.formCheckInMainResultSubGoal.isDelete = false;
             _this.modalCheckInMainResultSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-            _this.mainResultSubGoalArray = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult });
+            _this.mainResultSubGoalArray = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult }).map(x => x.subGoal[0].mainResult);
             console.log(_this.mainResultSubGoalArray);
             _this.$notify({
               title: 'Chúc mừng',
