@@ -79,6 +79,14 @@ const checkInSubGoal = async (request) => {
     return Vue.prototype.$http.post(`/api/checkIn/create`, request);
 }
 
+const createMainResultSubGoal = async (request) => {
+    return Vue.prototype.$http.post(`/api/result/create`, request);
+}
+
+const checkInMainResultSubGoal = async (request) => {
+    return Vue.prototype.$http.post(`/api/checkIn/create`, request);
+}
+
 export default {
     getUserList,
     getBoardId,
@@ -97,5 +105,7 @@ export default {
     createCheckInMainResult,
     updateCheckInMainResult,
     updateSubGoal,
-    checkInSubGoal
+    checkInSubGoal,
+    createMainResultSubGoal,
+    checkInMainResultSubGoal
 }

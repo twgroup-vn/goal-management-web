@@ -30,7 +30,6 @@ const getGoalList = (state) => {
         v.card = _.map(v.card, (x) => {
           x.assignObject = x.assign ? JSON.parse(x.assign.replace(/'/g, '"')) : '';
           x.assignees = state.userList.filter(o => x.assignObject.includes(o.id));
-          x.label = x.label ? JSON.parse(x.label.replace(/'/g, '"')) : '';
           return x;
         });
         var higherUser = _.find(state.userList, (o)=>{ return o.id === v.higherUserId });
