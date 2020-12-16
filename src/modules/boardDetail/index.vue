@@ -316,12 +316,12 @@
                     allow-create
                     default-first-option
                     placeholder="Chọn label">
-                    <el-option
+                    <!-- <el-option
                       v-for="label in commonData.labelList"
                       :key="label.code"
                       :label="label.code"
                       :value="label.code">
-                    </el-option>
+                    </el-option> -->
                   </el-select>
               </el-collapse-item>
               <el-collapse-item title="Trạng thái" name="4">
