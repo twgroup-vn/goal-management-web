@@ -131,6 +131,24 @@ const permissionList = [
   { code: "user", name: "Nhân viên"}
 ];
 
+
+const PERCENT = 'percent';
+const STAR = 'star';
+const VND = 'vnd';
+const DOLA = 'dola';
+const TIME = 'time';
+const PRODUCT = 'product';
+
+const unit = [
+  { code: PERCENT, name: 'Phần trăm', shortName: '%'},
+  { code: STAR, name: 'sao', shortName: '*' },
+  { code: VND, name: 'VN đồng', shortName: 'VNĐ'},
+  { code: DOLA, name: 'Đô la', shortName: '$'},
+  { code: TIME, name: 'Lần', shortName: 'l'},
+  { code: PRODUCT, name: 'Sản phẩm', shortName: 'sp'},
+];
+
+
 const landscapeImages = [
   '1.jpg',
   '2.jpg',
@@ -179,6 +197,13 @@ export default{
   labelList,
   landscapeImages,
   permissionList,
+  unit,
+  PERCENT,
+  STAR,
+  VND,
+  DOLA,
+  TIME,
+  PRODUCT,
   HR_DOMAIN,
   HR_TOKEN_AUTHORIZE,
   HR_GET_USER_LOGIN,

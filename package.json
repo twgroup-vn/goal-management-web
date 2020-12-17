@@ -38,6 +38,7 @@
     "vue-click-outside": "^1.1.0",
     "vue-clipboard2": "^0.3.1",
     "vue-context": "^6.0.0",
+    "vue-currency-filter": "^5.2.0",
     "vue-i18n": "^8.21.1",
     "vue-router": "^3.4.3",
     "vue2-editor": "^2.10.2",

@@ -1118,7 +1118,8 @@ import commonData from '../../utils/common-data';
 import NoAvatar from "../../assets/imgs/no-images.jpg";
 import _ from 'lodash';
 export default {
-  components: {},
+  components: {
+  },
   data() {
     return {
       NoAvatar,

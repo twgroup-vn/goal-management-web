@@ -20,6 +20,7 @@ import VueCountdownTimer from 'vuejs-countdown-timer';
 import CircleMenu from 'vue-circle-menu';
 import VueClipboard from 'vue-clipboard2';
 import VeeValidate from 'vee-validate';
+import VueCurrencyFilter from 'vue-currency-filter';
 
 Vue.config.productionTip = false
 
@@ -36,6 +37,14 @@ Vue.use(VueCountdownTimer);
 Vue.component('CircleMenu', CircleMenu)
 Vue.use(VueClipboard);
 Vue.use(VeeValidate);
+Vue.use(VueCurrencyFilter, {
+  symbol: '',
+  thousandsSeparator: ',',
+  fractionCount: 0,
+  fractionSeparator: ',',
+  symbolPosition: 'front',
+  symbolSpacing: true
+});
 
 axios.defaults.baseURL = process.env.VUE_APP_API_ROOT;
 Vue.prototype.$http = axios
