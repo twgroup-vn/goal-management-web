@@ -192,7 +192,19 @@
                             <div class="card-body">
                               <div class="row">
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                  <div class="title">Tên các mục tiêu con</div>
+                                <div class="title d-flex align-items-center">
+                                    <div class="mr-2">Tên mục tiêu con</div>
+                                    <el-tooltip class="item" effect="dark" content="Xem kết quả check-in" placement="top-start">
+                                      <a href="javascript:;" class="text-primary medium mr-2" :disabled="sub.checkIn.length === 0" @click="openModalViewCheckInSubGoal(sub)">
+                                        <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                                      </a>
+                                    </el-tooltip>
+                                    <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                                      <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
+                                        <font-awesome-icon :icon="['fas', 'eye']" />
+                                      </a>
+                                    </el-tooltip>
+                                  </div>
                                   <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                                 </div>
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -593,6 +605,106 @@
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog title="Xem kết quả chính của mục tiêu con" :visible.sync="modalViewMainResultSubGoal" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
+        <div class="table-responsive">
+          <table class="table center">
+            <thead class="thead-light">
+              <tr>
+                <th>Tên kết quả chính</th>
+                <th>Kết quả mong muốn</th>
+                <th>Link kế hoạch</th>
+                <th>Link kết quả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(result, index) in mainResultSubGoalArray" :key="index"> 
+                <td>
+                  <span class="mr-2">{{ result.title ? result.title : 'Không có nội dung' }}</span>
+                </td>
+                <td>
+                  <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                </td>
+                <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
+                <td>{{ result.resultLink ? text.resultLink : 'Không có nội dung' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="Xem kết quả check-in mục tiêu con" :visible.sync="modalViewCheckInSubGoal" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="card mb-3" v-for="item in checkInSubGoalArray" :key="item.id">
+          <div class="card-body">
+            <div class="row">
+              <label class="col-6 font-weight-bold">Kết quả</label>
+              <div class="col-6">
+                <div v-if="item && item.result">
+                  {{ item.result }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Mức độ tự tin</label>
+              <div class="col-6">{{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Tiến độ</label>
+              <div class="col-6">
+                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Ngày tạo</label>
+              <div class="col-6">
+                <div v-if="item && item.createdAt">
+                  {{ item.createdAt.slice(0, 10) }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 1).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFirst">
+                  {{ item.answerFirst }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 2).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerSecond">
+                  {{ item.answerSecond }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 3).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerThird">
+                  {{ item.answerThird }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 4).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFourth">
+                  {{ item.answerFourth }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -617,6 +729,8 @@ export default {
       modalRelation: false,
       modalViewMainResult: false,
       modalReadMainResult: false,
+      modalViewMainResultSubGoal: false,
+      modalViewCheckInSubGoal: false,
       activeTab: "check-in",
       cycleId: '',
       formData:{
@@ -635,6 +749,8 @@ export default {
       mainResultData: null,
       checkInMainResultData: null,
       relationData: null,
+      mainResultSubGoalArray: null,
+      checkInSubGoalArray: null,
       switchLayout: false,
     };
   },
@@ -700,6 +816,16 @@ export default {
       } else {
         return '#67c23a';
       }
+    },
+    openModalViewMainResultSubGoal(subGoal){
+      var _this = this;
+      _this.modalViewMainResultSubGoal = true;
+      _this.mainResultSubGoalArray = _.cloneDeep(subGoal.mainResult);
+    },
+    openModalViewCheckInSubGoal(subGoal){
+      var _this = this;
+      _this.modalViewCheckInSubGoal = true;
+      _this.checkInSubGoalArray = _.cloneDeep(subGoal.checkIn);
     },
     openCreateFeedback(){
       var _this = this;

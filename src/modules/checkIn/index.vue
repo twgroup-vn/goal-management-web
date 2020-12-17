@@ -1247,6 +1247,7 @@ export default {
       resultDetail: null,
       resultDetailSubGoal: null,
       subGoalDetails: null,
+      subGoalArray: null,
       mainResultSubGoalArray: null,
       switchLayout: false,
       relationArray: [
@@ -1671,7 +1672,7 @@ export default {
     },
     openModalCheckInMainResultSubGoal(resultDetailSubGoal){
       var _this = this;
-      _this.idTempMainResult = resultDetailSubGoal.goalId;
+      _this.idTempMainResult = resultDetailSubGoal.resultId;
       _this.resultDetailSubGoal = _.cloneDeep(resultDetailSubGoal);
       _this.formCheckInMainResultSubGoal.goalId = resultDetailSubGoal.goalId;
       _this.formCheckInMainResultSubGoal.resultId = resultDetailSubGoal.id;
@@ -1702,8 +1703,7 @@ export default {
             _this.formCheckInMainResultSubGoal.isDelete = false;
             _this.modalCheckInMainResultSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
-            _this.mainResultSubGoalArray = _.filter(_this.goalList, (o)=>{ return o.id === _this.idTempMainResult }).map(x => x.subGoal[0].mainResult);
-            console.log(_this.mainResultSubGoalArray);
+            console.log(_this.mainResultSubGoalArray)
             _this.$notify({
               title: 'Chúc mừng',
               message: 'Cập nhật thành công',
