@@ -93,7 +93,7 @@
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.progress") }}</div>
                   <div class="content">
-                    <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                    <ProgressAdvance :type="item.typeProgress" :value="item.progressPercent" />
                   </div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -202,7 +202,7 @@
                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title">Tiến độ</div>
                                 <div class="content">
-                                  <el-progress :percentage="sub.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                                  <ProgressAdvance :type="sub.typeProgress" :value="sub.progressPercent" />
                                 </div>
                               </div>
                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
@@ -353,6 +353,30 @@
               </div>      
             </div>
           </div>
+          <div :class="`form-group ${errors.has('validateCreateGoal.goalTypeProgress') ? 'has-error' : ''}`">
+            <div class="row my-2">
+              <div class="col-md-4 title">Đơn vị đo lường<span class="text-danger ml-2">*</span></div>
+              <div class="col-md-8">
+                <el-select v-model="formCreate.typeProgress" name="goalTypeProgress" clearable placeholder="Chọn đơn vị đo lường" class="w-100" v-validate="'required'">
+                  <el-option v-for="item in commonData.unit"
+                              :key="item.code"
+                              :label="`${item.name} ( ${item.shortName} )`"
+                              :value="item.code">
+                  </el-option>
+                </el-select>
+                <div v-if="errors.has('validateCreateGoal.goalTypeProgress')" class="mt-3 text-danger">Yêu cầu nhập đơn vị đo lường</div>
+              </div>      
+            </div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateGoal.goalFullProgress') ? 'has-error' : ''}`" v-if="formCreate.typeProgress && formCreate.typeProgress !== commonData.PERCENT && formCreate.typeProgress !== commonData.STAR">
+            <div class="row my-2">
+              <div class="col-md-4 title">Giới hạn đo lường<span class="text-danger ml-2">*</span></div>
+              <div class="col-md-8">
+                <input type="number" class="input-primary medium" name="goalFullProgress" placeholder="Nhập giới hạn đo lường" v-model="formCreate.fullProgress" v-validate="'required'" />
+                <div v-if="errors.has('validateCreateGoal.goalFullProgress')" class="my-3 text-danger">Yêu cầu nhập giới hạn đo lường</div>
+              </div>
+            </div>
+          </div>
           <div class="row my-2">
             <div class="col-md-4 title">Link kế hoạch</div>
             <div class="col-md-8">
@@ -500,7 +524,7 @@
                 </div>
               </td>
               <td>
-                <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
               </td>
               <td>
                 <div v-if="result && result.planLink">{{ result.planLink }}</div>
@@ -636,6 +660,22 @@
             <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
             <input type="text" class="input-primary medium" name="nameSubGoal" placeholder="Nhập tên mục tiêu con" v-model="formCreateSubGoal.name" v-validate="'required'"/>
             <div v-if="errors.has('validateCreateSubGoal.nameSubGoal')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.typeProgressSubGoal') ? 'has-error' : ''}`">
+            <label>Đơn vị đo lường<span class="text-danger ml-2">*</span></label>
+            <el-select v-model="formCreateSubGoal.typeProgress" name="typeProgressSubGoal" clearable placeholder="Chọn đơn vị đo lường" class="w-100" v-validate="'required'">
+              <el-option v-for="item in commonData.unit"
+                    :key="item.code"
+                    :label="`${item.name} ( ${item.shortName} )`"
+                    :value="item.code">
+              </el-option>
+            </el-select>
+            <div v-if="errors.has('validateCreateSubGoal.typeProgressSubGoal')" class="mt-3 text-danger">Yêu cầu nhập đơn vị đo lường</div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.fullProgressSubGoal') ? 'has-error' : ''}`" v-if="formCreateSubGoal.typeProgress && formCreateSubGoal.typeProgress !== commonData.PERCENT && formCreateSubGoal.typeProgress !== commonData.STAR">
+            <label>Giới hạn đo lường<span class="text-danger ml-2">*</span></label>
+            <input type="number" class="input-primary medium" name="fullProgressSubGoal" placeholder="Nhập giới hạn đo lường" v-model="formCreateSubGoal.fullProgress" v-validate="'required'" />
+            <div v-if="errors.has('validateCreateSubGoal.fullProgressSubGoal')" class="mt-3 text-danger">Yêu cầu nhập giới hạn đo lường</div>
           </div>
         </form>
       </div>
@@ -796,7 +836,7 @@
             <div class="row">
               <label class="col-6 font-weight-bold">Tiến độ</label>
               <div class="col-6">
-                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="item.typeProgress" :value="item.currentProgress" />
               </div>
             </div>
             <div class="row">
@@ -1029,7 +1069,7 @@
                   </a>
                 </td>
                 <td>
-                  <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                  <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
                 </td>
                 <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
                 <td>{{ result.resultLink ? text.resultLink : 'Không có nội dung' }}</td>
@@ -1116,9 +1156,11 @@ import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import commonData from '../../utils/common-data';
 import NoAvatar from "../../assets/imgs/no-images.jpg";
+import ProgressAdvance from "../../components/progressAdvance";
 import _ from 'lodash';
 export default {
   components: {
+    ProgressAdvance
   },
   data() {
     return {
@@ -1153,6 +1195,7 @@ export default {
         name: '',
         linkPlan: null,
         confidenceLevel: 'fine',
+        fullProgress: 0,
         progressPercent: 0,
         image: null,
         isDelete: false,
@@ -1334,6 +1377,7 @@ export default {
         await _this.$validator.validateAll("validateCreateSubGoal").then(async result => {
           if (result) {
             try {
+              _this.formCreateSubGoal.fullProgress = _this.setFullProgress(_this.formCreateSubGoal.typeProgress, _this.formCreateSubGoal.fullProgress);
               await _this.$store.dispatch("$_checkInUser/editSubGoal", _this.formCreateSubGoal);
               _this.modalCreateSubGoal = false;
               _this.formCreateSubGoal.userId = null;
@@ -1341,6 +1385,8 @@ export default {
               _this.formCreateSubGoal.cycleId = null;
               _this.formCreateSubGoal.companyId = null;
               _this.formCreateSubGoal.higherUserId = null;
+              _this.formCreateSubGoal.typeProgress = null;
+              _this.formCreateSubGoal.fullProgress = null;
               _this.formCreateSubGoal.name = "";
               await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
               _this.$notify({
@@ -1582,6 +1628,8 @@ export default {
       _this.subGoalDetails = _.cloneDeep(subGoalDetails);
       _this.formCheckInSubGoal.subGoalId = subGoalDetails.id;
       _this.formCheckInSubGoal.goalId = subGoalDetails.goalId;
+      _this.formCheckInSubGoal.fullProgress = subGoalDetails.fullProgress;
+      _this.formCheckInSubGoal.typeProgress = subGoalDetails.typeProgress;
       _this.modalCheckInSubGoal = true;
       _this.$nextTick(() => {
         _this.$validator.errors.clear();
@@ -1596,11 +1644,14 @@ export default {
         if (result) {
           try {
             _this.formCheckInSubGoal.currentProgress = parseFloat(_this.formCheckInSubGoal.currentProgress);
+            _this.formCheckInSubGoal.fullProgress = _this.setFullProgress(_this.formCheckInSubGoal.typeProgress,_this.formCheckInSubGoal.fullProgress);
             await _this.$store.dispatch("$_checkInUser/checkInSubGoal", _this.formCheckInSubGoal);
             _this.formCheckInSubGoal.goalId = '';
             _this.formCheckInSubGoal.subGoalId = null;
             _this.formCheckInSubGoal.currentProgress = 0;
             _this.formCheckInSubGoal.confidenceLevel = '';
+            _this.formCheckInSubGoal.fullProgress = 0;
+            _this.formCheckInSubGoal.typeProgress = null;
             _this.formCheckInSubGoal.result = '';
             _this.formCheckInSubGoal.answerFirst = '';
             _this.formCheckInSubGoal.answerSecond = '';
@@ -1768,17 +1819,6 @@ export default {
       }
       _this.modalViewRalation = true;
     },
-    customColorMethod(percentage) {
-      if (percentage < 10) {
-        return '#909399';
-      } else if (percentage < 50) {
-        return '#ff0404';
-      } else if (percentage < 70) {
-        return '#e6a23c';
-      } else {
-        return '#67c23a';
-      }
-    },
     async handleFileUpload(e) {
       var _this = this;
       _this.file = e.target.files[0];
@@ -1798,9 +1838,6 @@ export default {
         });
       }
     },
-    format(percentage) {
-      return percentage === 100 ? "Full" : `${percentage}%`;
-    },
     handleOpenModalCheckIn(goalDetails) {
       var _this = this;
       _this.goalDetails = _.cloneDeep(goalDetails);
@@ -1808,6 +1845,8 @@ export default {
       _this.formCheckIn.companyId = goalDetails.companyId;
       _this.formCheckIn.currentProgress = goalDetails.progressPercent;
       _this.formCheckIn.confidenceLevel = goalDetails.confidenceLevel;
+      _this.formCheckIn.typeProgress = goalDetails.typeProgress;
+      _this.formCheckIn.fullProgress = goalDetails.fullProgress;
       _this.formCheckIn.result = '',
       _this.formCheckIn.answerFirst = '',
       _this.formCheckIn.answerSecond = '',
@@ -1832,11 +1871,24 @@ export default {
         _this.$validator.reset();
       });
     },
+    setFullProgress(type, value){
+      switch(type){
+        case commonData.PERCENT:
+          return 100;
+        case commonData.STAR:
+          return 5;
+        case commonData.VND: case commonData.DOLA: case commonData.TIME: case commonData.PRODUCT:
+          return parseFloat(value);
+        default:
+          return 0;
+      }
+    },
     submit: _.debounce(async function () {
       var _this = this;
       await _this.$validator.validateAll("validateCreateGoal").then(async result => {
           if (result) {
             try {
+              _this.formCreate.fullProgress = _this.setFullProgress(_this.formCreate.typeProgress, _this.formCreate.fullProgress);
               var response = await _this.$store.dispatch("$_checkInUser/editGoal", _this.formCreate);
               if(response && response.id){
                 if(_this.relationArray && _this.relationArray.length && _this.relationArray[0].RelatedGoalId && _this.relationArray[0].Type){
@@ -1862,6 +1914,7 @@ export default {
                 linkPlan: null,
                 confidenceLevel: 'fine',
                 progressPercent: 0,
+                fullProgress: 0,
                 image: null,
                 isDelete: false,
                 status: 'new'
@@ -1894,6 +1947,8 @@ export default {
               goalId: '',
               confidenceLevel: '',
               currentProgress: 0,
+              fullProgress: 0,
+              typeProgress: '',
               result: '',
               answerFirst: '',
               answerSecond: '',

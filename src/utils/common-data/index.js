@@ -141,10 +141,10 @@ const PRODUCT = 'product';
 
 const unit = [
   { code: PERCENT, name: 'Phần trăm', shortName: '%'},
-  { code: STAR, name: 'sao', shortName: '*' },
+  { code: STAR, name: 'Sao', shortName: '*' },
   { code: VND, name: 'VN đồng', shortName: 'VNĐ'},
   { code: DOLA, name: 'Đô la', shortName: '$'},
-  { code: TIME, name: 'Lần', shortName: 'l'},
+  { code: TIME, name: 'Lần', shortName: 'lần'},
   { code: PRODUCT, name: 'Sản phẩm', shortName: 'sp'},
 ];
 
