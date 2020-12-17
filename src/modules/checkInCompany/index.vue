@@ -237,77 +237,84 @@
 
     <el-dialog title="Form phản hồi, ghi nhận" :visible.sync="modalFeedback" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <div class="modal-body">
-        <div class="row my-2">
-          <div class="col-md-4 title">Loại phản hồi</div>
-          <div class="col-md-8">
-            <el-select v-model="formData.type" placeholder="Select" class="w-100">
-              <el-option
-                v-for="(item, index) in commonData.replyType"
-                :key="index"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
-            </el-select>
+        <form data-vv-scope="validateFeedback">
+          <div :class="`row my-2 ${errors.has('validateFeedback.replyType') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">Loại phản hồi</div>
+            <div class="col-md-8">
+              <el-select v-model="formData.type" placeholder="Chọn loại phản hồi" class="w-100" name="replyType" v-validate="'required'">
+                <el-option
+                  v-for="(item, index) in commonData.replyType"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.code">
+                </el-option>
+              </el-select>
+              <div v-if="errors.has('validateFeedback.replyType')" class="my-3 text-danger">Yêu cầu nhập loại phản hồi</div>
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Người được phản hồi</div>
-          <div class="col-md-8">
-            <el-select v-model="formData.receiveUserId" placeholder="Select" class="w-100">
-              <el-option
-                v-for="item in feedbackUser"
-                :key="item.id"
-                :label="item.fullName"
-                :value="item.id">
-              </el-option>
-            </el-select>
+          <div :class="`row my-2 ${errors.has('validateFeedback.receiveUserId') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">Người được phản hồi</div>
+            <div class="col-md-8">
+              <el-select v-model="formData.receiveUserId" placeholder="Chọn người được phản hồi" class="w-100" name="receiveUserId" v-validate="'required'">
+                <el-option
+                  v-for="item in feedbackUser"
+                  :key="item.id"
+                  :label="item.fullName"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <div v-if="errors.has('validateFeedback.receiveUserId')" class="my-3 text-danger">Yêu cầu nhập người được phản hồi</div>
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Chu kỳ</div>
-          <div class="col-md-8">
-            <el-select v-model="cycleId" placeholder="Select" class="w-100">
-              <el-option
-                v-for="item in cycleCompany"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
+          <div :class="`row my-2 ${errors.has('validateFeedback.cycleId') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">Chu kỳ</div>
+            <div class="col-md-8">
+              <el-select v-model="cycleId" placeholder="Chọn chu kỳ" class="w-100" name="cycleId" v-validate="'required'">
+                <el-option
+                  v-for="item in cycleCompany"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <div v-if="errors.has('validateFeedback.cycleId')" class="my-3 text-danger">Yêu cầu nhập chu kỳ</div>
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Mục tiêu</div>
-          <div class="col-md-8">
-            <el-select v-model="formData.goalId" placeholder="Select" class="w-100">
-              <el-option
-                v-for="item in goalUser"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
+          <div :class="`row my-2 ${errors.has('validateFeedback.goalId') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">Mục tiêu</div>
+            <div class="col-md-8">
+              <el-select v-model="formData.goalId" placeholder="Chọn mục tiêu" name="goalId" class="w-100" v-validate="'required'">
+                <el-option
+                  v-for="item in goalUser"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <div v-if="errors.has('validateFeedback.cycleId')" class="my-3 text-danger">Yêu cầu nhập mục tiêu</div>
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Tiêu chí</div>
-          <div class="col-md-8">
-            <el-select v-model="formData.evaluativeCriteriaId" placeholder="Select" class="w-100">
-              <el-option
-                v-for="item in evaluateUser"
-                :key="item.id"
-                :label="item.content"
-                :value="item.id">
-              </el-option>
-            </el-select>
+          <div :class="`row my-2 ${errors.has('validateFeedback.evaluativeCriteriaId') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">Tiêu chí</div>
+            <div class="col-md-8">
+              <el-select v-model="formData.evaluativeCriteriaId" placeholder="Chọn tiêu chí" name="evaluativeCriteriaId" class="w-100" v-validate="'required'">
+                <el-option
+                  v-for="item in evaluateUser"
+                  :key="item.id"
+                  :label="item.content"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+               <div v-if="errors.has('validateFeedback.evaluativeCriteriaId')" class="my-3 text-danger">Yêu cầu nhập tiêu chí</div>
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-md-4 title">Nội dung</div>
-          <div class="col-md-8">
-            <textarea rows="10" class="w-100" v-model="formData.content"></textarea>
+          <div class="row my-2">
+            <div class="col-md-4 title">Nội dung</div>
+            <div class="col-md-8">
+              <textarea rows="10" class="w-100" v-model="formData.content" placeholder="Nhập nội dung"></textarea>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
       <span slot="footer" class="dialog-footer">
         <button class="btn btn-standard btn-medium mr-3" @click="modalFeedback = false">
@@ -621,9 +628,9 @@
               <tr v-for="(result, index) in mainResultSubGoalArray" :key="index"> 
                 <td>
                   <span class="mr-2">{{ result.title ? result.title : 'Không có nội dung' }}</span>
-                  <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                  <el-tooltip class="item" effect="dark" content="Xem check-in của kết quả chính" placement="top-start">
                     <a href="javascript:;" class="text-primary medium" :disabled="result.checkIn === 0" @click="openModalViewMainResultCheckInSubGoal(result)">
-                      <font-awesome-icon :icon="['fas', 'eye']" />
+                      <font-awesome-icon :icon="['fas', 'calendar-check']" />
                     </a>
                   </el-tooltip>
                 </td>
@@ -961,21 +968,25 @@ export default {
     },
     submitResponse: _.debounce(async function () {
       var _this = this;
-      try {
-        await _this.$store.dispatch("$_checkInCompany/createReply", _this.formData);
-        await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
-        _this.modalFeedback = false
-        _this.$notify({
-          title: "Chúc mừng",
-          message: "Phản hồi thành công",
-          type: "success",
-        });
-      } catch (error) {
-        _this.$notify.error({
-          title: "Thất bại",
-          message: "Phản hồi thất bại",
-        });
-      }
+      await _this.$validator.validateAll("validateFeedback").then(async result => {
+        if (result) {
+          try {
+            await _this.$store.dispatch("$_checkInCompany/createReply", _this.formData);
+            await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
+            _this.modalFeedback = false
+            _this.$notify({
+              title: "Chúc mừng",
+              message: "Phản hồi thành công",
+              type: "success",
+            });
+          } catch (error) {
+            _this.$notify.error({
+              title: "Thất bại",
+              message: "Phản hồi thất bại",
+            });
+          }
+        }
+      });
     }, 500),
   },
 };
