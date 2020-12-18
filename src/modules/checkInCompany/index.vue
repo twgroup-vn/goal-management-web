@@ -110,12 +110,14 @@
                   <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                     <div class="title">Tiến độ</div>
                     <div class="content">
-                      <el-progress :percentage="item.progressPercent" :format="format" :color="customColorMethod"></el-progress>
+                      <ProgressAdvance :type="item.typeProgress" :value="item.progressPercent" />
                     </div>
                   </div>
                   <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                     <div class="title">Thay đổi</div>
-                    <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
+                    <div class="content">
+                      <CompareValue :type="item.typeProgress" :value="item.compare" />
+                    </div>
                   </div>
                   <div :class="switchLayout == false ? 'col-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                     <div class="title">Mức độ tự tin</div>
@@ -384,7 +386,7 @@
                 </div>
               </td>
               <td>
-                <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
               </td>
               <td>
                 <div v-if="result && result.planLink">{{ result.planLink }}</div>
@@ -420,7 +422,7 @@
             <div class="row">
               <label class="col-6 font-weight-bold">Tiến độ</label>
               <div class="col-6">
-                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="item.typeProgress" :value="item.currentProgress" />
               </div>
             </div>
             <div class="row">
@@ -635,7 +637,7 @@
                   </el-tooltip>
                 </td>
                 <td>
-                  <el-progress :percentage="result.targetPercent" :format="format" :color="customColorMethod"></el-progress>
+                  <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
                 </td>
                 <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
                 <td>{{ result.resultLink ? text.resultLink : 'Không có nội dung' }}</td>
@@ -665,7 +667,7 @@
             <div class="row">
               <label class="col-6 font-weight-bold">Tiến độ</label>
               <div class="col-6">
-                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="item.typeProgress" :value="item.currentProgress" />
               </div>
             </div>
             <div class="row">
@@ -738,7 +740,7 @@
             <div class="row">
               <label class="col-6 font-weight-bold">Tiến độ</label>
               <div class="col-6">
-                <el-progress :percentage="item.currentProgress" :format="format" :color="customColorMethod"></el-progress>
+                <ProgressAdvance :type="item.typeProgress" :value="item.currentProgress" />
               </div>
             </div>
             <div class="row">
@@ -798,10 +800,14 @@ import { mapState, mapGetters } from "vuex";
 import store from "./_store";
 import commonData from '../../utils/common-data';
 import PieChart from "./_components/pieChart";
+import CompareValue from "../../components/compareValue.vue";
+import ProgressAdvance from "../../components/progressAdvance.vue";
 import _ from 'lodash';
 export default {
   components: {
     PieChart,
+    CompareValue,
+    ProgressAdvance
   },
   data() {
     return {
