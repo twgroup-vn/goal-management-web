@@ -715,7 +715,7 @@
             </div>
             <div class="col-md-6">
               <div :class="`form-group ${errors.has('validateEditMainResult.targetPercentEdit') ? 'has-error' : ''}`">
-                <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
+                <label>Kết quả hiện tại<span class="text-danger ml-2">*</span></label>
                 <input type="number" class="input-primary medium" name="targetPercentEdit" placeholder="Nhập kết quả mong muốn" v-model="formEditMainResult.targetPercent" v-validate="'required'" />
                 <div v-if="errors.has('validateEditMainResult.targetPercentEdit')" class="mt-3 text-danger">Yêu cầu nhập kết quả mong muốn</div>
               </div>
@@ -1755,6 +1755,9 @@ export default {
       _this.resultDetailSubGoal = _.cloneDeep(resultDetailSubGoal);
       _this.formCheckInMainResultSubGoal.goalId = resultDetailSubGoal.goalId;
       _this.formCheckInMainResultSubGoal.resultId = resultDetailSubGoal.id;
+      _this.formCheckInMainResultSubGoal.subGoalId = resultDetailSubGoal.subGoalId;
+      _this.formCheckInMainResultSubGoal.typeProgress = resultDetailSubGoal.typeProgress;
+      _this.formCheckInMainResultSubGoal.fullProgress = resultDetailSubGoal.fullProgress;
       _this.modalCheckInMainResultSubGoal = true;
       _this.$nextTick(() => {
         _this.$validator.errors.clear();
@@ -1781,6 +1784,7 @@ export default {
             _this.formCheckInMainResultSubGoal.answerFourth = '';
             _this.formCheckInMainResultSubGoal.isDelete = false;
             _this.modalCheckInMainResultSubGoal = false;
+            _this.modalViewMainResultSubGoal = false;
             await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
             console.log(_this.mainResultSubGoalArray)
             _this.$notify({
