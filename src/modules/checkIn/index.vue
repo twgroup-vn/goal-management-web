@@ -98,7 +98,9 @@
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.changing") }}</div>
-                  <div class="content">{{ item.compare >= 0 ? `+${item.compare}%` : `${item.compare}%`}}</div>
+                  <div class="content">
+                    <CompareValue :type="item.typeProgress" :value="item.compare" />
+                  </div>
                 </div>
                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                   <div class="title">{{ $t("checkinPage.table.confidenceLevel") }}</div>
@@ -516,7 +518,7 @@
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
-              <th>Kết quả mong muốn</th>
+              <th class="text-center">Tiến độ</th>
               <th>Link kế hoạch</th>
               <th>Link kết quả</th>
               <th></th>
@@ -1080,7 +1082,7 @@
             <thead class="thead-light">
               <tr>
                 <th>Tên kết quả chính</th>
-                <th>Kết quả mong muốn</th>
+                <th class="text-center">Tiến độ</th>
                 <th>Link kế hoạch</th>
                 <th>Link kết quả</th>
               </tr>
@@ -1094,7 +1096,7 @@
                     <font-awesome-icon :icon="['fas', 'calendar-check']" />
                   </a>
                 </td>
-                <td>
+                <td class="text-center">
                   <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
                 </td>
                 <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
@@ -1183,10 +1185,12 @@ import store from "./_store";
 import commonData from '../../utils/common-data';
 import NoAvatar from "../../assets/imgs/no-images.jpg";
 import ProgressAdvance from "../../components/progressAdvance";
+import CompareValue from "../../components/compareValue.vue";
 import _ from 'lodash';
 export default {
   components: {
-    ProgressAdvance
+    ProgressAdvance,
+    CompareValue
   },
   data() {
     return {
@@ -1544,6 +1548,8 @@ export default {
       _this.formCheckInMainResult.companyId = resultDetail.companyId;
       _this.formCheckInMainResult.currentProgress = resultDetail.progressPercent;
       _this.formCheckInMainResult.confidenceLevel = resultDetail.confidenceLevel;
+      _this.formCheckInMainResult.typeProgress = resultDetail.typeProgress;
+      _this.formCheckInMainResult.fullProgress = resultDetail.fullProgress;
       _this.formCheckInMainResult.result = '',
       _this.formCheckInMainResult.answerFirst = '',
       _this.formCheckInMainResult.answerSecond = '',
