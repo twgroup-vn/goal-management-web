@@ -209,17 +209,25 @@
                                   </div>
                                   <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                                 </div>
-                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                   <div class="title">Mức độ tự tin</div>
                                   <div class="content">{{ sub.confidenceLevel ? commonData.confidenceLevelDisplay[sub.confidenceLevel] : '' }}</div>
                                 </div>
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                  <div class="title">Tiến độ</div>
+                                  <div class="content"> 
+                                    <div class="content">
+                                      <ProgressAdvance :type="sub.typeProgress" :value="sub.progressPercent" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                   <div class="title">Trạng thái</div>
                                   <div class="content"> 
                                     <div :class="`tag ${commonData.goalStatusDisplay[sub.status].color}`">{{ sub.status ? commonData.goalStatusDisplay[sub.status].name : '' }}</div>
                                   </div>
                                 </div>
-                                <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                   <div class="title">Ngày tạo</div>
                                   <div class="content">{{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}</div>
                                 </div>
