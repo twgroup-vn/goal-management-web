@@ -372,7 +372,7 @@
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
-              <th>Kết quả mong muốn</th>
+              <th>Tiến độ</th>
               <th>Link kế hoạch</th>
               <th>Link kết quả</th>
               <th></th>
@@ -629,7 +629,7 @@
             <thead class="thead-light">
               <tr>
                 <th>Tên kết quả chính</th>
-                <th>Kết quả mong muốn</th>
+                <th>Tiến độ</th>
                 <th>Link kế hoạch</th>
                 <th>Link kết quả</th>
               </tr>

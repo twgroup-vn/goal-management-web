@@ -26,7 +26,7 @@ const getGoalList = (state) => {
     var currentDate = moment(new Date()).format('DD/MM/YYYY');
     if (state.goalList) {
       data = _.map(state.goalList, (v) => {
-        v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete }) : '';
+        v.mainResult = v.mainResult ? _.filter(v.mainResult, (o) => { return !o.isDelete && !o.subGoalId }) : '';
         v.card = _.map(v.card, (x) => {
           x.assignObject = x.assign ? JSON.parse(x.assign.replace(/'/g, '"')) : '';
           x.assignees = state.userList.filter(o => x.assignObject.includes(o.id));
