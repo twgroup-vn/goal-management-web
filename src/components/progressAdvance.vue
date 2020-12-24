@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="progress-template">
         <div v-if="type===commonData.PERCENT">
             <el-progress :percentage="value" :format="format" :color="customColorMethod"></el-progress>
         </div>
@@ -66,5 +66,8 @@ export default {
 .valueVND{
     font-size: 14px;
     color: green;
+}
+.progress-template{
+  width: 150px;
 }
 </style>

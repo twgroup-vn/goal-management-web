@@ -460,14 +460,14 @@
     <el-dialog title="Kết quả chính" :visible.sync="modalViewMainResult" class="transition-box-center" width="80%" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-dialog width="50%" title="Thêm kết quả chính" :visible.sync="modalCreateMainResults" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
         <form data-vv-scope="validateCreateMainResults">
-          <div>
-            <div :class="`form-group ${errors.has('validateCreateMainResults.titleCreateMainResult') ? 'has-error' : ''}`">
-              <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
-              <input type="text" class="input-primary medium" name="titleCreateMainResult" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title" v-validate="'required'" />
-            </div>
-            <div v-if="errors.has('validateCreateMainResults.titleCreateMainResult')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
-          </div>
           <div class="row">
+            <div  class="col-md-6">
+              <div :class="`form-group ${errors.has('validateCreateMainResults.titleCreateMainResult') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="titleCreateMainResult" placeholder="Nhập kết quả chính" v-model="formCreateMainResult.title" v-validate="'required'" />
+              </div>
+              <div v-if="errors.has('validateCreateMainResults.titleCreateMainResult')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
+            </div>
             <div class="col-md-6">
               <div :class="`form-group ${errors.has('validateCreateMainResults.typePercentCreateMainResult') ? 'has-error' : ''}`">
                 <label>Đơn vị đo lường<span class="text-danger ml-2">*</span></label>
@@ -518,7 +518,7 @@
           <thead class="thead-light">
             <tr>
               <th>Kết quả chính</th>
-              <th class="text-center">Tiến độ</th>
+              <th>Tiến độ</th>
               <th>Link kế hoạch</th>
               <th>Link kết quả</th>
               <th></th>
@@ -538,7 +538,7 @@
                   </a>
                 </div>
               </td>
-              <td class="text-center">
+              <td>
                 <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
               </td>
               <td>
@@ -1022,14 +1022,14 @@
 
     <el-dialog width="50%" title="Thêm kết quả chính mục tiêu con" :visible.sync="modalCreateMainResultSubGoal" class="transition-box-center" append-to-body :close-on-click-modal="false" :close-on-press-escape="false">
         <form data-vv-scope="validateCreateMainResultsSubGoal">
-          <div>
-            <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal') ? 'has-error' : ''}`">
-              <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
-              <input type="text" class="input-primary medium" name="titleCreateMainResultSubGoal" placeholder="Nhập kết quả chính" v-model="formCreateMainResultSubGoal.title" v-validate="'required'" />
-            </div>
-            <div v-if="errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
-          </div>
           <div class="row">
+            <div class="col-md-6">
+              <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal') ? 'has-error' : ''}`">
+                <label>Kết quả chính<span class="text-danger ml-2">*</span></label>
+                <input type="text" class="input-primary medium" name="titleCreateMainResultSubGoal" placeholder="Nhập kết quả chính" v-model="formCreateMainResultSubGoal.title" v-validate="'required'" />
+              </div>
+              <div v-if="errors.has('validateCreateMainResultsSubGoal.titleCreateMainResultSubGoal')" class="my-3 text-danger">Yêu cầu nhập kết quả chính</div>
+            </div>
             <div class="col-md-6">
               <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.typePercentCreateMainResultSubGoal') ? 'has-error' : ''}`">
                 <label>Đơn vị đo lường<span class="text-danger ml-2">*</span></label>
@@ -1043,7 +1043,7 @@
               </div>
               <div v-if="errors.has('validateCreateMainResultsSubGoal.typePercentCreateMainResultSubGoal')" class="my-3 text-danger">Yêu cầu chọn đơn vị đo lường</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div :class="`form-group ${errors.has('validateCreateMainResultsSubGoal.targetPercentCreateMainResultSubGoal') ? 'has-error' : ''}`" v-if="formCreateMainResultSubGoal.typeProgress && formCreateMainResultSubGoal.typeProgress !== commonData.PERCENT && formCreateMainResultSubGoal.typeProgress !== commonData.STAR">
                 <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
                 <input type="number" class="input-primary medium" name="targetPercentCreateMainResultSubGoal" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResultSubGoal.fullProgress" v-validate="'required'" />
@@ -1082,7 +1082,7 @@
             <thead class="thead-light">
               <tr>
                 <th>Tên kết quả chính</th>
-                <th class="text-center">Tiến độ</th>
+                <th>Tiến độ</th>
                 <th>Link kế hoạch</th>
                 <th>Link kết quả</th>
               </tr>
@@ -1096,7 +1096,7 @@
                     <font-awesome-icon :icon="['fas', 'calendar-check']" />
                   </a>
                 </td>
-                <td class="text-center">
+                <td>
                   <ProgressAdvance :type="result.typeProgress" :value="result.targetPercent" />
                 </td>
                 <td>{{ result.planLink ? text.planLink : 'Không có nội dung'}}</td>
@@ -1731,6 +1731,8 @@ export default {
             _this.formCreateMainResultSubGoal.subGoalId = null;
             _this.formCreateMainResultSubGoal.title = "";
             _this.formCreateMainResultSubGoal.targetPercent = 0;
+            _this.formCreateMainResultSubGoal.typeProgress = "";
+            _this.formCreateMainResultSubGoal.fullProgress = 0
             _this.formCreateMainResultSubGoal.planLink = "";
             _this.formCreateMainResultSubGoal.resultLink = "";
             _this.formCreateMainResultSubGoal.isDelete = false,
