@@ -90,6 +90,13 @@ export default {
   },
   directives: {ClickOutside},
   methods: {
+    redirectTo: function (path) {
+      if (path) {
+        this.$router.push(path);
+      } else {
+        this.$router.go(-1);
+      }
+    },
     openMenu: function () {
       this.target = true;
     },

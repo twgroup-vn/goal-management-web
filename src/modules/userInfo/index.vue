@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row white-background">
+    <div class="row page-content white-background">
       <div class="col-md-4">
         <div class="form-group mb-0">
           <div class="avatar-circle square">
