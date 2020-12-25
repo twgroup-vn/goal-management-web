@@ -79,11 +79,12 @@
 
 <script>
 import { routes } from '../router/routes';
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import commonData from '../utils/common-data/index';
 import Avatar from "../components/avatar";
 import MainLogo from '../assets/svgs/mainLogo/TWG.svg';
 import ClickOutside from 'vue-click-outside';
+import _ from "lodash";
 export default {
   components: {
     'avatar': Avatar
@@ -98,13 +99,18 @@ export default {
       pathname: '',
       opened: false,
       lang: localStorage.getItem("lang") ? localStorage.getItem("lang") : 'vn',
-      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light'
+      currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light',
+      modulesList: null,
     };
   },
   created() {
     var _this = this;
     _this.pathname = window.location.pathname;
     _this.listeningSocket();
+    if(localStorage.getItem('modules')){
+      _this.modulesList = _.cloneDeep(JSON.parse(localStorage.getItem('modules')));
+    }
+    console.log(_this.modulesList);
   },
   mounted(){
     var _this = this;
@@ -116,6 +122,9 @@ export default {
     }
   },
   computed: {
+      ...mapState({
+        modules: (state) => state.$_loginPage.modules,
+      }),
       ...mapGetters({
         currentUser: "$_loginPage/getCurrentUser",
       }),

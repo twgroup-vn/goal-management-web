@@ -77,6 +77,11 @@ const getToken = async (context, request) => {
   context.commit('SET_TOKEN', response.data);
 };
 
+const getModulesFromHR = async (context, request) => {
+  let response = await api.getModulesFromHR(request);
+  context.commit('SET_MODULES_LIST', response.data);
+};
+
 export default {
   login,
   getCompanyOfUser,
@@ -90,5 +95,6 @@ export default {
   authorizeHRLogin,
   getUserInfoFromHRPort,
   sendSocket,
-  getToken
+  getToken,
+  getModulesFromHR
 }

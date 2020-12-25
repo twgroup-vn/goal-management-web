@@ -26,11 +26,16 @@ const LOG_OUT = (state) => {
   state.companiesOfUser = [];
 }
 
+const SET_MODULES_LIST = (state, messages) => {
+  state.modules = messages;
+  localStorage.setItem('modules', JSON.stringify(state.modules));
+};
 
 export default {
   SET_TOKEN,
   SET_COMPANIES_OF_USER,
   SET_COMPANY,
   SET_COMPANY_DETAILS,
+  SET_MODULES_LIST,
   LOG_OUT
 }

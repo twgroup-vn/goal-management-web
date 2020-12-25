@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import commonData from "../../../utils/common-data";
+import commmonFunc from "../../../utils/common-func";
 
 const login = async (request) => {
     return Vue.prototype.$http.post(`/api/user/login`, request);
@@ -42,6 +43,12 @@ const getToken = async (request) => {
     return Vue.prototype.$http.get(`/api/user/getToken/${request}`);
 }
 
+const getModulesFromHR = async (request) => {
+    let linkApi = commmonFunc.getModulesHRLinkApi(request);
+    return Vue.prototype.$http.get(`${linkApi}`);
+};
+
+
 export default {
     login,
     logOutHR,
@@ -52,5 +59,6 @@ export default {
     refreshToken,
     getCompanyDetails,
     authorizeHRLogin,
-    getUserInfoFromHRPort
+    getUserInfoFromHRPort,
+    getModulesFromHR
 }

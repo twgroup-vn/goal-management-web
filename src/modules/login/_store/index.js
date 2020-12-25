@@ -7,7 +7,8 @@ const state = {
  currentUser: null,
  companiesOfUser: [],
  companyId: null,
- companyDetails: null
+ companyDetails: null,
+ modules: null
 }
 
 export default {
