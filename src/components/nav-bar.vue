@@ -27,6 +27,19 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+          <div class="dropdown d-flex align-items-center mr-3">
+            <a href="javascript:;" @click="openDropdownDirections">
+              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0,3A3,3,0,0,1,3,0H5A1,1,0,0,1,6,1V5A1,1,0,0,1,5,6H1A1,1,0,0,1,0,5Z" style="fill:#000"></path><rect x="9" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect x="18" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect y="9" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect x="9" y="9" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect x="18" y="9" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect y="18" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect x="9" y="18" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect><rect x="18" y="18" width="6" height="6" rx="1" ry="1" style="fill:#000"></rect></svg>
+            </a>
+            <div class="dropdown-menu max-content" :class="{ show : dropdownDirections}">
+              <div v-for="(modules, index) in modulesList" :key="index">
+                <a class="dropdown-item" :href="modules.DuongDanTruyCap">
+                  <img :src="modules.Icon"/>
+                  <span class="ml-2">{{ modules.Ten }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
           <avatar v-on:toggle="updateParentOpened" v-on:hide-dropdown="updateParentHideDropdown"></avatar>
           <div class="position-relative">
             <div class="dropdown-menu" :class="{ show : opened}">
@@ -101,6 +114,7 @@ export default {
       lang: localStorage.getItem("lang") ? localStorage.getItem("lang") : 'vn',
       currentTheme: localStorage.getItem("theme-color") ? localStorage.getItem("theme-color") : 'theme-light',
       modulesList: null,
+      dropdownDirections: false,
     };
   },
   created() {
@@ -109,8 +123,9 @@ export default {
     _this.listeningSocket();
     if(localStorage.getItem('modules')){
       _this.modulesList = _.cloneDeep(JSON.parse(localStorage.getItem('modules')));
+      _this.modulesList = _this.modulesList.filter(x => x.Ten != 'Quản lý mục tiêu')
     }
-    console.log(_this.modulesList);
+    console.log(_this.modulesList)
   },
   mounted(){
     var _this = this;
@@ -130,6 +145,10 @@ export default {
       }),
   },
   methods: {
+    openDropdownDirections(){
+      var _this = this;
+      _this.dropdownDirections = ! _this.dropdownDirections;
+    },
     updateParentOpened(val) {
       var _this = this;
       _this.opened = val;
@@ -208,4 +227,7 @@ export default {
 </script>
 
 <style scoped>
+  .max-content{
+    min-width: max-content;
+  }
 </style>
