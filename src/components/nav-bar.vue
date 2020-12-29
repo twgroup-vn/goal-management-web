@@ -33,7 +33,7 @@
             </a>
             <div class="dropdown-menu max-content" :class="{ show : dropdownDirections}">
               <div v-for="(modules, index) in modulesList" :key="index">
-                <a class="dropdown-item" :href="modules.DuongDanTruyCap">
+                <a class="dropdown-item d-flex align-items-center" :href="modules.DuongDanTruyCap">
                   <img :src="modules.Icon"/>
                   <span class="ml-2">{{ modules.Ten }}</span>
                 </a>
@@ -125,7 +125,6 @@ export default {
       _this.modulesList = _.cloneDeep(JSON.parse(localStorage.getItem('modules')));
       _this.modulesList = _this.modulesList.filter(x => x.Ten != 'Quản lý mục tiêu')
     }
-    console.log(_this.modulesList)
   },
   mounted(){
     var _this = this;

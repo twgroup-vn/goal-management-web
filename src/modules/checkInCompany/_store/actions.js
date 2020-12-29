@@ -34,6 +34,11 @@ const getBoardId = async (context, request) => {
   return response.data;
 };
 
+const editSubGoal = async (context, request) => {
+  let response =  request.id && request.id != "" ? await api.updateSubGoal(request) : await api.createSubGoal(request);
+  return response;
+};
+
 export default {
   getUserList,
   getBoardId,
@@ -41,5 +46,6 @@ export default {
   getAllGoalOfUser,
   handleChangeCycleIdOfGoalUser,
   createReply,
-  getAllGoalOfCompany
+  getAllGoalOfCompany,
+  editSubGoal
 }

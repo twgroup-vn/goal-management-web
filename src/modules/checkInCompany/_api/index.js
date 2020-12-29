@@ -25,11 +25,21 @@ const getBoardId = async (request) => {
     return Vue.prototype.$http.get(`/api/cardGroup/getBoardId/${request}`);
 }
   
+const updateSubGoal = async (request) => {
+    return Vue.prototype.$http.post(`/api/subGoal/update`, request);
+}
+
+const createSubGoal = async (request) => {
+    return Vue.prototype.$http.post(`/api/subGoal/create`, request);
+}
+
 export default {
     getUserList,
     getBoardId,
     getGoalListOfCompany,
     getAllGoalOfUser,
     createReply,
-    getAllGoalOfCompany
+    getAllGoalOfCompany,
+    updateSubGoal,
+    createSubGoal
 }

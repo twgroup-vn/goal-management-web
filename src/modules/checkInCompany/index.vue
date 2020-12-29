@@ -76,6 +76,9 @@
                         <div class="name-avatar">{{ item && item.fullName ? item.fullName : '' }}</div>
                         <div class="created-date">{{ item.createdAt.slice(0,10) }}</div>
                       </div>
+                      <button class="btn btn-primary" v-if="item.userId != loggedUserId" @click="handleCreateSubGoal(item)">
+                        <span class="ml-2">Tạo mục tiêu con</span>
+                      </button>
                     </div>
                     <div :class="switchLayout == false ? 'd-flex align-items-center' : 'col-12 d-flex justify-content-between align-items-center px-0'">
                       <a class="relative-group-icon mr-4" @click="handleModalRelation(item.id)">
@@ -800,6 +803,42 @@
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog title="Tạo mục tiêu con" :visible.sync="modalCreateSubGoal" class="transition-box-center" width="50%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <form data-vv-scope="validateCreateSubGoal">
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.nameSubGoal') ? 'has-error' : ''}`">
+            <label>Tên mục tiêu con<span class="text-danger ml-2">*</span></label>
+            <input type="text" class="input-primary medium" name="nameSubGoal" placeholder="Nhập tên mục tiêu con" v-model="formCreateSubGoal.name" v-validate="'required'"/>
+            <div v-if="errors.has('validateCreateSubGoal.nameSubGoal')" class="mt-3 text-danger">Yêu cầu nhập tên mục tiêu con</div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.typeProgressSubGoal') ? 'has-error' : ''}`">
+            <label>Đơn vị đo lường<span class="text-danger ml-2">*</span></label>
+            <el-select v-model="formCreateSubGoal.typeProgress" name="typeProgressSubGoal" clearable placeholder="Chọn đơn vị đo lường" class="w-100" v-validate="'required'">
+              <el-option v-for="item in commonData.unit"
+                    :key="item.code"
+                    :label="`${item.name} ( ${item.shortName} )`"
+                    :value="item.code">
+              </el-option>
+            </el-select>
+            <div v-if="errors.has('validateCreateSubGoal.typeProgressSubGoal')" class="mt-3 text-danger">Yêu cầu nhập đơn vị đo lường</div>
+          </div>
+          <div :class="`form-group ${errors.has('validateCreateSubGoal.fullProgressSubGoal') ? 'has-error' : ''}`" v-if="formCreateSubGoal.typeProgress && formCreateSubGoal.typeProgress !== commonData.PERCENT && formCreateSubGoal.typeProgress !== commonData.STAR">
+            <label>Giới hạn đo lường<span class="text-danger ml-2">*</span></label>
+            <input type="number" class="input-primary medium" name="fullProgressSubGoal" placeholder="Nhập giới hạn đo lường" v-model="formCreateSubGoal.fullProgress" v-validate="'required'" />
+            <div v-if="errors.has('validateCreateSubGoal.fullProgressSubGoal')" class="mt-3 text-danger">Yêu cầu nhập giới hạn đo lường</div>
+          </div>
+        </form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCreateSubGoal = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="confirmCreateSubGoal">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -831,6 +870,7 @@ export default {
       modalViewMainResultSubGoal: false,
       modalViewCheckInSubGoal: false,
       modalViewMainResultCheckInSubGoal: false,
+      modalCreateSubGoal: false,
       activeTab: "check-in",
       cycleId: '',
       formData:{
@@ -853,6 +893,14 @@ export default {
       checkInSubGoalArray: null,
       checkInMainReusultSubGoalArray: null,
       switchLayout: false,
+      loggedUserId: null,
+      formCreateSubGoal: {
+        name: '',
+        confidenceLevel: 'fine',
+        image: null,
+        status: 'new',
+        isDelete: false
+      },
     };
   },
   computed: {
@@ -881,6 +929,8 @@ export default {
     await _this.$store.dispatch("$_checkInCompany/getAllGoalOfCompany");
     _this.rawEvaluateCompany = _.cloneDeep(_this.evaluateCompany);
     _this.evaluateUser = _.cloneDeep(_this.rawEvaluateCompany);
+    _this.loggedUserId = localStorage.getItem('userId');
+
   },
   watch:{
     "formData.receiveUserId": async function(val){
@@ -918,6 +968,65 @@ export default {
         return '#67c23a';
       }
     },
+    setFullProgress(type, value){
+      switch(type){
+        case commonData.PERCENT:
+          return 100;
+        case commonData.STAR:
+          return 5;
+        case commonData.VND: case commonData.DOLA: case commonData.TIME: case commonData.PRODUCT:
+          return parseFloat(value);
+        default:
+          return 0;
+      }
+    },
+    handleCreateSubGoal(item){
+      var _this = this;
+      _this.formCreateSubGoal.userId = localStorage.getItem("userId");
+      _this.formCreateSubGoal.goalId = item.id;
+      _this.formCreateSubGoal.cycleId = item.cycleId;
+      _this.formCreateSubGoal.companyId = item.companyId;
+      _this.formCreateSubGoal.higherUserId = item.higherUserId;
+      _this.modalCreateSubGoal = true;
+      console.log( _this.formCreateSubGoal)
+       _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
+    },
+    confirmCreateSubGoal: _.debounce(async function () {
+        var _this = this;
+        await _this.$validator.validateAll("validateCreateSubGoal").then(async result => {
+          if (result) {
+            try {
+              _this.formCreateSubGoal.fullProgress = _this.setFullProgress(_this.formCreateSubGoal.typeProgress, _this.formCreateSubGoal.fullProgress);
+              await _this.$store.dispatch("$_checkInCompany/editSubGoal", _this.formCreateSubGoal);
+              _this.modalCreateSubGoal = false;
+              _this.formCreateSubGoal.userId = null;
+              _this.formCreateSubGoal.goalId = null;
+              _this.formCreateSubGoal.cycleId = null;
+              _this.formCreateSubGoal.companyId = null;
+              _this.formCreateSubGoal.higherUserId = null;
+              _this.formCreateSubGoal.typeProgress = null;
+              _this.formCreateSubGoal.fullProgress = null;
+              _this.formCreateSubGoal.name = "";
+              await _this.$store.dispatch("$_checkInCompany/getAllGoalOfCompany");
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Lưu thành công',
+                type: 'success'
+              });
+            } catch (error) {
+              _this.$notify.error({
+                title: 'Thất bại',
+                message: 'Lưu thất bại'
+              });
+            }
+          }
+        });
+    }, 500),
     openModalViewMainResultSubGoal(subGoal){
       var _this = this;
       _this.modalViewMainResultSubGoal = true;
