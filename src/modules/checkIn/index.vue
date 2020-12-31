@@ -179,21 +179,23 @@
                               <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title d-flex align-items-center">
                                   <div class="mr-2">Tên mục tiêu con</div>
-                                  <el-tooltip class="item" effect="dark" content="Check-in" placement="top-start">
-                                    <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCheckInSubGoal(sub)">
-                                      <font-awesome-icon :icon="['fas', 'calendar-check']" />
-                                    </a>
-                                  </el-tooltip>
-                                  <el-tooltip class="item" effect="dark" content="Tạo kết quả chính" placement="top-start">
-                                    <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCreateMainResultSubGoal(sub)">
-                                      <font-awesome-icon :icon="['fas', 'plus-square']" />
-                                    </a>
-                                  </el-tooltip>
-                                  <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
-                                    <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
-                                      <font-awesome-icon :icon="['fas', 'eye']" />
-                                    </a>
-                                  </el-tooltip>
+                                  <div v-if="item.userId === sub.userId">
+                                    <el-tooltip class="item" effect="dark" content="Check-in" placement="top-start">
+                                      <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCheckInSubGoal(sub)">
+                                        <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                                      </a>
+                                    </el-tooltip>
+                                    <el-tooltip class="item" effect="dark" content="Tạo kết quả chính" placement="top-start">
+                                      <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCreateMainResultSubGoal(sub)">
+                                        <font-awesome-icon :icon="['fas', 'plus-square']" />
+                                      </a>
+                                    </el-tooltip>
+                                    <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                                      <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
+                                        <font-awesome-icon :icon="['fas', 'eye']" />
+                                      </a>
+                                    </el-tooltip>
+                                  </div>
                                 </div>
                                 <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                               </div>
@@ -213,13 +215,15 @@
                                   <div :class="`tag ${commonData.goalStatusDisplay[sub.status].color}`">{{ sub.status ? commonData.goalStatusDisplay[sub.status].name : '' }}</div>
                                 </div>
                               </div>
-                               <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                <div class="title">Ngày tạo</div>
-                                <div class="content">
-                                  {{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}
-                                </div>
+                              <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                                <div class="title">Người tạo</div>
+                                <el-tooltip class="item" effect="dark" :content="feedbackUser.find(x => x.id === sub.userId).fullName" placement="top-start">
+                                  <div class="avatar-circle board">
+                                    <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${feedbackUser ? feedbackUser.find(x => x.id === sub.userId ).avatar : ''})` }"></div>
+                                  </div>
+                                </el-tooltip>
                               </div>
-                              <div :class="switchLayout == false ? 'col-md-1 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
+                              <div v-if="sub.userId === loggedUserId" :class="switchLayout == false ? 'col-md-1 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title"></div>
                                 <div class="content">
                                   <el-tooltip class="item" effect="dark" content="Cập nhật mục tiêu con" placement="top-start">
@@ -481,7 +485,7 @@
               </div>
               <div v-if="errors.has('validateCreateMainResults.typePercentCreateMainResult')" class="my-3 text-danger">Yêu cầu chọn đơn vị đo lường</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div :class="`form-group ${errors.has('validateCreateMainResults.targetPercentCreateMainResult') ? 'has-error' : ''}`" v-if="formCreateMainResult.typeProgress && formCreateMainResult.typeProgress !== commonData.PERCENT && formCreateMainResult.typeProgress !== commonData.STAR">
                 <label>Kết quả mong muốn<span class="text-danger ml-2">*</span></label>
                 <input type="number" class="input-primary medium" name="targetPercentCreateMainResult" placeholder="Nhập kết quả mong muốn" v-model="formCreateMainResult.fullProgress" v-validate="'required'" />
@@ -1329,6 +1333,7 @@ export default {
       loading: false,
       options: [],
       idTempMainResult: null,
+      loggedUserId: null,
     };
   },
   computed: {
@@ -1354,6 +1359,7 @@ export default {
     await _this.$store.dispatch("$_checkInUser/getUserList");
     await _this.$store.dispatch("$_checkInUser/getGoalListOfUser");
     await _this.$store.dispatch("$_checkInUser/getAllGoalOfCompany");
+    _this.loggedUserId = localStorage.getItem("userId");
   },
   methods: {
     async redirectToCardDetail(card){

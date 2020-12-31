@@ -199,16 +199,30 @@
                                 <div :class="switchLayout == false ? 'col-md-3 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
                                 <div class="title d-flex align-items-center">
                                     <div class="mr-2">Tên mục tiêu con</div>
-                                    <el-tooltip class="item" effect="dark" content="Xem kết quả check-in" placement="top-start">
-                                      <a href="javascript:;" class="text-primary medium mr-2" :disabled="sub.checkIn.length === 0" @click="openModalViewCheckInSubGoal(sub)">
-                                        <font-awesome-icon :icon="['fas', 'calendar-check']" />
-                                      </a>
-                                    </el-tooltip>
-                                    <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
-                                      <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
-                                        <font-awesome-icon :icon="['fas', 'eye']" />
-                                      </a>
-                                    </el-tooltip>
+                                    <div v-if="item.userId === sub.userId">
+                                      <el-tooltip class="item" effect="dark" content="Xem kết quả check-in" placement="top-start">
+                                        <a href="javascript:;" class="text-primary medium mr-2" :disabled="sub.checkIn.length === 0" @click="openModalViewCheckInSubGoal(sub)">
+                                          <font-awesome-icon :icon="['fas', 'calendar-check']" />
+                                        </a>
+                                      </el-tooltip>
+                                      <el-tooltip class="item" effect="dark" content="Xem kết quả chính" placement="top-start">
+                                        <a href="javascript:;" class="text-primary medium" :disabled="sub.mainResult.length === 0" @click="openModalViewMainResultSubGoal(sub)">
+                                          <font-awesome-icon :icon="['fas', 'eye']" />
+                                        </a>
+                                      </el-tooltip>
+                                    </div>
+                                    <div v-else>
+                                      <el-tooltip class="item" effect="dark" content="Check-in mục tiêu con" placement="top-start" v-if="item.userId != loggedUserId">
+                                        <a href="javascript:;" class="text-primary medium mr-2" @click="openModalCheckInHigher(sub)">
+                                          <font-awesome-icon :icon="['fas', 'check-double']" />
+                                        </a>
+                                      </el-tooltip>
+                                      <el-tooltip class="item" effect="dark" content="Xem kết quả check-in" placement="top-start">
+                                        <a href="javascript:;" class="text-primary medium" @click="openModalViewHigher(sub.checkIn)">
+                                          <font-awesome-icon :icon="['fas', 'eye']" />
+                                        </a>
+                                      </el-tooltip>
+                                    </div>
                                   </div>
                                   <div class="content">{{ sub.name ? sub.name : 'Không có tên mục tiêu' }}</div>
                                 </div>
@@ -231,8 +245,12 @@
                                   </div>
                                 </div>
                                 <div :class="switchLayout == false ? 'col-md-2 list d-flex flex-column justify-content-center' : 'col-md-12 grid d-flex flex-column justify-content-center'">
-                                  <div class="title">Ngày tạo</div>
-                                  <div class="content">{{ sub.createdAt ? sub.createdAt.slice(0, 10) : '' }}</div>
+                                  <div class="title">Người tạo</div>
+                                  <el-tooltip class="item" effect="dark" :content="feedbackUser.find(x => x.id === sub.userId).fullName" placement="top-start">
+                                    <div class="avatar-circle board">
+                                      <div class="inside img-thumbnail" :style="{ backgroundImage: `url(${feedbackUser ? feedbackUser.find(x => x.id === sub.userId ).avatar : ''})` }"></div>
+                                    </div>
+                                  </el-tooltip>
                                 </div>
                               </div>
                             </div>
@@ -839,6 +857,125 @@
         </button>
       </span>
     </el-dialog>
+
+    <el-dialog title="Form check-in cấp trên" :visible.sync="modalCheckInHigher" class="transition-box-center" width="80%" top="3vh" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="modal-body">
+        <form data-vv-scope="validateCheckInHigher">
+          <div class="row my-2">
+            <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.confidenceLevel") }}</div>
+            <div class="col-md-8">
+              <el-radio-group v-model="formCheckInHigher.confidenceLevel" v-for="(item,k) in commonData.confidenceLevel" :key="k">
+                <el-radio :label="item.code" class="mr-2">{{item.name}}</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
+          <div :class="`row my-2 ${errors.has('validateCheckInHigher.resultMainGoal') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.result") }}<span class="text-danger ml-2">*</span></div>
+            <div class="col-md-8">
+              <input class="input-primary medium" name="resultMainGoal" placeholder="Nhập kết quả" v-model="formCheckInHigher.result" v-validate="'required'" />
+              <div v-if="errors.has('validateCheckInHigher.resultMainGoal')" class="mt-3 text-danger">Yêu cầu nhập kết quả</div>
+            </div>
+          </div>
+          <div :class="`row my-2 ${errors.has('validateCheckInHigher.currentProgressMainGoal') ? 'has-error' : ''}`">
+            <div class="col-md-4 title">{{ $t("checkinPage.checkInForm.progress") }}<span class="text-danger ml-2">*</span></div>
+            <div class="col-md-8">
+              <input type="number" class="input-primary medium" name="currentProgressMainGoal" placeholder="Nhập tiến độ" v-model="formCheckInHigher.currentProgress" v-validate="'required'" />
+              <div v-if="errors.has('validateCheckInHigher.currentProgressMainGoal')" class="mt-3 text-danger">Yêu cầu nhập tiến độ</div>
+            </div> 
+          </div>
+          <div class="row my-2" v-for="(item, index) in questionsCompany" :key="index">
+            <div class="col-md-4 title">{{ item.question }}</div>
+            <div class="col-md-8">
+              <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 1" v-model="formCheckInHigher.answerFirst"></textarea>
+              <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 2" v-model="formCheckInHigher.answerSecond"></textarea>
+              <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 3" v-model="formCheckInHigher.answerThird"></textarea>
+              <textarea placeholder="Nhập trả lời" rows="4" class="w-100" v-if="item.orderNo == 4" v-model="formCheckInHigher.answerFourth"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button class="btn btn-standard btn-medium mr-3" @click="modalCheckInHigher = false">
+          Hủy
+        </button>
+        <button class="btn btn-primary btn-medium" :disabled="errors.items.length > 0" @click="submitCheckInHigher">
+          Xác nhận
+        </button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="Xem kết quả check-in cấp trên" :visible.sync="modalViewHigher" class="transition-box-center" width="60%" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div>
+        <div class="card mb-3" v-for="(item, index) in checkInHigherArray" :key="index">
+          <div class="card-body">
+            <div class="row">
+              <label class="col-6 font-weight-bold">Kết quả</label>
+              <div class="col-6">
+                <div v-if="item && item.result">
+                  {{ item.result }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Mức độ tự tin</label>
+              <div class="col-6">{{ commonData.confidenceLevelDisplay[item.confidenceLevel] }}</div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Tiến độ</label>
+              <div class="col-6">
+                <ProgressAdvance :type="item.typeProgress" :value="item.currentProgress" />
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">Ngày tạo</label>
+              <div class="col-6">
+                <div v-if="item && item.createdAt">
+                  {{ item.createdAt.slice(0, 10) }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 1).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFirst">
+                  {{ item.answerFirst }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 2).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerSecond">
+                  {{ item.answerSecond }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 3).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerThird">
+                  {{ item.answerThird }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-6 font-weight-bold">{{ questionsCompany.find(x => x.orderNo === 4).question }}</label>
+              <div class="col-6">
+                <div v-if="item && item.answerFourth">
+                  {{ item.answerFourth }}
+                </div>
+                <div v-else class="text-disabled">Không có nội dung</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -871,7 +1008,10 @@ export default {
       modalViewCheckInSubGoal: false,
       modalViewMainResultCheckInSubGoal: false,
       modalCreateSubGoal: false,
+      modalCheckInHigher: false,
+      modalViewHigher: false,
       activeTab: "check-in",
+      activeTabHigher: "check-in",
       cycleId: '',
       formData:{
         receiveUserId: '',
@@ -892,6 +1032,7 @@ export default {
       mainResultSubGoalArray: null,
       checkInSubGoalArray: null,
       checkInMainReusultSubGoalArray: null,
+      checkInHigherArray: null,
       switchLayout: false,
       loggedUserId: null,
       formCreateSubGoal: {
@@ -899,6 +1040,19 @@ export default {
         confidenceLevel: 'fine',
         image: null,
         status: 'new',
+        isDelete: false
+      },
+      higherDetails: null,
+      formCheckInHigher: {
+        goalId: '',
+        subGoalId: null,
+        result: '',
+        confidenceLevel: '',
+        currentProgress: 0,
+        answerFirst: '',
+        answerSecond: '',
+        answerThird: '',
+        answerFourth: '',
         isDelete: false
       },
     };
@@ -947,6 +1101,63 @@ export default {
     },
   },
   methods: {
+    openModalCheckInHigher(higherDetails){
+      var _this = this;
+      _this.formCheckInHigher = _.cloneDeep(higherDetails);
+      _this.formCheckInHigher.subGoalId = higherDetails.id;
+      _this.formCheckInHigher.goalId = higherDetails.goalId;
+      _this.formCheckInHigher.fullProgress = higherDetails.fullProgress;
+      _this.formCheckInHigher.typeProgress = higherDetails.typeProgress;
+      _this.modalCheckInHigher = true;
+      _this.$nextTick(() => {
+        _this.$validator.errors.clear();
+        _this.$validator.fields.items.forEach(field => field.reset());
+        _this.$validator.fields.items.forEach(field => _this.errors.remove(field));
+        _this.$validator.reset();
+      });
+    },
+    submitCheckInHigher: _.debounce(async function () {
+        var _this = this;
+        await _this.$validator.validateAll("validateCheckInHigher").then(async result => {
+          if (result) {
+            try {
+              _this.formCheckInHigher.currentProgress = parseFloat(_this.formCheckInHigher.currentProgress);
+              _this.formCheckInHigher.fullProgress = _this.setFullProgress(_this.formCheckInHigher.typeProgress, _this.formCheckInHigher.fullProgress);
+              await _this.$store.dispatch("$_checkInCompany/checkInHigher", _this.formCheckInHigher);
+              _this.formCheckInHigher.goalId = '';
+              _this.formCheckInHigher.subGoalId = null;
+              _this.formCheckInHigher.currentProgress = 0;
+              _this.formCheckInHigher.confidenceLevel = '';
+              _this.formCheckInHigher.fullProgress = 0;
+              _this.formCheckInHigher.typeProgress = null;
+              _this.formCheckInHigher.result = '';
+              _this.formCheckInHigher.answerFirst = '';
+              _this.formCheckInHigher.answerSecond = '';
+              _this.formCheckInHigher.answerThird = '';
+              _this.formCheckInHigher.answerFourth = '';
+              _this.formCheckInHigher.isDelete = false,
+              _this.modalCheckInHigher = false;
+              console.log(_this.formCheckInHigher);
+              await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
+              _this.$notify({
+                title: 'Chúc mừng',
+                message: 'Check-in thành công',
+                type: 'success'
+              });
+            } catch (error) {
+              _this.$notify.error({
+                title: 'Thất bại',
+                message: 'Check-in thất bại'
+              });
+            }
+          }
+        });
+    }, 500),
+    openModalViewHigher(subGoal){
+      var _this = this;
+      _this.modalViewHigher = true;
+      _this.checkInHigherArray = _.cloneDeep(subGoal);
+    },
     async redirectToCardDetail(card){
       var _this = this;
       var boardIdOfCardGroup =  await _this.$store.dispatch("$_checkInCompany/getBoardId", card.cardGroupId);
@@ -1012,7 +1223,7 @@ export default {
               _this.formCreateSubGoal.typeProgress = null;
               _this.formCreateSubGoal.fullProgress = null;
               _this.formCreateSubGoal.name = "";
-              await _this.$store.dispatch("$_checkInCompany/getAllGoalOfCompany");
+              await _this.$store.dispatch("$_checkInCompany/getGoalListOfCompany");
               _this.$notify({
                 title: 'Chúc mừng',
                 message: 'Lưu thành công',

@@ -33,6 +33,10 @@ const createSubGoal = async (request) => {
     return Vue.prototype.$http.post(`/api/subGoal/create`, request);
 }
 
+const checkInHigher = async (request) => {
+    return Vue.prototype.$http.post(`/api/checkIn/create`, request);
+}
+
 export default {
     getUserList,
     getBoardId,
@@ -41,5 +45,6 @@ export default {
     createReply,
     getAllGoalOfCompany,
     updateSubGoal,
-    createSubGoal
+    createSubGoal,
+    checkInHigher
 }

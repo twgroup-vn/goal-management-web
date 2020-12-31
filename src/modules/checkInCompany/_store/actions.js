@@ -39,6 +39,11 @@ const editSubGoal = async (context, request) => {
   return response;
 };
 
+const checkInHigher = async (context, request) => {
+  let response = await api.checkInHigher(request);
+  return response;
+};
+
 export default {
   getUserList,
   getBoardId,
@@ -47,5 +52,6 @@ export default {
   handleChangeCycleIdOfGoalUser,
   createReply,
   getAllGoalOfCompany,
-  editSubGoal
+  editSubGoal,
+  checkInHigher
 }
